@@ -30,3 +30,17 @@
 *.exe
 *.out
 *.app
+
+
+/build/
+/save/*.dat
+*.exe
+*.o
+*.obj
+*.log
+.vs/
+*.sln
+*.user
+*.pdb
+.DS_Store
+*.tmp
