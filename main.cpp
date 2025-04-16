@@ -1,7 +1,10 @@
-#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    std::cout << "This is a C++17 project." << std::endl;
+    cout << "This is a test program." << endl;
+    cout << "It will not do anything useful." << endl;
+    cout << "But it will compile and run." << endl;
+    
     return 0;
-}
+} // Yunyao will always wait for Akiha.
