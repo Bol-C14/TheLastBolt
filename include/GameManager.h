@@ -14,6 +14,20 @@
 static GameManager& Instance();
 
 /*
+	玩家状态的类对象
+*/
+class PlayerState {
+	int HP;
+	int energy;
+	int nodeId;
+};
+
+/*
+	备注：这个对象目前还没弄懂
+*/
+class GameManager {
+public:
+/*
 	负责人：木木
 	功能：程序运行时被调用，加载、存档数据，并且初始化各个子系统
 	参数：空
@@ -53,18 +67,5 @@ PlayerState& GetPlayerState();
 	返回值：空
 */
 void OnBattleEnd(bool playerWin, int nextNodeId);
-
-/*
-	玩家状态的类对象
-*/
-class PlayerState {
-
-};
-
-/*
-	备注：这个对象目前还没弄懂
-*/
-class GameManager {
-
 };
 #endif
