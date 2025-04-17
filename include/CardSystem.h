@@ -17,6 +17,7 @@ private:
 
 public:
 	CardSysytem() {
+<<<<<<< HEAD
 		LoadCards(const string & filePath);//-ä» cards.json åŠ è½½æ‰€æœ‰å¡ç‰Œæ•°æ®
 	}
 	Card DrawCard();//-ä» drawPile é¡¶éƒ¨ / éšæœºä½ç½®æŠ½ä¸€å¼ å¡
@@ -41,5 +42,31 @@ public:
 //4. void ShuffleDeck();
 //-éšæœºæ´—ç‰Œ
 //å…³é”®æ•°æ®ç»“æ„ :
+=======
+		LoadCards(const string & filePath);//-´Ó cards.json ¼ÓÔØËùÓĞ¿¨ÅÆÊı¾İ
+	}
+	Card DrawCard();//-´Ó drawPile ¶¥²¿ / Ëæ»úÎ»ÖÃ³éÒ»ÕÅ¿¨
+	void ApplyCardEffect(const Card& card, BattleState& battle);//-¸ù¾İ¿¨ÅÆÀàĞÍºÍÊıÖµ£¬¶Ô battle ÀïµÄÊı¾İÖ´ĞĞ¹¥»÷ / ÖÎÁÆ / »¤¶ÜµÈ
+	void ShuffleDeck();//-Ëæ»úÏ´ÅÆ
+};
+
+//¶¨Òå CardSystem Àà£»
+//½Ó¿Ú£º LoadCards(filePath), DrawCard(), ApplyCardEffect(Card, BattleState&), ShuffleDeck()£»
+//¹Ø¼üÊı¾İ½á¹¹£º Card, Deck¡£
+
+//¹¦ÄÜ / ĞèÇó£º
+//- ×¨ÃÅ´¦Àí¿¨ÅÆÊı¾İ¡¢³éÅÆ / ÆúÅÆÂß¼­¡¢¿¨ÅÆĞ§¹ûµÈ¡£
+//- Ìá¹©¶Ô¡°Íæ¼Ò¿¨×é¡±µÄ¹ÜÀí£¬Èç³õÊ¼¿¨×é¹¹½¨¡¢ÔËĞĞÊ±³éÅÆÆúÅÆµÈ¡£
+//¶ÔÍâ½Ó¿Ú£º
+//1. void LoadCards(const std::string & filePath);
+//-´Ó cards.json ¼ÓÔØËùÓĞ¿¨ÅÆÊı¾İ
+//2. Card DrawCard();
+//-´Ó drawPile ¶¥²¿ / Ëæ»úÎ»ÖÃ³éÒ»ÕÅ¿¨
+//3. void ApplyCardEffect(const Card & card, BattleState & battle);
+//-¸ù¾İ¿¨ÅÆÀàĞÍºÍÊıÖµ£¬¶Ô battle ÀïµÄÊı¾İÖ´ĞĞ¹¥»÷ / ÖÎÁÆ / »¤¶ÜµÈ
+//4. void ShuffleDeck();
+//-Ëæ»úÏ´ÅÆ
+//¹Ø¼üÊı¾İ½á¹¹ :
+>>>>>>> 76a6cea (æ›´æ–°å‡½æ•°éœ€æ±‚ã€æœºåˆ¶åŠŸèƒ½)
 //-struct Card(id, name, cost, type, value)
 //- std::vector<Card> deck, drawPile, discardPile
