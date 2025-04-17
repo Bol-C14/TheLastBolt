@@ -1,16 +1,32 @@
 #include<NodeManager.h>
 using namespace std;
-bool LoadNodes(const std::string& filePath)
+bool NodeManager::LoadNodes(string filepath)
 {
 
 }
-Node GetNodeById(int id)
+Node NodeManager::GetNodeById(int id)
 {
 
 }
-
+void nodejuge(NodeType c)
+{
+	switch (c)
+	{
+	case NodeType::DIALOGUE:
+		break;
+	case NodeType::BATTLE:
+		break;
+	case NodeType::CHOICE:
+		break;
+	case NodeType::REWARD:
+		break;
+	case NodeType::MAP:
+		break;
+	default:
+		break;
+	}
+}
 int main()
 {
-
 
 }
