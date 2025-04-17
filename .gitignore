@@ -44,3 +44,5 @@
 *.pdb
 .DS_Store
 *.tmp
+main
+.vscode/tasks.json
