@@ -1,11 +1,9 @@
-#ifndef BATTLESYSTEM_H
-#define BATTLESYSTEM_H
+#pragma once
+#include<string>
+#include<vector>
+using namespace std;
 
-#include "CommonTypes.h"
-#include <vector>
-#include <string>
-
-// 战斗状态数据结构
+// 战斗状态结构体
 struct BattleState {
     int playerHP;
     int playerMaxHP;
