@@ -12,6 +12,7 @@
 #include <iostream>
 
 
+
 class RewardSystem
 {
 public:
