@@ -1,48 +1,61 @@
-#include "../include/MapSystem.h"
-#include <fstream>
-#include <iostream>
-// TODO: 添加JSON解析支持（例如nlohmann/json），当前为示例结构体填充
+#include "MapSystem.h"
 
-// 加载地图数据
-bool MapSystem_LoadMap(const std::string &filePath, MapContext &ctx) {
-    std::ifstream file(filePath);
-    if (!file.is_open()) {
-        std::cerr << "无法打开地图文件: " << filePath << std::endl;
-        return false;
-    }
-    // TODO: 解析JSON，填充ctx.stages
-    // 当前示例：手动添加或在上层初始化
-    return true;
-}
+//构造函数
+MapSystem::MapSystem()
+{
 
-// 获取下一关卡列表
-std::vector<int> MapSystem_GetNextStageIds(const MapContext &ctx) {
-    for (const auto &stage : ctx.stages) {
-        if (stage.stageId == ctx.currentStageId) {
-            return stage.nextStageIds;
-        }
-    }
-    return {};
-}
+}                                                
 
-// 判断是否Boss关卡
-bool MapSystem_IsBossStage(const MapContext &ctx, int stageId) {
-    for (const auto &stage : ctx.stages) {
-        if (stage.stageId == stageId) {
-            return stage.isBoss;
-        }
-    }
-    return false;
-}
+//析构函数
+MapSystem::~MapSystem()
+{
 
-// 获取关卡信息
-const MapStage& MapSystem_GetStageById(const MapContext &ctx, int stageId) {
-    static MapStage empty;
-    for (const auto &stage : ctx.stages) {
-        if (stage.stageId == stageId) {
-            return stage;
-        }
-    }
-    std::cerr << "未找到关卡ID: " << stageId << std::endl;
-    return empty;
-}
+}                                              
+
+//初始化地图数据，玩家第一次游玩使用，主要将stages初始化
+bool MapSystem::initMap()
+{
+    
+}                                           
+
+//从json存档中加载地图,加载成功返回true,private中两个成员被赋予相应数据，否则返回false
+bool MapSystem::LoadMap(const std::string& mapFile)
+{
+
+}              
+
+//获取下一关的地图列表，返回值是一个vector<int>列表，该列表包含最多3个地图
+std::vector<int> MapSystem::GetNextStageIds(int currentStageId)
+{
+
+}      
+
+//判断stageId这个关卡是否为Boss,是返回true,不是返回false
+bool MapSystem::IsBossStage(int stageId)
+{
+
+}                        
+
+//通过stageId获取相应的地图数据，返回MapStage结构体
+MapStage MapSystem::GetMapStageByStageId(int stageId)
+{
+
+}                
+
+//设置私有成员selectStages的值
+void MapSystem::setSelectStages(std::vector<int>& selectStages)
+{
+
+}      
+
+//获取私有成员selectStages的数据
+std::vector<int> MapSystem::getSelectStages()
+{
+    
+}               
+
+//设置私有成员的值
+void MapSystem::setCurrentStageId(int currentStageId)
+{
+
+}                 

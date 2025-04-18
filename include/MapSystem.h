@@ -19,14 +19,13 @@ struct MapContext {
     int currentStageId;              // 当前关卡ID
 };
 
-/**
- * 加载地图数据
- * @param filePath JSON文件路径（data/map.json）
- * @param ctx 地图上下文，会被填充stages
- * @return 是否加载成功
- * TODO: 使用JSON解析库解析并加载关卡数据
- */
-bool MapSystem_LoadMap(const std::string &filePath, MapContext &ctx);
+class MapSystem {
+public:
+    MapSystem();                                                //���캯��
+    
+    ~MapSystem();                                               //��������
+
+    bool initMap();                                             //��ʼ����ͼ���ݣ���ҵ�һ������ʹ�ã���Ҫ��stages��ʼ��
 
 /**
  * 获取当前关卡的下一可选关卡ID列表
