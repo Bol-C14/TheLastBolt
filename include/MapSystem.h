@@ -21,6 +21,10 @@ struct MapStage {
 
 class MapSystem {
 public:
+    MapSystem();                                                //构造函数
+    
+    ~MapSystem();                                               //析构函数
+
     bool initMap();                                             //初始化地图数据，玩家第一次游玩使用，主要将stages初始化
 
     bool LoadMap(const std::string& mapFile);                   //从json存档中加载地图,加载成功返回true,private中两个成员被赋予相应数据，否则返回false
