@@ -15,6 +15,7 @@
  */
 CardSystem::CardSystem() {
     // TODO: 可在此初始化随机种子，例如 std::srand(time(nullptr));
+    std::srand(time(nullptr));
 }
 
 /**
@@ -38,8 +39,33 @@ void CardSystem::LoadCards(const std::string &filePath) {
     // std::ifstream in(filePath);
     // json j; in >> j;
     // for (auto &item : j) { Card c; c.id = item["id"]; ... deck.push_back(c); }
-    
+    ifstream in(filePath);//打开文件filePath，并解析
+    json j;//
+    in>>j;//解析json数据
+    // 遍历 JSON 数组，将每个对象转换为 Card
+    for(auto &item:j)
+    {
+        Card c;
+        c.id=item["id"];
+        c.name=item["name"];
+        c.type=item["type"];
+        c.cost=item["cost"];
+        c.value=item["value"];
+        c.description=item["description"];
+        c.upgraded=item["upgraded"];
+        deck.push_back(c);//将Card对象存入deck
+
+    // int            id;           // 卡牌ID
+    // std::string    name;         // 卡牌名
+    // CardType       type;         // 卡牌类型
+    // int            cost;         // 行动力消耗
+    // int            value;        // 数值（伤害/护盾/回复量）
+    // std::string    description;  // 效果描述
+    // bool           upgraded;     // 是否为强化版
+
+    }
     // TODO: 初始化抽牌堆 drawPile = deck;
+    drawPile = deck;
 }
 
 /**
@@ -56,8 +82,12 @@ Card CardSystem::DrawCard() {
     std::cout << "[CardSystem] DrawCard called\n";
     // TODO: 如果 drawPile.empty()，调用 ShuffleDeck()
     // TODO: Card c = drawPile.back(); drawPile.pop_back(); return c;
-    
-    return Card(); // 返回默认 Card，学生需实现实际抽牌逻辑
+    if(drawPile.empty())
+    ShuffleDeck();
+    Card c=drawPile.back();
+    drawPile.pop_back();
+    return c;
+    //return Card(); // 返回默认 Card，学生需实现实际抽牌逻辑
 }
 
 /**
@@ -78,6 +108,7 @@ Card CardSystem::DrawCard() {
 void CardSystem::ApplyCardEffect(const Card &card, PlayerState &player, Enemy &enemy) {
     std::cout << "[CardSystem] ApplyCardEffect: " << card.name << "\n";
     // TODO: 使用 card.type 判断攻击、防御、资源等效果
+   enemy.hp-=card.value;//敌人血量减少card.value
 }
 
 /**
@@ -98,6 +129,11 @@ void CardSystem::ShuffleDeck() {
     // TODO: drawPile.insert(drawPile.end(), discardPile.begin(), discardPile.end());
     // TODO: discardPile.clear();
     // TODO: 洗牌算法
+    drawPile.insert(drawPile.end(), discardPile.begin(), discardPile.end());// 将 discardPile 中所有卡牌移入 drawPile
+    discardPile.clear();//清空 discardPile
+
+    //使用 std::shuffle 随机打乱 drawPile
+    std::shuffle(drawPile.begin(), drawPile.end(), [](int n) { return std::rand() % n; });
 }
 
 /**
