@@ -1,91 +1,87 @@
-#pragma once
-#include<string>
-#include<vector>
-using namespace std;
+#ifndef BATTLESYSTEM_H
+#define BATTLESYSTEM_H
 
-// 战斗状态结构体
+#include "CommonTypes.h"
+#include <vector>
+#include <string>
+
+// 战斗状态数据结构
 struct BattleState {
     int playerHP;
     int playerMaxHP;
     int energy;
     int currentTurn; // 当前回合数
 
-    vector<Card> hand;       // 手牌
-	vector<Card> drawPile;    // 抽牌堆
-    vector<Card> discardPile; // 弃牌堆
+    std::vector<Card> hand;        // 手牌
+    std::vector<Card> drawPile;    // 抽牌堆
+    std::vector<Card> discardPile; // 弃牌堆
 
-    Enemy currentEnemy;           // 当前敌人
+    Enemy currentEnemy;            // 当前敌人
+    // TODO: 其他战斗相关状态
 };
 
-class BattleSystem {
-private:
-	
-public:
-	/*
-			负责人: 汪超伟
-			功能: 初始化战斗界面 赋值敌人的初始数据 
-			参数: enemyId表示要加载敌人的数据
-			返回值: bool true表示初始化成功 false表示初始化失败
-		*/
-	bool StartBattle(const string &enemyId);
-	/*
-			负责人: 汪超伟
-			功能: 判断游戏是否结束
-			参数: 无
-			返回值:true表示游戏结束 false表示游戏结束
-		*/
-	bool IsBattleOver();
-	/*
-			负责人: 汪超伟
-			功能: 判断玩家是否取得了胜利
-			参数: 无
-			返回值:true表示玩家胜利 false表示玩家失败
-		*/
-	bool PlayerWon();
-	/*
-			负责人: 汪超伟
-			功能: 游戏结束来打印游戏结束的页面
-			参数: 无
-			返回值:无
-		*/
-	void printGameEnd();
-	/*
-			负责人: 汪超伟
-			功能: 玩家出牌进行攻击
-			参数: 无
-			返回值:无
-		*/
-	void enemyAttcak();
-	/*
-			负责人: 汪超伟
-			功能: 敌人出牌进行攻击
-			参数: 无
-			返回值:无
-		*/
-	void playerAttcak();
-	/*
-			负责人: 汪超伟
-			功能: 随机buff的出现
-			参数: 无
-			返回值:无
-		*/
-	void randomBuff();
-	/*
-			负责人: 汪超伟
-			功能: 控制战斗界面总的的流程 
-			参数: 无
-			返回值:无
-		*/
-	void Battle();
-	/*
-			负责人: 汪超伟
-			功能: 战斗结束后的一些状态的休整
-			参数: 无
-			返回值:无
-		*/
-	void 
+/**
+ * 初始化战斗，返回是否成功
+ * @param battle 战斗状态
+ * @param enemyId 敌人ID
+ * @param player 玩家状态
+ * @return 是否初始化成功
+ * 
+ * TODO: 实现战斗初始化逻辑
+ */
+bool BattleSystem_StartBattle(BattleState &battle, const std::string &enemyId, const PlayerState &player);
 
+/**
+ * 判断战斗是否结束
+ * @param battle 战斗状态
+ * @return 是否结束
+ * 
+ * TODO: 实现战斗结束判断逻辑
+ */
+bool BattleSystem_IsBattleOver(const BattleState &battle);
 
+/**
+ * 判断玩家是否胜利
+ * @param battle 战斗状态
+ * @return 是否胜利
+ * 
+ * TODO: 实现胜利判断逻辑
+ */
+bool BattleSystem_PlayerWon(const BattleState &battle);
 
-	
-};
+/**
+ * 敌人行动
+ * @param battle 战斗状态
+ * 
+ * TODO: 实现敌人行动逻辑
+ */
+void BattleSystem_EnemyAction(BattleState &battle);
+
+/**
+ * 玩家出牌
+ * @param battle 战斗状态
+ * @param cardIndex 手牌索引
+ * 
+ * TODO: 实现玩家出牌逻辑
+ */
+void BattleSystem_PlayerAction(BattleState &battle, int cardIndex);
+
+/**
+ * 结算回合
+ * @param battle 战斗状态
+ * 
+ * TODO: 实现回合结算逻辑
+ */
+void BattleSystem_NextTurn(BattleState &battle);
+
+/**
+ * 执行战斗流程
+ * @param battle 战斗状态
+ * @param player 玩家状态
+ * @param onBattleEnd 战斗结束回调函数指针
+ * 
+ * TODO: 实现战斗主循环流程
+ */
+void BattleSystem_ExecuteBattle(BattleState &battle, PlayerState &player);
+
+#endif // BATTLESYSTEM_H

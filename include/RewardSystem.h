@@ -1,105 +1,42 @@
 /*
-	¸ºÔğÈË		£ºÉòÉ¡
-	¹¦ÄÜ		£º¸øÓèÍæ¼Ò½±Àø£¬ÆäÖĞ½±ÀøÓĞ¿¨ÅÆ¡¢»Ö¸´ÉúÃüÖµ¡¢¾­Ñé
-	Ğèµ÷ÓÃ½Ó¿Ú	£º
-	±»µ÷ÓÃ½Ó¿Ú	£»
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½É¡
+	ï¿½ï¿½ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½Ğ¿ï¿½ï¿½Æ¡ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½Ã½Ó¿ï¿½	ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½ï¿½Ã½Ó¿ï¿½	ï¿½ï¿½
 */
 
+#ifndef REWARDSYSTEM_H
+#define REWARDSYSTEM_H
 
+#include "CommonTypes.h"
+#include <vector>
+#include <string>
 
-#pragma once
-
-#include <iostream>
-
-
-
-class RewardSystem
-{
-public:
-
+// äº‹ä»¶ç±»å‹ï¼Œç”¨äºåŒºåˆ†å¥–åŠ±æ¥æº
+enum class RewardEventType {
+    VICTORY,
+    BOSS_DEFEAT,
+    FAILURE
 };
-/*
-	¸ºÔğÈË		£ºÉòÉ¡
-	¹¦ÄÜ		£º½±ÀøÖÎÁÆÍæ¼Ò
-	²ÎÊı		£ºÍæ¼Òµ±Ç°µÄÉúÃüÖµ£¬Íæ¼ÒĞèÖÎÁÆµÄÉúÃüÖµ
-	·µ»ØÖµ		£ºÖÎÁÆÁË¶àÉÙÉúÃüÖµ
-*/
-int reward_heal(int& hp, int heal);
 
+/**
+ * è·å–æŒ‡å®šäº‹ä»¶çš„å¥–åŠ±åˆ—è¡¨
+ * @param eventType å¥–åŠ±äº‹ä»¶ç±»å‹
+ * @return å¥–åŠ±é€‰é¡¹åˆ—è¡¨
+ */
+std::vector<RewardOption> RewardSystem_GetRewardsForEvent(RewardEventType eventType);
 
+/**
+ * åº”ç”¨é€‰ä¸­çš„å¥–åŠ±åˆ°ç©å®¶çŠ¶æ€
+ * @param reward å¥–åŠ±é€‰é¡¹
+ * @param player ç©å®¶çŠ¶æ€
+ */
+void RewardSystem_ApplyReward(const RewardOption &reward, PlayerState &player);
 
-/*
-	¸ºÔğÈË		£ºÉòÉ¡
-	¹¦ÄÜ		£º½±ÀøÖÎÁÆÍæ¼Ò
-	²ÎÊı		£ºÍæ¼Òµ±Ç°µÄÉúÃüÖµ£¬Íæ¼ÒÉúÃüÖµÉÏÏŞ
-	·µ»ØÖµ		£ºÖÎÁÆÁË¶àÉÙÉúÃüÖµ
-*/
-int reward_heal(int& hp, int maxHp);
+/**
+ * éšæœºç”Ÿæˆä¸€ä¸ªå¡ç‰Œå¥–åŠ±
+ * @return å¥–åŠ±é€‰é¡¹
+ */
+RewardOption RewardSystem_GenerateRandomCardReward();
 
-
-
-/*
-	¸ºÔğÈË		£ºÉòÉ¡
-	¹¦ÄÜ		£º½±ÀøÍæ¼Ò¾­Ñé
-	·µ»ØÖµ		£ºÍæ¼ÒµÄ¾­ÑéÖµ
-	²ÎÊı		£º¼ÓÁË¶àÉÙ¾­Ñé
-*/
-int reward_xp(int& playerXp);
-
-
-
-/*
-	¸ºÔğÈË		£ºÉòÉ¡
-	¹¦ÄÜ		£º½±ÀøÍæ¼ÒÉ¾³ıÒ»ÕÅ¿¨×éÖĞµÄ¿¨ÅÆ
-	·µ»ØÖµ		£º
-	²ÎÊı		£º
-*/
-
-
-
-/*
-	¸ºÔğÈË		£ºÉòÉ¡
-	¹¦ÄÜ		£º½±ÀøÍæ¼Ò¿¨ÅÆ
-	²ÎÊı		£º
-	·µ»ØÖµ		£º
-*/
-
-
-
-/*
-	¸ºÔğÈË		£ºÉòÉ¡
-	¹¦ÄÜ		£ºÒÔ×Ö·û´®µÄĞÎÊ½´æ´¢¾ßÌå¶¼½±ÀøÁËÍæ¼ÒÊ²Ã´£¬±ãÓÚÔÚ½áËã½çÃæ´òÓ¡
-	²ÎÊı		£º
-	·µ»ØÖµ		£º
-*/
-void show_reward();
-
-
-/*
-	// ¶ÔÍâ½Ó¿Ú£º
-	// ¸ù¾İÊÂ¼şÀàĞÍ£¨Victory¡¢BossDefeat¡¢FailµÈ£©»ñÈ¡Ò»ÏµÁĞ½±ÀøÑ¡Ïî
-	std::vector<RewardOption> GetRewardsForEvent(EventType evt);
-
-	// °Ñ½±Àø¾ßÌåÓ¦ÓÃµ½Íæ¼ÒÉíÉÏ£¬Èç¼Ó¿¨¡¢¼Ó¼¼ÄÜµã
-	void ApplyReward(const RewardOption & reward, PlayerState & player);
-
-	// Ëæ»ú³éÈ¡¿¨¿âÒ»ÕÅ¿¨ÅÆ¹©Íæ¼ÒÑ¡Ôñ
-	RewardOption GenerateRandomCardReward();
-
-	// ¹Ø¼üÊı¾İ½á¹¹ :
-	// type ¿ÉÄÜÊÇ CARD / HEAL / RELIC / etc.
-	struct RewardOption { std::string description; RewardType type; int value; }
-	class RewardSystem
-	{
-	public:
-		std::string description;
-		RewardType type;
-		int value
-	};
-
-	class RewardOption
-	{
-	public:
-
-	};
-*/
+#endif // REWARDSYSTEM_H
