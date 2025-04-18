@@ -65,52 +65,65 @@ void StorySystem_Proceed(StoryContext &ctx) {
        return;
    }
    ctx.currentNode = ctx.futureNodes.back();
+   StorySystem_ShowNode(ctx.currentNode);
+   
    // 从未来节点列表中移除
    ctx.futureNodes.pop_back();
 }
 
-// 处理剧情节点
-void StorySystem_HandleNode(const NodeManagerContext &nodeCtx, StoryContext &ctx, PlayerState &player) {
-    // 获取当前节点（从外部提供的函数获取）
-    // 注：此处假设有一个外部的NodeManager_GetNodeById函数
-    const Node &node = NodeManager_GetNodeById(nodeCtx, player.currentNodeId);
-    
-    switch (node.type) {
-        case NodeType::DIALOGUE:
-            // 显示对话
-            ConsoleUI::ShowDialogue(node.text, node.portrait);
-            ConsoleUI::WaitForContinue();
-            break;
-            
-      //   case NodeType::CHOICE:
-      //       {
-      //           // 准备选项文本
-      //           std::vector<std::string> options;
-      //           for (const auto &option : node.options) {
-      //               options.push_back(option.text);
-      //           }
-                
-      //           // 显示选择
-      //           int choice = ConsoleUI::ShowChoice(options);
-                
-      //           // 更新节点
-      //           if (choice >= 0 && choice < node.options.size()) {
-      //               int nextId = node.options[choice].nextNodeId;
-      //               ctx.currentNodeId = nextId;
-      //               player.currentNodeId = nextId;
-      //           }
-      //       }
-      //       break;
-            
-        case NodeType::STAGE_INFO:
-            // 显示关卡信息
-            ConsoleUI::ShowStageInfo(node.stageName, node.stageDescription, node.stageTips);
-            ConsoleUI::WaitForContinue();
-            break;
-            
-        default:
-            // 其他类型节点可能由其他系统处理
-            std::cout << "StorySystem不处理类型为" << static_cast<int>(node.type) << "的节点" << std::endl;
-            break;
-    }
+// 调用UI打印展示剧情节点
+void StorySystem_ShowNode(const StoryNode &node) {
+   // 显示对话文本
+   ConsoleUI::ShowDialogue(node.text, node.portrait);
+   // 等待用户继续
+   ConsoleUI::WaitForContinue();
 }
+
+
+// // 处理剧情节点
+// void StorySystem_HandleNode(const NodeManagerContext &nodeCtx, StoryContext &ctx, PlayerState &player) {
+//     // 获取当前节点（从外部提供的函数获取）
+//     // 注：此处假设有一个外部的NodeManager_GetNodeById函数
+//     const Node &node = NodeManager_GetNodeById(nodeCtx, player.currentNodeId);
+    
+//     switch (node.type) {
+//         case NodeType::DIALOGUE:
+//             // 显示对话
+//             ConsoleUI::ShowDialogue(node.text, node.portrait);
+//             ConsoleUI::WaitForContinue();
+//             break;
+            
+//       //   case NodeType::CHOICE:
+//       //       {
+//       //           // 准备选项文本
+//       //           std::vector<std::string> options;
+//       //           for (const auto &option : node.options) {
+//       //               options.push_back(option.text);
+//       //           }
+                
+//       //           // 显示选择
+//       //           int choice = ConsoleUI::ShowChoice(options);
+                
+//       //           // 更新节点
+//       //           if (choice >= 0 && choice < node.options.size()) {
+//       //               int nextId = node.options[choice].nextNodeId;
+//       //               ctx.currentNodeId = nextId;
+//       //               player.currentNodeId = nextId;
+//       //           }
+//       //       }
+//       //       break;
+            
+//         case NodeType::STAGE_INFO:
+//             // 显示关卡信息
+//             ConsoleUI::ShowStageInfo(node.stageName, node.stageDescription, node.stageTips);
+//             ConsoleUI::WaitForContinue();
+//             // 处理关卡信息后，推进到下一个节点
+//             StorySystem_Proceed(ctx);
+//             break;
+            
+//         default:
+//             // 其他类型节点可能由其他系统处理
+//             std::cout << "StorySystem不处理类型为" << static_cast<int>(node.type) << "的节点" << std::endl;
+//             break;
+//     }
+// }
