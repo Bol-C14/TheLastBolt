@@ -1,0 +1,20 @@
+[
+    {
+      "stageId": 1,
+      "name": "幽暗森林",
+      "isBoss": false,
+      "nextStageIds": [2,3]
+    },
+    {
+      "stageId": 2,
+      "name": "古墓之门",
+      "isBoss": false,
+      "nextStageIds": [4]
+    },
+    {
+      "stageId": 4,
+      "name": "墓王之战",
+      "isBoss": true,
+      "nextStageIds": []
+    }
+  ]

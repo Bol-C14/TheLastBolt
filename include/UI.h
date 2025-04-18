@@ -3,13 +3,14 @@
 
 #include <string>
 #include <vector>
+#include "CommonTypes.h"
 
-// 战斗状态数据结构
+// 战斗视图状态
 struct BattleViewState {
     int playerHP;
     int playerMaxHP;
     int energy;
-    std::vector<std::string> handCards;  // 卡牌名称列表
+    std::vector<std::string> handCards;
     std::string enemyName;
     int enemyHP;
     std::string enemyIntent;
@@ -29,7 +30,7 @@ namespace ConsoleUI {
     void ShowBattleState(const BattleViewState &state);
 
     // 获取玩家出牌选择，返回卡牌在手牌中的索引
-    int GetCardChoice();
+    int GetCardChoice(int handSize);
 
     // 显示关卡信息
     void ShowStageInfo(const std::string &stageName, const std::string &description, const std::vector<std::string> &tips);

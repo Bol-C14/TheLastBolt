@@ -5,40 +5,43 @@
 #include <unordered_map>
 #include <fstream>
 
+#ifndef MAPSYSTEM_H
+#define MAPSYSTEM_H
 
-struct MapStage {
-    /* µØÍ¼Ïà¹ØÊı¾İ */
-    int stageId;                            //µØÍ¼Id£¬Î¨Ò»±êÊ¶µØÍ¼
+#include "CommonTypes.h"
+#include <vector>
+#include <string>
 
-    std::string name;                       //µØÍ¼Ãû×Ö
-
-    bool isBoss;                            //ÊÇ·ñÓĞBoss
-
-    std::vector<int> nextStageIds;          //ÏÂÒ»¹ØµÄµØÍ¼Id;
-
-    /* ½±Àø»úÖÆÏà¹ØÊı¾İ */
+// åœ°å›¾ä¸Šä¸‹æ–‡ï¼ŒåŒ…å«æ‰€æœ‰å…³å¡å’Œå½“å‰å…³å¡é€‰æ‹©çŠ¶æ€
+struct MapContext {
+    std::vector<MapStage> stages;    // æ‰€æœ‰å…³å¡æ•°æ®
+    std::vector<int> selectStages;   // å½“å‰å¯é€‰å…³å¡åˆ—è¡¨
+    int currentStageId;              // å½“å‰å…³å¡ID
 };
 
-class MapSystem {
-public:
-    bool initMap();                                             //³õÊ¼»¯µØÍ¼Êı¾İ£¬Íæ¼ÒµÚÒ»´ÎÓÎÍæÊ¹ÓÃ£¬Ö÷Òª½«stages³õÊ¼»¯
+/**
+ * åŠ è½½åœ°å›¾æ•°æ®
+ * @param filePath JSONæ–‡ä»¶è·¯å¾„ï¼ˆdata/map.jsonï¼‰
+ * @param ctx åœ°å›¾ä¸Šä¸‹æ–‡ï¼Œä¼šè¢«å¡«å……stages
+ * @return æ˜¯å¦åŠ è½½æˆåŠŸ
+ * TODO: ä½¿ç”¨JSONè§£æåº“è§£æå¹¶åŠ è½½å…³å¡æ•°æ®
+ */
+bool MapSystem_LoadMap(const std::string &filePath, MapContext &ctx);
 
-    bool LoadMap(const std::string& mapFile);                   //´Ójson´æµµÖĞ¼ÓÔØµØÍ¼,¼ÓÔØ³É¹¦·µ»Øtrue,privateÖĞÁ½¸ö³ÉÔ±±»¸³ÓèÏàÓ¦Êı¾İ£¬·ñÔò·µ»Øfalse
+/**
+ * è·å–å½“å‰å…³å¡çš„ä¸‹ä¸€å¯é€‰å…³å¡IDåˆ—è¡¨
+ */
+std::vector<int> MapSystem_GetNextStageIds(const MapContext &ctx);
 
-    std::vector<int> GetNextStageIds(int currentStageId);       //»ñÈ¡ÏÂÒ»¹ØµÄµØÍ¼ÁĞ±í£¬·µ»ØÖµÊÇÒ»¸övector<int>ÁĞ±í£¬¸ÃÁĞ±í°üº¬×î¶à3¸öµØÍ¼
+/**
+ * åˆ¤æ–­ç»™å®šå…³å¡IDæ˜¯å¦ä¸ºBosså…³å¡
+ */
+bool MapSystem_IsBossStage(const MapContext &ctx, int stageId);
 
-    bool IsBossStage(int stageId);                              //ÅĞ¶ÏstageIdÕâ¸ö¹Ø¿¨ÊÇ·ñÎªBoss,ÊÇ·µ»Øtrue,²»ÊÇ·µ»Øfalse
+/**
+ * æ ¹æ®å…³å¡IDè·å–å…³å¡ä¿¡æ¯
+ * @return è‹¥ä¸å­˜åœ¨è¿”å›é™æ€ç©ºMapStage
+ */
+const MapStage& MapSystem_GetStageById(const MapContext &ctx, int stageId);
 
-    MapStage GetMapStageByStageId(int stageId);                 //Í¨¹ıstageId»ñÈ¡ÏàÓ¦µÄµØÍ¼Êı¾İ£¬·µ»ØMapStage½á¹¹Ìå
-
-    void setSelectStages(std::vector<int>& selectStages);        //ÉèÖÃË½ÓĞ³ÉÔ±selectStagesµÄÖµ
-
-    std::vector<int> getSelectStages();                          //»ñÈ¡Ë½ÓĞ³ÉÔ±selectStagesµÄÊı¾İ
-
-    void setCurrentStageId(int currentStageId);                  //ÉèÖÃË½ÓĞ³ÉÔ±µÄÖµ
-
-private:
-    std::vector<int> selectStages;                               //ÓÎÏ·Ò³ÃæËùÒªÑ¡ÔñµÄ3¸ö¹Ø¿¨
-
-    int currentStageId;                                         //Íæ¼ÒÑ¡ÔñµÄÄÇ¸ö¹Ø¿¨
-};
+#endif // MAPSYSTEM_H
