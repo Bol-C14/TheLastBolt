@@ -1,0 +1,5 @@
+[
+    { "id": 1, "name": "打击",     "type": "ATTACK",  "cost": 1, "value": 6, "description": "造成6点伤害", "upgraded": false },
+    { "id": 2, "name": "防御",     "type": "DEFENSE", "cost": 1, "value": 5, "description": "获得5点护甲", "upgraded": false },
+    { "id": 3, "name": "内力回复", "type": "RESOURCE","cost": 0, "value": 2, "description": "恢复2点能量", "upgraded": false }
+]

@@ -1,98 +1,74 @@
-#include "StorySystem.h"
+#include "../include/StorySystem.h"
+#include "../include/UI.h"
+#include "../include/NodeManager.h"
+#include <iostream>
 
-StorySystem::StorySystem() {
-    // Constructor implementation
+// 初始化剧情系统
+void StorySystem_Initialize(StoryContext &ctx) {
+    ctx.currentNodeId = 1; // 设置起始节点ID
+    // TODO: 其他剧情系统初始化工作
 }
 
-void StorySystem::initialize() {
-    // Initialization logic for the story system
+// 推进到下一个节点
+void StorySystem_Proceed(StoryContext &ctx, int nextNodeId) {
+    ctx.currentNodeId = nextNodeId;
+    // TODO: 可能需要做一些节点转换的特殊处理
 }
 
-void StorySystem::update(float deltaTime) {
-    // Update logic for the story system
+// 处理剧情节点
+void StorySystem_HandleNode(const NodeManagerContext &nodeCtx, StoryContext &ctx, PlayerState &player) {
+    // 获取当前节点（从外部提供的函数获取）
+    // 注：此处假设有一个外部的NodeManager_GetNodeById函数
+    const Node &node = NodeManager_GetNodeById(nodeCtx, ctx.currentNodeId);
+    
+    switch (node.type) {
+        case NodeType::DIALOGUE:
+            // 显示对话
+            ConsoleUI::ShowDialogue(node.text, node.portrait);
+            ConsoleUI::WaitForContinue();
+            
+            // 更新节点
+            if (node.nextNodeId > 0) {
+                ctx.currentNodeId = node.nextNodeId;
+                player.currentNodeId = node.nextNodeId;
+            }
+            break;
+            
+        case NodeType::CHOICE:
+            {
+                // 准备选项文本
+                std::vector<std::string> options;
+                for (const auto &option : node.options) {
+                    options.push_back(option.text);
+                }
+                
+                // 显示选择
+                int choice = ConsoleUI::ShowChoice(options);
+                
+                // 更新节点
+                if (choice >= 0 && choice < node.options.size()) {
+                    int nextId = node.options[choice].nextNodeId;
+                    ctx.currentNodeId = nextId;
+                    player.currentNodeId = nextId;
+                }
+            }
+            break;
+            
+        case NodeType::STAGE_INFO:
+            // 显示关卡信息
+            ConsoleUI::ShowStageInfo(node.stageName, node.stageDescription, node.stageTips);
+            ConsoleUI::WaitForContinue();
+            
+            // 更新节点
+            if (node.proceedToId > 0) {
+                ctx.currentNodeId = node.proceedToId;
+                player.currentNodeId = node.proceedToId;
+            }
+            break;
+            
+        default:
+            // 其他类型节点可能由其他系统处理
+            std::cout << "StorySystem不处理类型为" << static_cast<int>(node.type) << "的节点" << std::endl;
+            break;
+    }
 }
-
-void StorySystem::triggerEvent(const std::string& eventName) {
-    // Logic to handle triggering a story event
-}
-
-bool StorySystem::isStoryComplete() const {
-    // Logic to check if the story is complete
-    return false;
-}
-/***
- * @File StorySystem.h
- * 
- * 主要功能是：
- * 主要依赖：调用了xxx
- * 主要被依赖：被xxx调用
- * 
- * 数据结构：
- * - StoryNode：剧情节点，包含节点的基本信息和状态
- * - StoryBranch：分支节点，包含分支的基本信息和状态
- * - StorySystem：剧情系统，负责管理剧情节点和分支节点的状态和操作
- */
-
-
-
- /**
-  * ShowDialogue
-  * 
-  * @Param node 节点对象
-  * @Return int 返回值，表示操作的结果
-  * 
-  */
- int ShowDialogue(const Node& node){
-    // 显示对话框
-    // 处理用户输入
-    // 更新节点状态
-    return 0;
- }
-
-/**
- * ShowChoice
- * 主要负责显示分支选择框
- * @Param node 节点对象
- * @Return int 返回值，表示操作的结果
- */
- int ShowChoice(const Node& node){
-    // 显示选择框
-    // 处理用户输入
-    // 更新分支状态
-    return 0;
- }
-
- int ShowStageInfo(const Node& node){
-    // 显示舞台信息
-    // 处理用户输入
-    // 更新节点状态
-    return 0;
- }
-
- int ShowMapInfo(const Node& node){
-    // 显示地图信息
-    // 处理用户输入
-    // 更新节点状态
-    return 0;
- }
-
- int ShowEnemyInfo(const Node& node){
-    // 显示敌人信息
-    // 处理用户输入
-    // 更新节点状态
-    return 0;
- }
-
- int ShowPlayerInfo(const Node& node){
-    // 显示玩家信息
-    // 处理用户输入
-    // 更新节点状态
-    return 0;
- }
-
- int ShowCardDeckInfo(const Node& node){
-    // 显示物品信息
-    // 处理用户输入
-    // 更新节点状态
-    return 0;
- }

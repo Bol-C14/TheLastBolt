@@ -1,0 +1,20 @@
+[
+    {
+      "id": "slime",
+      "hp": 30,
+      "armor": 0,
+      "actions": [
+        { "type": "ATTACK", "value": 4, "intent": "攻击" },
+        { "type": "DEFEND", "value": 3, "intent": "蜷缩防御" }
+      ]
+    },
+    {
+      "id": "goblin_boss",
+      "hp": 80,
+      "armor": 5,
+      "actions": [
+        { "type": "ATTACK", "value": 10, "intent": "重击" },
+        { "type": "BUFF",   "value": 2,  "intent": "怒气提升" }
+      ]
+    }
+  ]
