@@ -7,42 +7,42 @@
 
 
 struct MapStage {
-    /* µØÍ¼Ïà¹ØÊı¾İ */
-    int stageId;                            //µØÍ¼Id£¬Î¨Ò»±êÊ¶µØÍ¼
+    /* åœ°å›¾ç›¸å…³æ•°æ® */
+    int stageId;                            //åœ°å›¾Idï¼Œå”¯ä¸€æ ‡è¯†åœ°å›¾
 
-    std::string name;                       //µØÍ¼Ãû×Ö
+    std::string name;                       //åœ°å›¾åå­—
 
-    bool isBoss;                            //ÊÇ·ñÓĞBoss
+    bool isBoss;                            //æ˜¯å¦æœ‰Boss
 
-    std::vector<int> nextStageIds;          //ÏÂÒ»¹ØµÄµØÍ¼Id;
+    std::vector<int> nextStageIds;          //ä¸‹ä¸€å…³çš„åœ°å›¾Id;
 
-    /* ½±Àø»úÖÆÏà¹ØÊı¾İ */
+    /* å¥–åŠ±æœºåˆ¶ç›¸å…³æ•°æ® */
 };
 
 class MapSystem {
 public:
-    MapSystem();                                                //¹¹Ôìº¯Êı
+    MapSystem();                                                //æ„é€ å‡½æ•°
     
-    ~MapSystem();                                               //Îö¹¹º¯Êı
+    ~MapSystem();                                               //ææ„å‡½æ•°
 
-    bool initMap();                                             //³õÊ¼»¯µØÍ¼Êı¾İ£¬Íæ¼ÒµÚÒ»´ÎÓÎÍæÊ¹ÓÃ£¬Ö÷Òª½«stages³õÊ¼»¯
+    bool initMap();                                             //åˆå§‹åŒ–åœ°å›¾æ•°æ®ï¼Œç©å®¶ç¬¬ä¸€æ¬¡æ¸¸ç©ä½¿ç”¨ï¼Œä¸»è¦å°†stagesåˆå§‹åŒ–
 
-    bool LoadMap(const std::string& mapFile);                   //´Ójson´æµµÖĞ¼ÓÔØµØÍ¼,¼ÓÔØ³É¹¦·µ»Øtrue,privateÖĞÁ½¸ö³ÉÔ±±»¸³ÓèÏàÓ¦Êı¾İ£¬·ñÔò·µ»Øfalse
+    bool LoadMap(const std::string& mapFile);                   //ä»jsonå­˜æ¡£ä¸­åŠ è½½åœ°å›¾,åŠ è½½æˆåŠŸè¿”å›true,privateä¸­ä¸¤ä¸ªæˆå‘˜è¢«èµ‹äºˆç›¸åº”æ•°æ®ï¼Œå¦åˆ™è¿”å›false
 
-    std::vector<int> GetNextStageIds(int currentStageId);       //»ñÈ¡ÏÂÒ»¹ØµÄµØÍ¼ÁĞ±í£¬·µ»ØÖµÊÇÒ»¸övector<int>ÁĞ±í£¬¸ÃÁĞ±í°üº¬×î¶à3¸öµØÍ¼
+    std::vector<int> GetNextStageIds(int currentStageId);       //è·å–ä¸‹ä¸€å…³çš„åœ°å›¾åˆ—è¡¨ï¼Œè¿”å›å€¼æ˜¯ä¸€ä¸ªvector<int>åˆ—è¡¨ï¼Œè¯¥åˆ—è¡¨åŒ…å«æœ€å¤š3ä¸ªåœ°å›¾
 
-    bool IsBossStage(int stageId);                              //ÅĞ¶ÏstageIdÕâ¸ö¹Ø¿¨ÊÇ·ñÎªBoss,ÊÇ·µ»Øtrue,²»ÊÇ·µ»Øfalse
+    bool IsBossStage(int stageId);                              //åˆ¤æ–­stageIdè¿™ä¸ªå…³å¡æ˜¯å¦ä¸ºBoss,æ˜¯è¿”å›true,ä¸æ˜¯è¿”å›false
 
-    MapStage GetMapStageByStageId(int stageId);                 //Í¨¹ıstageId»ñÈ¡ÏàÓ¦µÄµØÍ¼Êı¾İ£¬·µ»ØMapStage½á¹¹Ìå
+    MapStage GetMapStageByStageId(int stageId);                 //é€šè¿‡stageIdè·å–ç›¸åº”çš„åœ°å›¾æ•°æ®ï¼Œè¿”å›MapStageç»“æ„ä½“
 
-    void setSelectStages(std::vector<int>& selectStages);        //ÉèÖÃË½ÓĞ³ÉÔ±selectStagesµÄÖµ
+    void setSelectStages(std::vector<int>& selectStages);        //è®¾ç½®ç§æœ‰æˆå‘˜selectStagesçš„å€¼
 
-    std::vector<int> getSelectStages();                          //»ñÈ¡Ë½ÓĞ³ÉÔ±selectStagesµÄÊı¾İ
+    std::vector<int> getSelectStages();                          //è·å–ç§æœ‰æˆå‘˜selectStagesçš„æ•°æ®
 
-    void setCurrentStageId(int currentStageId);                  //ÉèÖÃË½ÓĞ³ÉÔ±µÄÖµ
+    void setCurrentStageId(int currentStageId);                  //è®¾ç½®ç§æœ‰æˆå‘˜çš„å€¼
 
 private:
-    std::vector<int> selectStages;                               //ÓÎÏ·Ò³ÃæËùÒªÑ¡ÔñµÄ3¸ö¹Ø¿¨
+    std::vector<int> selectStages;                               //æ¸¸æˆé¡µé¢æ‰€è¦é€‰æ‹©çš„3ä¸ªå…³å¡
 
-    int currentStageId;                                         //Íæ¼ÒÑ¡ÔñµÄÄÇ¸ö¹Ø¿¨
+    int currentStageId;                                         //ç©å®¶é€‰æ‹©çš„é‚£ä¸ªå…³å¡
 };
