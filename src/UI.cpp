@@ -182,3 +182,4 @@ int ShowRewardChoice(const vector<string>& rewardOptions) {
     return ShowChoice(rewardOptions);
 }
 } // namespace ConsoleUI
+// the end of the file
