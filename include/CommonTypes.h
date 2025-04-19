@@ -63,10 +63,7 @@ struct Node {
     // 奖励节点专用
     std::vector<std::string> rewardOptions; // 奖励描述列表
     // 地图信息节点专用
-    std::string       stageName;
-    std::string       stageDescription;
-    std::vector<std::string> stageTips;
-    int               proceedToId;     // 地图展示后继续节点
+    MapStage          mapStage;             // 当前节点的地图关卡信息
 };
 
 // 卡牌基础数据
@@ -100,7 +97,7 @@ struct MapStage {
     int               stageId;       // 关卡ID
     std::string       name;          // 关卡名称
     bool              isBoss;        // 是否Boss关卡
-    std::vector<int>  nextStageIds;  // 可选后续关卡
+    int               nextStageId;   // 下一个关卡Id
 };
 
 // 奖励选项

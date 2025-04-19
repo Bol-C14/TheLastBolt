@@ -23,10 +23,21 @@
  * - StorySystem：剧情系统，负责管理剧情节点和分支节点的状态和操作
  */
 
+
+ struct StoryNode {
+      int id; // 节点ID
+      std::string type; // 节点类型
+      std::string text; // 对话文本
+      std::string background; // 背景图像
+      std::string portrait; // 角色立绘
+ };
+
+
 // 剧情系统上下文，跟踪当前节点ID等状态
 struct StoryContext {
-    int currentNodeId;
-    // TODO: 其他剧情系统状态，如分支历史、对话进度等
+    StoryNode currentNode; // 当前节点
+    std::vector<StoryNode> historyNodes; // 剧情节点列表（已经完成的历史节点）
+    std::vector<StoryNode> futureNodes; // 剧情节点列表（未来节点）
 };
 
 /**
