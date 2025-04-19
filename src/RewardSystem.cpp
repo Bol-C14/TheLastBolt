@@ -14,17 +14,25 @@ static std::string EventTypeToString(RewardEventType evt)
 {
     switch (evt) 
     {
-        case RewardEventType::VICTORY:     return "VICTORY";
+    case RewardEventType::VICTORY:
+        return "VICTORY";
 
-        case RewardEventType::BOSS_DEFEAT:  return "BOSS_DEFEAT";
+    case RewardEventType::BOSS_DEFEAT:
+        return "BOSS_DEFEAT";
 
-        case RewardEventType::FAILURE:      return "FAILURE";
+    case RewardEventType::FAILURE:
+        return "FAILURE";
     }
+
     return "";
 }
 
 
 
+// 根据特定的事件类型（RewardEventType）从一个 JSON 文件（data/rewards.json）中读取对应的奖励选项
+// 并将这些奖励选项以 std::vector<RewardOption> 的形式返回
+//
+// RewardSystem_GetRewardsForEvent().description;
 std::vector<RewardOption> RewardSystem_GetRewardsForEvent(RewardEventType eventType) 
 {
     std::vector<RewardOption> result;
@@ -33,8 +41,10 @@ std::vector<RewardOption> RewardSystem_GetRewardsForEvent(RewardEventType eventT
     if (!file.is_open()) 
     {
         std::cerr << "无法打开奖励文件 data/rewards.json" << std::endl;
+
         return result;
     }
+
     try 
     {
         json j; file >> j;
@@ -44,6 +54,7 @@ std::vector<RewardOption> RewardSystem_GetRewardsForEvent(RewardEventType eventT
             std::cerr << "奖励JSON中未找到事件: " << key << std::endl;
             return result;
         }
+
         for (auto &item : j[key]) 
         {
             RewardOption opt;
@@ -52,7 +63,8 @@ std::vector<RewardOption> RewardSystem_GetRewardsForEvent(RewardEventType eventT
             opt.description = item.at("description").get<std::string>();
             result.push_back(opt);
         }
-    } catch (const std::exception &e) 
+    }
+    catch (const std::exception &e) 
     {
         std::cerr << "解析奖励JSON出错: " << e.what() << std::endl;
     }
@@ -62,6 +74,9 @@ std::vector<RewardOption> RewardSystem_GetRewardsForEvent(RewardEventType eventT
 
 
 
+// 奖励具体应用到玩家身上
+// 现只有 HEAL 可被调用，且固定恢复10点血
+// 后期奖励需要和 MapSystem 强相关，需要在 MapSystem 中给奖励类型(reward.type)和奖励数值(reward.value)确定
 void RewardSystem_ApplyReward(const RewardOption &reward, PlayerState &player) 
 {
     switch (reward.type) 
@@ -89,14 +104,20 @@ void RewardSystem_ApplyReward(const RewardOption &reward, PlayerState &player)
 
 
 
-RewardOption RewardSystem_GenerateRandomCardReward() {
+// 暂无用
+RewardOption RewardSystem_GenerateRandomCardReward() 
+{
     // 从所有卡牌中随机取一张作为奖励
     std::ifstream file("data/cards.json");
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         std::cerr << "无法打开卡牌文件 data/cards.json" << std::endl;
+
         return {};
     }
-    try {
+
+    try 
+    {
         json j; file >> j;
         if (!j.is_array() || j.empty()) return {};
         std::mt19937 rng(std::random_device{}());
@@ -106,9 +127,13 @@ RewardOption RewardSystem_GenerateRandomCardReward() {
         opt.type = RewardType::CARD;
         opt.value = item.at("id").get<int>();
         opt.description = item.at("name").get<std::string>();
+
         return opt;
-    } catch (const std::exception &e) {
+    } 
+    catch (const std::exception &e)
+    {
         std::cerr << "解析卡牌JSON出错: " << e.what() << std::endl;
+
         return {};
     }
 }

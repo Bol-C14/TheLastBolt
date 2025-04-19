@@ -114,7 +114,7 @@ enum class RewardType {
 struct RewardOption {
     RewardType        type;         // 奖励类型
     std::string       description;  // 文本描述
-    int               value;        // 数值（回血量/技能点数等）
+    int               value = 10;        // 数值（回血量/技能点数等）
 };
 
 #endif // COMMONTYPES_H

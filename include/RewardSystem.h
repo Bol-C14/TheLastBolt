@@ -2,7 +2,7 @@
 	负责人				：沈伞
 	功能				：结算
 	需调用函数			：
-	被调用函数			：
+	被调用函数			：void RewardSystem_ApplyReward(const RewardOption &reward, PlayerState &player)
 */
 
 
