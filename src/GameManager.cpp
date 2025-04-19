@@ -2,41 +2,45 @@
 #include "../include/UI.h"
 #include <iostream>
 
-// 初始化游戏
-bool GameManager_Initialize(GameContext &ctx) {
-    std::cout << "游戏初始化中..." << std::endl;
-    
-    // TODO: 初始化各子系统
-    
-    // 初始化节点管理器
-    if (!NodeManager_LoadNodes("data/nodes.json", ctx.nodeManagerCtx)) {
-        std::cout << "节点数据加载失败" << std::endl;
-        return false;
-    }
-    
-    // 加载地图数据
-    if (!MapSystem_LoadMap("data/map.json", ctx.mapCtx)) {
-        std::cout << "地图数据加载失败" << std::endl;
-        return false;
-    }
-    
-    // 加载卡牌数据
-    CardSystem cardSys;
-    cardSys.LoadCards("data/cards.json");
-    ctx.allCards = cardSys.GetDeck();
-    
-    // 初始化剧情系统
-    StorySystem_Initialize(ctx.storyCtx);
-    
-    // TODO: 尝试加载存档，如果失败则初始化新游戏
-    
-    // 初始化玩家状态（新游戏）
+//初始化玩家状态
+void Player_Initialize(GameContext &ctx){
     ctx.player.hp = 100;
     ctx.player.maxHp = 100;
     ctx.player.energy = 3;
     ctx.player.currentNodeId = 1; // 起始节点
     ctx.player.skillPoints = 0;
     ctx.player.canRevive = true;
+}
+// 初始化游戏，加载基础数据到ctx
+bool GameManager_Initialize(GameContext &ctx) {
+    std::cout << "游戏初始化中..." << std::endl;
+    
+    // TODO: 初始化各子系统
+    
+    // 初始化节点管理器，把所有节点信息加载到ctx的nodeManagerCtx中
+    if (!NodeManager_LoadNodes("data/nodes.json", ctx.nodeManagerCtx)) {
+        std::cout << "节点数据加载失败" << std::endl;
+        return false;
+    }
+    
+    // 加载当前关卡信息、所有地图关卡信息到ctx的mapCtx中
+    if (!MapSystem_LoadMap("data/map.json", ctx.mapCtx)) {
+        std::cout << "地图数据加载失败" << std::endl;
+        return false;
+    }
+    
+    // 加载所有卡牌数据到ctx的allCards中
+    CardSystem cardSys;
+    cardSys.LoadCards("data/cards.json");
+    ctx.allCards = cardSys.GetDeck();
+    
+    // 初始化故事节点
+    StorySystem_Initialize(ctx.storyCtx);
+    
+    // TODO: 尝试加载存档，如果失败则初始化新游戏
+    
+    // 初始化游戏角色初始状态，即给ctx中的player赋予初始值，备注：等会定义一个函数将这些装起来
+    Player_Initialize(ctx);
     
     std::cout << "游戏初始化完成" << std::endl;
     return true;
@@ -158,3 +162,5 @@ bool GameManager_HandleInput(GameContext &ctx) {
     
     return shouldExit;
 }
+
+

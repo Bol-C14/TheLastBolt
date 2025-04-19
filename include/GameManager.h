@@ -100,5 +100,6 @@ bool GameManager_LoadGame(GameContext &ctx, const std::string &filePath);
  * TODO: 实现用户输入处理逻辑
  */
 bool GameManager_HandleInput(GameContext &ctx);
-
+//对玩家状态的初始化
+void Player_Initialize(GameContext &ctx);
 #endif // GAMEMANAGER_H
