@@ -78,17 +78,17 @@ void CardSystem::LoadCards(const std::string &filePath) {
  * 
  * @return 抽取到的 Card 对象
  */
-Card CardSystem::DrawCard() {
-    std::cout << "[CardSystem] DrawCard called\n";
-    // TODO: 如果 drawPile.empty()，调用 ShuffleDeck()
-    // TODO: Card c = drawPile.back(); drawPile.pop_back(); return c;
-    if(drawPile.empty())
-    ShuffleDeck();
-    Card c=drawPile.back();
-    drawPile.pop_back();
-    return c;
-    //return Card(); // 返回默认 Card，学生需实现实际抽牌逻辑
-}
+// Card CardSystem::DrawCard() {
+//     std::cout << "[CardSystem] DrawCard called\n";
+//     // TODO: 如果 drawPile.empty()，调用 ShuffleDeck()
+//     // TODO: Card c = drawPile.back(); drawPile.pop_back(); return c;
+//     if(drawPile.empty())
+//     ShuffleDeck();
+//     Card c=drawPile.back();
+//     drawPile.pop_back();
+//     return c;
+//     //return Card(); // 返回默认 Card，学生需实现实际抽牌逻辑
+// }
 
 /**
  * @brief 执行卡牌效果
