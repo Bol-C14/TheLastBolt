@@ -24,7 +24,13 @@
         7.GameManager_LoadGame()根据不同的filePath加载相应的数据到ctx中
         8.GameManager_HandleInput()根据玩家的键入，而执行不同的操作
 */
-
+/*
+函数定义时模板：
+    负责人：
+    功能：
+    参数：
+    返回值：
+*/
 
 // 游戏全局上下文
 struct GameContext {
@@ -58,6 +64,46 @@ void GameManager_Run(GameContext &ctx);
     参数：GameContext &ctx, int nodeId
     返回值：空
 */
+
+/*
+    负责人：木木
+    功能：开始游戏按钮执行
+    参数：GameContext &ctx
+    返回值：空
+*/
+void GameStart(GameContext &ctx);
+
+/*
+    负责人：木木
+    功能：查看存档按钮执行
+    参数：
+    返回值：空
+*/
+void ViewArchive();
+
+/*
+    负责人：木木
+    功能：开发人员按钮执行
+    参数：
+    返回值：空
+*/
+void Developer();
+
+/*
+    负责人：木木
+    功能：退出游戏按钮执行
+    参数：
+    返回值：空
+*/
+void GameOver();
+
+/*
+    负责人：木木
+    功能：无存档时执行函数
+    参数：
+    返回值：空
+*/
+
 void GameManager_ChangeScene(GameContext &ctx, int nodeId);
 
 /*

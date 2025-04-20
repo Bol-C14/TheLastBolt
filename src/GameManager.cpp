@@ -61,8 +61,7 @@ void GameManager_Run(GameContext &ctx) {
             case 3://开发人员
                 break;
             case 4://退出游戏
-                //draw() 游戏退出成功界面
-                exit(0);
+                GameOver();
             default: cout<<"输入错误，请重新输入！"<<endl;
         }
     }
@@ -70,7 +69,30 @@ void GameManager_Run(GameContext &ctx) {
     cout << "游戏结束" << endl;
 }
 //开始游戏执行部分
-void GameStart()
+void GameStart(GameContext &ctx){
+    //判断存档函数，根据判断情况进入无存档、单存档或多存档界面
+    //情况一：无存档
+    //执行无存档时的函数
+
+    //情况二：单存档
+    //执行单存档时函数
+    
+    //情况三：多存档
+    //执行多存档时函数
+}
+//查看存档部分
+void ViewArchive(){
+
+}
+//开发人员部分
+void Developer(){
+
+}
+//退出有戏部分
+void GameOver(){
+    //draw()游戏推出UI
+    exit(0);
+}
 // 切换场景
 void GameManager_ChangeScene(GameContext &ctx, int nodeId) {
     // 保存当前节点ID
