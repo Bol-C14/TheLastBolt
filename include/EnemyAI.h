@@ -24,11 +24,8 @@ public:
     virtual void Enter();
     virtual void Exit();
 
-    // 获取动作概率
-    float GetProbability(Prob p) const { return prob[p]; }
-
-protected:
     // 动作类型数组
+    int prob[4];
     ActionType at[4] = { 
         ActionType::ATTACK,   // 普通攻击
         ActionType::DEFEND,   // 防御/护甲
@@ -78,7 +75,7 @@ public:
     // 更新状态
     virtual void UpdateState(const BattleState& battle);
 
-private:
+
     Enemy* enemy; // 指向所属敌人的指针
 
     EnemyBuffState buffState;

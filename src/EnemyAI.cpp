@@ -1,10 +1,10 @@
 #include "../include/EnemyAI.h"
-#include <nlohmann/json.hpp>
+//#include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
 #include <random>
 
-using json = nlohmann::json;
+//using json = nlohmann::json;
 EnemyState::EnemyState(Enemy* _enemy) : enemy(_enemy) {
     // 默认概率初始化（可以在派生类中被覆盖）
     prob[AttackProb] = 0.0f;
@@ -95,11 +95,11 @@ void EnemyStateMachine::UpdateState(const BattleState &battle){
     int maxhp = battle.currentEnemy.maxhp;
     int hp=battle.currentEnemy.hp;
     if(hp>maxhp/2&&hp<maxhp){
-        this->ChangeState(EnemyAttackState);
+        this->ChangeState(this->attackState);
     }else if(hp>maxhp/5){
-        this->ChangeState(EnemyAngryState);
+        this->ChangeState(this->angryState);
     }else{
-        this->ChangeState(EnemyFearState);
+        this->ChangeState(this->fearState);
     }
 };
 class EnemyBuffState:public EnemyState{
@@ -153,7 +153,29 @@ bool EnemyAI_LoadEnemy(const std::string &filePath, const std::string &enemyId, 
     }
     try
     {
-        
+        if(enemyId=="slime"){
+            enemy.id=enemyId;
+            enemy.hp=30;enemy.armor=0;
+            EnemyAction ea={ActionType::ATTACK,4,"攻击"};
+            enemy.nextActions.push_back(ea);
+            ea={ActionType::DEFEND,3,"柔软"};
+            enemy.nextActions.push_back(ea);
+            ea={ActionType::BUFF,3,"提升活力"};
+            enemy.nextActions.push_back(ea);
+            ea={ActionType::DEBUFF,3,"恶心你"};
+            enemy.nextActions.push_back(ea);
+        }else if(enemyId=="goblin_boss"){
+            enemy.id=enemyId;
+            enemy.hp=80,enemy.armor=5;
+            EnemyAction ea={ActionType::ATTACK,10,"重击"};
+            enemy.nextActions.push_back(ea);
+            ea={ActionType::DEFEND,10,"盾防"};
+            enemy.nextActions.push_back(ea);
+            ea={ActionType::BUFF,3,"怒气提升"};
+            enemy.nextActions.push_back(ea);
+            ea={ActionType::DEBUFF,3,"恐吓"};
+            enemy.nextActions.push_back(ea);
+        }
     }
     catch(const std::exception& e)
     {
@@ -211,7 +233,10 @@ EnemyAction EnemyAI_Update(Enemy &enemy, const BattleState &battle) {
     else chosenType=enemy.stateMachine->currentState->at[3];
     for(auto ea:enemy.nextActions){
         if(ea.type==chosenType)
+        {
+            std::cout << "敌人选择行动: " <<ea.intent << std::endl;
             return ea;
+        }      
     }
-    std::cout << "敌人选择行动: " << chosen.intent << std::endl;
+    
 }
