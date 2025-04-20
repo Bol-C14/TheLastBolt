@@ -51,6 +51,6 @@ void StorySystem_Initialize(StoryContext &ctx);
  * @param ctx 剧情系统上下文
  * @param player 玩家状态
  */
-void StorySystem_HandleNode(const NodeManagerContext &nodeCtx, StoryContext &ctx, PlayerState &player);
+void StorySystem_HandleNode(const Node& node, StoryContext &ctx, PlayerState &player);
 
 #endif // STORYSYSTEM_H
