@@ -2,6 +2,7 @@
 #include "../include/UI.h"
 #include <iostream>
 #include <cstdlib>
+#include<conio.h>
 using namespace std;
 
 //初始化玩家状态
@@ -15,7 +16,7 @@ void Player_Initialize(GameContext &ctx) {
 }
 
 // 初始化游戏，加载基础数据到ctx
-bool GameManager_Initialize(GameContext &ctx) {
+bool GameManager::GameManager_Initialize(GameContext &ctx) {
     cout << "游戏初始化中..." << endl;
 
     // TODO: 初始化各子系统
@@ -47,7 +48,7 @@ bool GameManager_Initialize(GameContext &ctx) {
 }
 
 // 游戏主循环
-void GameManager_Run(GameContext &ctx) {
+void GameManager::GameManager_Run(GameContext &ctx) {
     cout << "游戏开始运行..." << endl;
     while (true) {
         //暂时用draw()来代替任何UI界面
@@ -74,7 +75,7 @@ void GameManager_Run(GameContext &ctx) {
 }
 
 //开始游戏执行部分
-void GameStart(GameContext &ctx) {
+void GameManager::GameStart(GameContext &ctx) {
     //判断存档函数，根据判断情况进入无存档、单存档或多存档界面
     //情况一：无存档
     //执行无存档时的函数
@@ -87,23 +88,24 @@ void GameStart(GameContext &ctx) {
 }
 
 //查看存档部分
-void ViewArchive() {
+void GameManager::ViewArchive() {
 
 }
 
 //开发人员部分
-void Developer() {
-
+void GameManager::Developer() {
+    //开发人员界面，按任意键返回主菜单
+    _getch();
 }
 
 //退出游戏部分
-void GameOver() {
+void GameManager::GameOver() {
     //draw()游戏推出UI
     exit(0);
 }
 
 // 切换场景
-void GameManager_ChangeScene(GameContext &ctx, int nodeId) {
+void GameManager::GameManager_ChangeScene(GameContext &ctx, int nodeId) {
     // 保存当前节点ID
     ctx.player.currentNodeId = nodeId;
 
@@ -114,7 +116,7 @@ void GameManager_ChangeScene(GameContext &ctx, int nodeId) {
 }
 
 // 战斗结束回调
-void GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId) {
+void GameManager::GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId) {
     if (playerWin) {
         cout << "战斗胜利！" << endl;
 
@@ -141,7 +143,7 @@ void GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId) {
 }
 
 // 保存游戏进度
-bool GameManager_SaveGame(const GameContext &ctx, const std::string &filePath) {
+bool GameManager::GameManager_SaveGame(const GameContext &ctx, const std::string &filePath) {
     return SaveManager_SaveGame(filePath, ctx.player, ctx.player.currentNodeId);
 }
 
@@ -158,7 +160,7 @@ bool GameManager_LoadGame(GameContext &ctx, const std::string &filePath) {
 }
 
 // 处理用户输入
-bool GameManager_HandleInput(GameContext &ctx) {
+bool GameManager::GameManager_HandleInput(GameContext &ctx) {
     // TODO: 处理全局按键（如ESC菜单、保存等）
 
     // 示例：检测是否需要退出游戏
