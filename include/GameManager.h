@@ -1,200 +1,87 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
-#include "CommonTypes.h"
 
+#include "CommonTypes.h" // 包含通用类型
+#include "MapSystem.h"
+#include "StorySystem.h"
+#include "NodeManager.h"
+#include "CardSystem.h"
+#include "BattleSystem.h"
+#include "RewardSystem.h"
+#include "SaveManager.h"
+#include "UI.h"
+#include <string>
+#include <memory> // 用于智能指针
 
-// GameManager 负责全局流程控制、初始化、存档、主循环等
-/*
-函数定义时模板：
-    负责人：
-    功能：
-    参数：
-    返回值：
-*/
-
-class GameManager{
+// 游戏主管理器类
+class GameManager {
 public:
     GameManager();
-
     ~GameManager();
 
-    /*
-    负责人：木木
-    功能：初始化全局数据结构体ctx
-    参数：结构体：GameContext &ctx
-    返回值：bool
-    */
-    bool GameManager_Initialize();
+    // 初始化游戏，加载所有资源和数据
+    // 返回值: true - 初始化成功, false - 初始化失败
+    bool initialize();
 
-    /*
-    负责人：木木
-    功能：控制整个游戏流程，根据用户输入，跳转到不同界面，然后调用相应的执行部分
-    参数：GameContext &ctx
-    返回值：空
-    */
-    void GameManager_Run();
+    // 运行游戏主循环
+    void run();
 
-    /*
-    负责人：木木
-    功能：开始游戏按钮执行
-    参数：GameContext &ctx
-    返回值：空
-    */
-void GameStart(GameContext &ctx);
+    // 处理游戏结束逻辑
+    void gameOver();
 
-/*
-    负责人：木木
-    功能：查看存档按钮执行
-    参数：
-    返回值：空
-*/
-void ViewArchive();
+    // 保存游戏状态
+    void saveGame(const std::string &filePath);
 
-/*
-    负责人：木木
-    功能：开发人员按钮执行
-    参数：
-    返回值：空
-*/
-void Developer();
-
-/*
-    负责人：木木
-    功能：退出游戏按钮执行
-    参数：
-    返回值：空
-*/
-void GameOver();
-
-/*
-    负责人：木木
-    功能：无存档时执行函数
-    参数：
-    返回值：空
-*/
-
-/*
-    负责人：
-    功能：
-    参数：
-    返回值：
-*/
-    void GameManager_ChangeScene(GameContext &ctx, int nodeId);
-    
-/*
-    负责人：
-    功能：
-    参数：
-    返回值：
-*/
-    void GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId);
-
-/*
-    负责人：
-    功能：
-    参数：
-    返回值：
-*/
-    bool GameManager_SaveGame(const GameContext &ctx, const std::string &filePath);
-
-/*
-    负责人：
-    功能：
-    参数：
-    返回值：
-*/
-    bool GameManager_LoadGame(GameContext &ctx, const std::string &filePath);
-
-/*
-    负责人：
-    功能：
-    参数：
-    返回值：
-*/
-    bool GameManager_HandleInput(GameContext &ctx);
+    // 加载游戏状态
+    void loadGame(const std::string &filePath);
 
 private:
-    GameContext gameContext; // 游戏上下文
-    CardSystem cardSystem; // 卡牌子系统 
-    NodeManager nodeManager; // 节点管理器
-    StorySystem storySystem; // 剧情子系统系统
+    // 游戏状态
+    GameContext context; // 存储游戏全局上下文
+    bool isRunning;      // 游戏是否正在运行
 
-    /*
-    BattleSystem battleSystem; // 战斗系统
-    RewardSystem rewardSystem; // 奖励系统
-    SaveManager saveManager; // 存档管理器  
-    */
+    // 游戏系统模块 (使用智能指针管理生命周期)
+    std::unique_ptr<MapSystem> mapSystem;
+    std::unique_ptr<StorySystem> storySystem;
+    std::unique_ptr<NodeManager> nodeManager;
+    std::unique_ptr<CardSystem> cardSystem;
+    std::unique_ptr<BattleSystem> battleSystem;
+    std::unique_ptr<RewardSystem> rewardSystem;
+    std::unique_ptr<SaveManager> saveManager;
+    std::unique_ptr<UI> ui;
+
+    // 开始游戏的处理逻辑
+    void handleStartGame();
+    
+    // 查看存档的处理逻辑
+    void handleViewArchive();
+    
+    // 显示开发人员信息
+    void showDeveloperInfo();
+    
+    // 处理战斗结果
+    void handleBattleResult(bool playerWin, int nextNodeId);
+
+    // 处理当前节点逻辑
+    void processCurrentNode();
+
+    // 处理对话节点
+    void handleDialogueNode(const Node& node);
+
+    // 处理战斗节点
+    void handleBattleNode(const Node& node);
+
+    // 处理选择节点
+    void handleChoiceNode(const Node& node);
+
+    // 处理奖励节点
+    void handleRewardNode(const Node& node);
+
+    // 处理关卡信息节点
+    void handleStageInfoNode(const Node& node);
+
+    // 切换到下一个节点
+    void moveToNode(int nodeId);
 };
-
 
 #endif // GAMEMANAGER_H
-#ifndef GAMEMANAGER_H
-#define GAMEMANAGER_H
-
-#include<iostream>
-#include<string>
-
-/*
-	负责人：木木
-	功能：返回单例对象，
-	参数：空
-	返回值：对象本身
-	备注：这个接口含义目前没弄懂
-*/
-static GameManager& Instance();
-
-/*
-	负责人：木木
-	功能：程序运行时被调用，加载、存档数据，并且初始化各个子系统
-	参数：空
-	返回值：空
-*/
-void Initialize();
-
-/*
-	负责人：木木
-	功能：主游戏循环
-	参数：空
-	返回值：空
-	备注：这个函数目前也没太弄懂
-*/
-void Run();
-
-/*
-	负责人：木木
-	功能：切换到指定节点
-	参数：nodeId:当前节点号
-	返回值：空
-*/
-void ChangeScene(int nodeId);
-
-/*
-	负责人：木木
-	功能：获取玩家的全局状态
-	参数：空
-	返回值：玩家当前状态对象
-*/
-PlayerState& GetPlayerState();
-
-/*
-	负责人：木木
-	功能：由 BattleSystem 调用，通知战斗结束
-	参数：playerWin:是否胜利， nextNodeId:下一个节点号
-	返回值：空
-*/
-void OnBattleEnd(bool playerWin, int nextNodeId);
-
-/*
-	玩家状态的类对象
-*/
-class PlayerState {
-
-};
-
-/*
-	备注：这个对象目前还没弄懂
-*/
-class GameManager {
-
-};
-#endif

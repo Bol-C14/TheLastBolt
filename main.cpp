@@ -1,17 +1,21 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include "include/GameManager.h"
 
 int main() {
-    std::cout << "=== 欢迎来到《强弩之末》 ===" << std::endl;
+    // 创建游戏管理器实例
+    GameManager gameManager;
 
-    GameManager gameManager; // 游戏管理器
-
-    if (gameManager.GameManager_Initialize()) {
-        gameManager.GameManager_Run();
-    } else {
-        std::cout << "游戏初始化失败！" << std::endl;
+    // 初始化游戏
+    if (!gameManager.initialize()) {
+        std::cerr << "游戏初始化失败！" << std::endl;
+        return 1; // 返回错误码
     }
 
-    std::cout << "感谢游玩，再见！" << std::endl;
-    return 0;
+    // 运行游戏主循环
+    gameManager.run();
+
+    // 游戏结束
+    std::cout << "游戏结束。感谢游玩！" << std::endl;
+
+    return 0; // 正常退出
 } // Yunyao will always wait for Akiha.

@@ -3,133 +3,176 @@
 
 #include <string>
 #include <vector>
-#include <MapSystem.h>
-#include <StorySystem.h>
-#include <NodeManager.h>
-#include <CardSystem.h>
-#include <BattleSystem.h>
-#include <RewardSystem.h>
-#include <SaveManager.h>
-#include <iostream>
+#include <iostream> // 保留通用包含
 
-// 游戏全局上下文
-struct GameContext {
-    PlayerState player;                // 玩家全局状态
-    StoryContext storyCtx;             // 剧情流程状态
-    Node node;                         // 当前节点数据
-    std::vector<Card> allCards;        // 所有卡牌数据
-    // TODO: 其他全局状态（如系统配置等）
-};
+// 前向声明以打破依赖
+struct Node;
+struct Card;
+struct PlayerState;
+struct Enemy;
+struct MapStage;
+struct ChoiceOption;
+struct RewardOption;
+struct StoryContext; // 添加了前向声明
 
-// 节点类型，用于剧情、战斗、分支、奖励、地图展示等
+// Include system headers AFTER forward declarations if they depend on them
+// #include "MapSystem.h" // Move includes that USE these types out of CommonTypes.h
+// #include "StorySystem.h"
+// #include "NodeManager.h"
+// #include "CardSystem.h"
+// #include "BattleSystem.h"
+// #include "RewardSystem.h"
+// #include "SaveManager.h"
+
+
+// --- 枚举优先，因为它们通常没有依赖 ---
+
+// 节点类型
 enum class NodeType {
-    DIALOGUE,    // 剧情对话
-    BATTLE,      // 战斗触发
-    CHOICE,      // 分支选择
-    REWARD,      // 奖励选择
-    STAGE_INFO   // 关卡信息展示
+    DIALOGUE,    // 对话
+    BATTLE,      // 战斗
+    CHOICE,      // 选择
+    REWARD,      // 奖励
+    STAGE_INFO   // 关卡信息
 };
 
 // 卡牌类型
 enum class CardType {
-    ATTACK,    // 伤害卡
-    DEFENSE,   // 防御卡
-    SKILL,     // 特殊技能卡
-    RESOURCE,  // 资源/回复卡
-    CURSE      // 诅咒卡
+    ATTACK,      // 攻击
+    DEFENSE,     // 防御
+    SKILL,       // 技能
+    RESOURCE,    // 资源
+    CURSE        // 诅咒
 };
 
 // 敌人行为类型
 enum class ActionType {
-    ATTACK,    // 普通攻击
-    DEFEND,    // 防御/护甲
-    BUFF,      // 自身增益
-    DEBUFF     // 给玩家施加负面
+    ATTACK,      // 攻击
+    DEFEND,      // 防御
+    BUFF,        // 增益
+    DEBUFF       // 减益
 };
+
+// 奖励类型
+enum class RewardType {
+    CARD,        // 卡牌
+    HEAL,        // 治疗
+    ITEM,        // 物品
+    SKILLPOINT   // 技能点
+};
+
+// 奖励事件类型 (确保在使用 RewardSystem 之前定义)
+enum class RewardEventType {
+    VICTORY,     // 胜利
+    BOSS_DEFEAT, // Boss 战胜利
+    FAILURE      // 失败
+};
+
+
+// --- 结构体定义 ---
 
 // 玩家全局状态
 struct PlayerState {
-    int hp;                 // 当前生命值
-    int maxHp;              // 最大生命值
-    int energy;             // 本回合行动点
-    int currentNodeId;      // 当前流程节点ID
-    int lastAnchorId;       // 最近一次重启锚点ID
-    int skillPoints;        // 可分配的技能点
-    bool canRevive;         // 是否还有一次重启机会
-    std::vector<int> deck;  // 当前卡组（卡牌ID列表）
+    int hp = 100;             // 默认值
+    int maxHp = 100;          // 默认值
+    int energy = 3;           // 默认值
+    int currentNodeId = 1;    // 默认起始节点
+    int lastAnchorId = 1;     // 默认锚点
+    int skillPoints = 0;      // 默认值
+    bool canRevive = true;    // 默认值
+    std::vector<int> deck;  // 初始为空牌组
 };
 
 // 剧情分支选项
 struct ChoiceOption {
-    std::string text;   // 选项描述
-    int nextNodeId;     // 选择后跳转的节点ID
+    std::string text;       // 选项文本
+    int nextNodeId;         // 选择后跳转的节点 ID
 };
 
 // 地图关卡信息
 struct MapStage {
-    int               stageId;       // 关卡ID
-    std::string       name;          // 关卡名称
-    bool              isBoss;        // 是否Boss关卡
-    int               nextStageId;   // 下一个关卡Id
+    int               stageId;      // 关卡 ID
+    std::string       name;         // 关卡名称
+    bool              isBoss;       // 是否为 Boss 关卡
+    int               nextStageId;  // 下一关卡 ID
 };
 
 // 剧情/流程节点
 struct Node {
-    int               id;              // 节点唯一标识
-    NodeType          type;            // 节点类型
-    std::string       text;            // 对话或描述文本
-    std::string       background;      // 背景信息（可选）
-    std::string       portrait;        // 角色立绘（可选）
-    int               nextNodeId;      // 单一跳转
-    std::vector<ChoiceOption> options; // 分支选项
+    int               id = 0;          // 默认值
+    NodeType          type = NodeType::DIALOGUE; // 默认值
+    std::string       text;            // 节点文本/对话内容
+    std::string       background;      // 背景图像标识
+    std::string       portrait;        // 立绘图像标识
+    int               nextNodeId = 0;  // 默认值，对话/战斗/奖励节点的下一个节点 ID
+    std::vector<ChoiceOption> options; // 选择节点的选项列表
     // 战斗节点专用
-    std::string       enemyId;         // 敌人标识
-    int               afterBattleId;   // 战斗胜利后跳转
+    std::string       enemyId;         // 敌人 ID
+    int               afterBattleId = 0; // 默认值，战斗胜利后跳转的节点 ID
     // 奖励节点专用
-    std::vector<std::string> rewardOptions; // 奖励描述列表
+    std::vector<std::string> rewardOptions; // 奖励选项文本列表（简化）
     // 地图信息节点专用
-    MapStage          mapStage;             // 当前节点的地图关卡信息
+    MapStage          mapStage;        // 直接包含地图关卡信息
 };
 
 // 卡牌基础数据
 struct Card {
-    int            id;           // 卡牌ID
-    std::string    name;         // 卡牌名
-    CardType       type;         // 卡牌类型
-    int            cost;         // 行动力消耗
-    int            value;        // 数值（伤害/护盾/回复量）
-    std::string    description;  // 效果描述
-    bool           upgraded;     // 是否为强化版
+    int            id;             // 卡牌 ID
+    std::string    name;           // 卡牌名称
+    CardType       type;           // 卡牌类型
+    int            cost;           // 能量消耗
+    int            value;          // 效果数值 (伤害/防御/抽牌数等)
+    std::string    description;    // 卡牌描述
+    bool           upgraded = false; // 默认值，是否已升级
 };
 
 // 敌人行动预告
 struct EnemyAction {
-    ActionType     type;   // 行为类型
-    int            value;  // 数值（伤害/护盾等）
-    std::string    intent; // 文本或图标提示
+    ActionType     type;           // 行动类型
+    int            value;          // 行动数值 (伤害/护甲等)
+    std::string    intent;         // 行动意图描述 (用于 UI 显示)
 };
 
 // 敌人基础数据与运行时状态
 struct Enemy {
-    std::string       id;          // 敌人ID
-    int               hp;          // 当前生命值
-    int               armor;       // 护甲值
-    std::vector<EnemyAction> nextActions; // 下一回合可能动作
+    std::string       id;             // 敌人 ID
+    int               hp;             // 当前生命值
+    int               armor = 0;      // 默认值，当前护甲
+    std::vector<EnemyAction> nextActions; // 下回合行动计划
 };
 
-
-// 奖励选项
-enum class RewardType {
-    CARD,
-    HEAL,
-    ITEM,
-    SKILLPOINT
-};
-
+// 奖励选项 (在 RewardType 之后定义)
 struct RewardOption {
-    RewardType        type;         // 奖励类型
-    std::string       description;  // 文本描述
-    int               value;        // 数值（回血量/技能点数等）
+    RewardType        type;           // 奖励类型
+    std::string       description;    // 奖励描述
+    int               value;          // 奖励数值 (卡牌 ID/治疗量/物品 ID/技能点数)
 };
+
+// 剧情流程状态 (在 Node 和 ChoiceOption 之后定义)
+struct StoryContext {
+    int currentStoryNodeId = 1; // 默认起始节点
+    // 可能在此处添加其他与剧情相关的状态
+};
+
+// 游戏全局上下文 (在所有其他结构体之后定义)
+struct GameContext {
+    PlayerState player;                // 玩家全局状态
+    StoryContext storyCtx;             // 剧情上下文
+    Node node;                         // 当前节点数据 - 可能由 NodeManager 更好地管理
+    std::vector<Card> allCards;        // 所有卡牌数据 - 可能移至 CardSystem?
+    // 其他全局状态
+};
+
+// 战斗视图状态 (由 UI 使用) - 在此处或 UI.h 中定义并包含所需头文件
+struct BattleViewState {
+    int playerHP;                      // 玩家当前 HP
+    int playerMaxHP;                   // 玩家最大 HP
+    int energy;                        // 玩家当前能量
+    std::string enemyName;             // 敌人名称
+    int enemyHP;                       // 敌人当前 HP
+    std::string enemyIntent;           // 敌人意图
+    std::vector<std::string> handCards; // 手牌信息列表
+};
+
 
 #endif // COMMONTYPES_H

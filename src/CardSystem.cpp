@@ -1,8 +1,9 @@
-#include "CardSystem.h"
+#include "../include/CardSystem.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <random>
+#include <ctime>
 
 /**
  * @brief 构造 CardSystem 对象
@@ -14,8 +15,28 @@
  * 依赖：无
  */
 CardSystem::CardSystem() {
-    // TODO: 可在此初始化随机种子，例如 std::srand(time(nullptr));
-    std::srand(time(nullptr));
+    // 初始化随机数种子
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+}
+
+CardSystem::~CardSystem() {
+    // 清理资源
+}
+
+bool CardSystem::initCard(std::vector<Card> &allCards) {
+    std::cout << "初始化卡牌数据..." << std::endl;
+    
+    // 从文件加载卡牌数据（这里简化为硬编码，实际应该从JSON文件加载）
+    loadCardsFromJson("data/card.json");
+    
+    // 复制卡牌数据到传出参数
+    allCards = deck;
+    
+    // 初始化抽牌堆
+    drawPile = deck;
+    
+    std::cout << "成功加载 " << deck.size() << " 张卡牌" << std::endl;
+    return !deck.empty();
 }
 
 /**
@@ -32,39 +53,71 @@ CardSystem::CardSystem() {
  * - 使用 nlohmann::json 或其他库解析文件
  * - 遍历 JSON 数组，将每个对象转换为 Card
  */
-void CardSystem::LoadCards(const std::string &filePath) {
-    //std::cout << "[CardSystem] LoadCards from: " << filePath << "\n";
-    // TODO: 从 filePath 打开文件并解析
-    // 示例：
-    // std::ifstream in(filePath);
-    // json j; in >> j;
-    // for (auto &item : j) { Card c; c.id = item["id"]; ... deck.push_back(c); }
-    ifstream in(filePath);//打开文件filePath，并解析
-    json j;//
-    in>>j;//解析json数据
-    // 遍历 JSON 数组，将每个对象转换为 Card
-    for(auto &item:j)
-    {
-        Card c;
-        c.id=item["id"];
-        c.name=item["name"];
-        c.type=item["type"];
-        c.cost=item["cost"];
-        c.value=item["value"];
-        c.description=item["description"];
-        c.upgraded=item["upgraded"];
-        deck.push_back(c);//将Card对象存入deck
-    }
-    // int            id;           // 卡牌ID
-    // std::string    name;         // 卡牌名
-    // CardType       type;         // 卡牌类型
-    // int            cost;         // 行动力消耗
-    // int            value;        // 数值（伤害/护盾/回复量）
-    // std::string    description;  // 效果描述
-    // bool           upgraded;     // 是否为强化版
-
-    // TODO: 初始化抽牌堆 drawPile = deck;
-    //drawPile = deck;
+bool CardSystem::loadCardsFromJson(const std::string &filePath) {
+    std::cout << "从 " << filePath << " 加载卡牌数据..." << std::endl;
+    
+    // 实际项目中应该使用JSON解析库，例如nlohmann::json
+    // 这里简化为直接硬编码一些卡牌作为演示
+    
+    // 清空现有卡牌
+    deck.clear();
+    
+    // 创建基础攻击卡
+    Card attackCard;
+    attackCard.id = 1;
+    attackCard.name = "打击";
+    attackCard.type = CardType::ATTACK;
+    attackCard.cost = 1;
+    attackCard.value = 6;
+    attackCard.description = "造成6点伤害";
+    attackCard.upgraded = false;
+    deck.push_back(attackCard);
+    
+    // 创建基础防御卡
+    Card defenseCard;
+    defenseCard.id = 2;
+    defenseCard.name = "防御";
+    defenseCard.type = CardType::DEFENSE;
+    defenseCard.cost = 1;
+    defenseCard.value = 5;
+    defenseCard.description = "获得5点护甲";
+    defenseCard.upgraded = false;
+    deck.push_back(defenseCard);
+    
+    // 创建技能卡
+    Card skillCard;
+    skillCard.id = 3;
+    skillCard.name = "谋略";
+    skillCard.type = CardType::SKILL;
+    skillCard.cost = 1;
+    skillCard.value = 2;
+    skillCard.description = "抽2张牌";
+    skillCard.upgraded = false;
+    deck.push_back(skillCard);
+    
+    // 创建恢复卡
+    Card healCard;
+    healCard.id = 4;
+    healCard.name = "治疗";
+    healCard.type = CardType::RESOURCE;
+    healCard.cost = 1;
+    healCard.value = 4;
+    healCard.description = "回复4点生命值";
+    healCard.upgraded = false;
+    deck.push_back(healCard);
+    
+    // 创建强力攻击卡
+    Card strongAttackCard;
+    strongAttackCard.id = 5;
+    strongAttackCard.name = "重击";
+    strongAttackCard.type = CardType::ATTACK;
+    strongAttackCard.cost = 2;
+    strongAttackCard.value = 10;
+    strongAttackCard.description = "造成10点伤害";
+    strongAttackCard.upgraded = false;
+    deck.push_back(strongAttackCard);
+    
+    return true;
 }
 
 /**
@@ -77,17 +130,30 @@ void CardSystem::LoadCards(const std::string &filePath) {
  * 
  * @return 抽取到的 Card 对象
  */
-// Card CardSystem::DrawCard() {
-//     std::cout << "[CardSystem] DrawCard called\n";
-//     // TODO: 如果 drawPile.empty()，调用 ShuffleDeck()
-//     // TODO: Card c = drawPile.back(); drawPile.pop_back(); return c;
-//     if(drawPile.empty())
-//     ShuffleDeck();
-//     Card c=drawPile.back();
-//     drawPile.pop_back();
-//     return c;
-//     //return Card(); // 返回默认 Card，学生需实现实际抽牌逻辑
-// }
+Card CardSystem::drawCard() {
+    // 如果抽牌堆为空，则洗牌
+    if (drawPile.empty()) {
+        shuffleDeck();
+    }
+    
+    // 仍为空，返回一个默认卡牌（可能是所有卡都打出去了）
+    if (drawPile.empty()) {
+        Card emptyCard;
+        emptyCard.id = 0;
+        emptyCard.name = "空牌";
+        emptyCard.type = CardType::ATTACK;
+        emptyCard.cost = 0;
+        emptyCard.value = 0;
+        emptyCard.description = "抽牌堆已空";
+        emptyCard.upgraded = false;
+        return emptyCard;
+    }
+    
+    // 从抽牌堆末尾抽一张牌
+    Card drawnCard = drawPile.back();
+    drawPile.pop_back();
+    return drawnCard;
+}
 
 /**
  * @brief 执行卡牌效果
@@ -104,12 +170,56 @@ void CardSystem::LoadCards(const std::string &filePath) {
  * - 使用 switch(card.type) 分支处理不同效果
  * - 更新 player 或 enemy 的字段
  */
-// void CardSystem::ApplyCardEffect(const Card &card, PlayerState &player, Enemy &enemy) {
-//     //std::cout << "[CardSystem] ApplyCardEffect: " << card.name << "\n";
-//     // TODO: 使用 card.type 判断攻击、防御、资源等效果
-//    enemy.hp-=card.value;//敌人血量减少card.value
-//    //discardPile.push_back(card);
-// }
+void CardSystem::applyCardEffect(const Card &card, PlayerState &player, Enemy &enemy) {
+    std::cout << "使用卡牌: " << card.name << " - " << card.description << std::endl;
+    
+    // 消耗能量
+    player.energy -= card.cost;
+    
+    // 根据卡牌类型应用效果
+    switch (card.type) {
+        case CardType::ATTACK:
+            // 攻击类卡牌：对敌人造成伤害
+            enemy.hp -= card.value;
+            std::cout << "对敌人造成 " << card.value << " 点伤害!" << std::endl;
+            break;
+            
+        case CardType::DEFENSE:
+            // 防御类卡牌：增加护甲
+            enemy.armor += card.value;
+            std::cout << "获得 " << card.value << " 点护甲!" << std::endl;
+            break;
+            
+        case CardType::SKILL:
+            // 技能卡牌：根据卡牌描述产生特殊效果
+            if (card.description.find("抽牌") != std::string::npos) {
+                std::cout << "抽 " << card.value << " 张牌!" << std::endl;
+                // 实际抽牌逻辑在战斗系统中处理
+            } else if (card.description.find("能量") != std::string::npos) {
+                player.energy += card.value;
+                std::cout << "获得 " << card.value << " 点能量!" << std::endl;
+            }
+            break;
+            
+        case CardType::RESOURCE:
+            // 资源卡：回复生命值
+            player.hp += card.value;
+            if (player.hp > player.maxHp) {
+                player.hp = player.maxHp;
+            }
+            std::cout << "回复 " << card.value << " 点生命值!" << std::endl;
+            break;
+            
+        case CardType::CURSE:
+            // 诅咒卡：负面效果
+            player.hp -= card.value;
+            std::cout << "受到 " << card.value << " 点伤害!" << std::endl;
+            break;
+    }
+    
+    // 将使用过的卡牌加入弃牌堆
+    discardPile.push_back(card);
+}
 
 /**
  * @brief 洗牌：将弃牌堆与抽牌堆合并并随机打乱顺序
@@ -124,23 +234,26 @@ void CardSystem::LoadCards(const std::string &filePath) {
  * TODO：
  * - std::shuffle(drawPile.begin(), drawPile.end(), std::mt19937{std::random_device{}()});
  */
-// void CardSystem::ShuffleDeck() {
-//     //std::cout << "[CardSystem] ShuffleDeck called\n";
-//     // TODO: drawPile.insert(drawPile.end(), discardPile.begin(), discardPile.end());
-//     // TODO: discardPile.clear();
-//     // TODO: 洗牌算法
-//     drawPile.insert(drawPile.end(), discardPile.begin(), discardPile.end());// 将 discardPile 中所有卡牌移入 drawPile
-//     discardPile.clear();//清空 discardPile
-
-//     //使用 std::shuffle 随机打乱 drawPile
-//     std::shuffle(drawPile.begin(), drawPile.end(), [](int n) { return std::rand() % n; });
-// }
+void CardSystem::shuffleDeck() {
+    std::cout << "洗牌..." << std::endl;
+    
+    // 将弃牌堆的牌加入到抽牌堆
+    drawPile.insert(drawPile.end(), discardPile.begin(), discardPile.end());
+    
+    // 清空弃牌堆
+    discardPile.clear();
+    
+    // 随机打乱抽牌堆
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(drawPile.begin(), drawPile.end(), g);
+}
 
 /**
  * @brief 获取当前完整卡组（所有定义卡牌）
  * @return deck 容器复制
  */
-std::vector<Card> CardSystem::GetDeck() const {
+std::vector<Card> CardSystem::getDeck() const {
     return deck;
 }
 
@@ -148,14 +261,14 @@ std::vector<Card> CardSystem::GetDeck() const {
  * @brief 获取当前抽牌堆状态
  * @return drawPile 容器复制
  */
-// std::vector<Card> CardSystem::GetDrawPile() const {
-//     return drawPile;
-// }
+std::vector<Card> CardSystem::getDrawPile() const {
+    return drawPile;
+}
 
 /**
  * @brief 获取当前弃牌堆状态
  * @return discardPile 容器复制
  */
-// std::vector<Card> CardSystem::GetDiscardPile() const {
-//     return discardPile;
-// }
+std::vector<Card> CardSystem::getDiscardPile() const {
+    return discardPile;
+}

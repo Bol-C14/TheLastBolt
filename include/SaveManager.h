@@ -3,47 +3,42 @@
 
 #include "CommonTypes.h"
 #include <string>
+#include <vector>
 
-// SaveManager 负责游戏进度的保存与读取
+// 存档管理器类
+class SaveManager {
+public:
+    SaveManager();
+    ~SaveManager();
 
-/**
- * 保存游戏进度到文件
- * @param filePath 存档文件路径
- * @param player 玩家状态
- * @param currentNodeId 当前节点ID
- * @return 是否保存成功
- * 
- * TODO: 实现存档写入逻辑，使用binary或JSON格式
- */
-bool SaveManager_SaveGame(const std::string &filePath, const PlayerState &player, int currentNodeId);
+    // 保存游戏状态到文件
+    // filePath: 存档文件的路径
+    // player: 当前玩家状态
+    // currentNodeId: 玩家当前所在的节点 ID
+    // 返回值: true - 保存成功, false - 保存失败
+    bool saveGame(const std::string &filePath, const PlayerState &player, int currentNodeId);
 
-/**
- * 从文件读取游戏进度
- * @param filePath 存档文件路径
- * @param player 玩家状态（将被填充）
- * @param currentNodeId 当前节点ID（将被填充）
- * @return 是否读取成功
- * 
- * TODO: 实现存档读取逻辑
- */
-bool SaveManager_LoadGame(const std::string &filePath, PlayerState &player, int &currentNodeId);
+    // 从文件加载游戏状态
+    // filePath: 存档文件的路径
+    // player: 用于接收加载后玩家状态的引用
+    // currentNodeId: 用于接收加载后节点 ID 的引用
+    // 返回值: true - 加载成功, false - 加载失败
+    bool loadGame(const std::string &filePath, PlayerState &player, int &currentNodeId);
 
-/**
- * 检查存档是否存在
- * @param filePath 存档文件路径
- * @return 存档是否存在
- * 
- * TODO: 实现存档存在性检查
- */
-bool SaveManager_SaveExists(const std::string &filePath);
+    // 检查存档是否存在
+    // filePath: 存档文件路径
+    // 返回值: 存档是否存在
+    bool saveExists(const std::string &filePath);
 
-/**
- * 删除存档
- * @param filePath 存档文件路径
- * @return 是否删除成功
- * 
- * TODO: 实现存档删除逻辑
- */
-bool SaveManager_DeleteSave(const std::string &filePath);
+    // 删除存档
+    // filePath: 存档文件路径
+    // 返回值: 是否删除成功
+    bool deleteSave(const std::string &filePath);
+
+    // 获取所有存档文件路径
+    // directory: 存档目录
+    // 返回值: 存档文件路径列表
+    std::vector<std::string> getAllSaves(const std::string &directory);
+};
 
 #endif // SAVEMANAGER_H
