@@ -16,6 +16,8 @@ void initnode(NodeManagerContext& ctx)
             nodei.nextNodeId = 1;
         }
         nodei.id = i;
+        MapSystem mapnd;
+        mapnd.initMap(nodei);
         ctx.nodes.push_back(nodei);
         i++;
         if (i == 1000)
@@ -82,22 +84,13 @@ ______________ ______________.____       _____    ______________________________
 }
 bool NodeManager_LoadNodes(NodeManagerContext &ctx)
 {
-    // TODO: 打开filePath文件
-    // TODO: 解析JSON数据
-    // TODO: 遍历JSON数组，将每个节点数据转换为Node结构体，添加到nodes容器中
-    // TODO: 错误处理
+    
     std::cout << "节点数据加载中..." << std::endl;
     ctx.nodes.clear();
     initnode(ctx);
     initstory(ctx);
     initbattle(ctx);
     initreward(ctx);
-    // 简单实现示例（实际中需替换为真实JSON解析代码）
-    // TODO: 这里应该是JSON解析代码
-    // 示例: 读取文件内容，解析为JSON结构，遍历节点数组
-    // 清空旧数据
-    // 示例：手动添加一些测试节点
-    // 这部分在实际实现时应替换为从JSON解析的数据
     std::cout << "成功加载节点数据" << endl;
     return true;
 }
