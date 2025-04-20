@@ -1,6 +1,7 @@
 #include "../include/GameManager.h"
 #include "../include/UI.h"
 #include <iostream>
+#include<cstdlib>
 using namespace std;
 //初始化玩家状态
 void Player_Initialize(GameContext &ctx){
@@ -52,11 +53,24 @@ void GameManager_Run(GameContext &ctx) {
         //choice用来接收玩家输入的选择
         int choice;
         cin>>choice;
+        switch(choice){
+            case 1://开始游戏
+                break;
+            case 2://查看存档
+                break;
+            case 3://开发人员
+                break;
+            case 4://退出游戏
+                //draw() 游戏退出成功界面
+                exit(0);
+            default: cout<<"输入错误，请重新输入！"<<endl;
+        }
     }
     
     cout << "游戏结束" << endl;
 }
-
+//开始游戏执行部分
+void GameStart()
 // 切换场景
 void GameManager_ChangeScene(GameContext &ctx, int nodeId) {
     // 保存当前节点ID
