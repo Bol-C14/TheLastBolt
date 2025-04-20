@@ -4,7 +4,8 @@
 #include <cstdlib>
 #include<conio.h>
 using namespace std;
-
+//TODO
+const string check_archive_filePath = "";
 //初始化玩家状态
 void Player_Initialize(GameContext &ctx) {
     ctx.player.hp = 100;
@@ -58,10 +59,13 @@ void GameManager::GameManager_Run(GameContext &ctx) {
         cin >> choice;
         switch (choice) {
             case 1: //开始游戏
+            GameStart(ctx);
                 break;
             case 2: //查看存档
+            ViewArchive();
                 break;
             case 3: //开发人员
+            Developer();
                 break;
             case 4: //退出游戏
                 GameOver();
@@ -77,14 +81,28 @@ void GameManager::GameManager_Run(GameContext &ctx) {
 //开始游戏执行部分
 void GameManager::GameStart(GameContext &ctx) {
     //判断存档函数，根据判断情况进入无存档、单存档或多存档界面
+    if(SaveManager_SaveExists(check_archive_filePath)){
+        //情况二：单存档
+        //执行单存档时函数
+        //游戏界面TODO
+        ShowStageInfo(const string& stageName, const string& description, const vector<string>& tips);
+        //游戏界面执行部分
+        void GameInterface(ctx){
+            //游戏界面UI界面
+        }
+    }
     //情况一：无存档
     //执行无存档时的函数
+    else{
+        //TODO
+        //执行新建过程函数
+        //游戏界面
+        ShowStageInfo(const string& stageName, const string& description, const vector<string>& tips);
+        //游戏界面执行部分TODO
+    }
 
-    //情况二：单存档
-    //执行单存档时函数
+    
 
-    //情况三：多存档
-    //执行多存档时函数
 }
 
 //查看存档部分
@@ -100,7 +118,7 @@ void GameManager::Developer() {
 
 //退出游戏部分
 void GameManager::GameOver() {
-    //draw()游戏推出UI
+    cout<<"游戏退出成功"<<endl;
     exit(0);
 }
 // 切换场景

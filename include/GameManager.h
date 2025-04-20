@@ -40,7 +40,7 @@ public:
     参数：GameContext &ctx
     返回值：空
 */
-void GameStart(GameContext &ctx);
+    void GameStart(GameContext &ctx);
 
 /*
     负责人：木木
@@ -48,7 +48,7 @@ void GameStart(GameContext &ctx);
     参数：
     返回值：空
 */
-void ViewArchive();
+    void ViewArchive();
 
 /*
     负责人：木木
@@ -56,7 +56,7 @@ void ViewArchive();
     参数：
     返回值：空
 */
-void Developer();
+    void Developer();
 
 /*
     负责人：木木
@@ -64,7 +64,7 @@ void Developer();
     参数：
     返回值：空
 */
-void GameOver();
+    void GameOver();
 
 /*
     负责人：木木
@@ -72,6 +72,13 @@ void GameOver();
     参数：
     返回值：空
 */
+
+/*
+    负责人：木木
+    功能：游戏界面执行
+    参数：GameContext &ctx
+    返回值：空
+*/  void GameInterface(GameContext &ctx);
 
 /*
     负责人：
