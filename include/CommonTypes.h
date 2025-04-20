@@ -85,7 +85,7 @@ struct EnemyAction {
 };
 
 
-
+class EnemyStateMachine;
 // 敌人基础数据与运行时状态
 struct Enemy {
     std::string       id;          // 敌人ID

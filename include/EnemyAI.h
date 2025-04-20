@@ -19,14 +19,13 @@ enum Prob {
 class EnemyState {
 public:
     EnemyState(Enemy* _enemy);
-    
+
     // 状态进入和退出的虚函数，子类可以重写
     virtual void Enter();
     virtual void Exit();
-
     // 动作类型数组
     int prob[4];
-    ActionType at[4] = { 
+    ActionType at[4] = {
         ActionType::ATTACK,   // 普通攻击
         ActionType::DEFEND,   // 防御/护甲
         ActionType::BUFF,     // 自身增益
@@ -59,29 +58,26 @@ public:
 protected:
     void Enter() override;
 };
-
 // 状态机类
 class EnemyStateMachine {
 public:
     // 构造函数
     EnemyStateMachine(Enemy* _enemy);
 
-    // 初始化状态
-    void Initialize(EnemyState& state);
 
     // 改变状态
-    void ChangeState(EnemyState& nextState);
+    void ChangeState(EnemyState* nextState);
 
     // 更新状态
     virtual void UpdateState(const BattleState& battle);
 
-
+public:
     Enemy* enemy; // 指向所属敌人的指针
 
-    EnemyBuffState buffState;
-    EnemyAttackState attackState;
-    EnemyAngryState angryState;
-    EnemyFearState fearState;
+    EnemyBuffState *buffState;
+    EnemyAttackState *attackState;
+    EnemyAngryState *angryState;
+    EnemyFearState *fearState;
 
     EnemyState* currentState; // 当前状态指针
 };
@@ -92,14 +88,14 @@ public:
  * @param enemy 输出敌人数据结构
  * @return 是否加载成功
  */
-bool EnemyAI_LoadEnemy(const std::string &filePath, const std::string &enemyId, Enemy &enemy);
+bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, Enemy& enemy);
 
 /**
  * 更新敌人AI，生成下一回合行动列表
  * @param enemy 敌人结构体
  * @param battle 当前战斗状态
  */
-EnemyAction EnemyAI_Update(Enemy &enemy, const BattleState &battle);
+EnemyAction EnemyAI_Update(Enemy& enemy, const BattleState& battle);
 
 #endif // ENEMYAI_H
 

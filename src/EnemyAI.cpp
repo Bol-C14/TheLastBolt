@@ -1,10 +1,12 @@
-#include "../include/EnemyAI.h"
+#include "EnemyAI.h"
 //#include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
 #include <random>
 
 //using json = nlohmann::json;
+
+
 EnemyState::EnemyState(Enemy* _enemy) : enemy(_enemy) {
     // 默认概率初始化（可以在派生类中被覆盖）
     prob[AttackProb] = 0.0f;
@@ -22,7 +24,6 @@ void EnemyState::Enter() {
 void EnemyState::Exit() {
     // 默认退出状态的行为（可以被重写）
 }
-
 // EnemyBuffState 构造函数实现
 EnemyBuffState::EnemyBuffState(Enemy* _enemy) : EnemyState(_enemy) {
     prob[AttackProb] = 2.0f;
@@ -55,133 +56,90 @@ EnemyFearState::EnemyFearState(Enemy* _enemy) : EnemyState(_enemy) {
     prob[DebuffProb] = 10.0f;
 }
 
+
 // EnemyFearState::Enter 实现
-void EnemyFearState::Enter() {
+/*void EnemyFearState::Enter() {
     enemy->armor += 3;
     std::cout << "EnemyFearState Entered. Armor increased by 3." << std::endl; // 调试输出
-}
+}*/
 
 // EnemyStateMachine 构造函数实现
 EnemyStateMachine::EnemyStateMachine(Enemy* _enemy)
     : enemy(_enemy),
-      buffState(enemy),
-      attackState(enemy),
-      angryState(enemy),
-      fearState(enemy),
-      currentState(&buffState) // 默认初始状态为 BuffState
+    buffState(new EnemyBuffState(_enemy)),
+    attackState(new EnemyAttackState(_enemy)),
+    angryState(new EnemyAngryState(_enemy)),
+    fearState(new EnemyFearState(_enemy)),
+    currentState(buffState) // 默认初始状态为 BuffState
 {
     // 初始化当前状态
+   
     currentState->Enter();
 }
 
-// Initialize 方法实现
-void EnemyStateMachine::Initialize(EnemyState& state) {
-    if (currentState) {
-        currentState->Exit(); // 退出当前状态
-    }
-    currentState = &state;
-    currentState->Enter(); // 进入新状态
-}
+
 
 // ChangeState 方法实现
-void EnemyStateMachine::ChangeState(EnemyState& nextState) {
+void EnemyStateMachine::ChangeState(EnemyState* nextState) {
     if (currentState) {
         currentState->Exit(); // 退出当前状态
     }
-    currentState = &nextState;
+    currentState = nextState;
     currentState->Enter(); // 进入新状态
 }
-void EnemyStateMachine::UpdateState(const BattleState &battle){
+void EnemyStateMachine::UpdateState(const BattleState& battle) {
     int maxhp = battle.currentEnemy.maxhp;
-    int hp=battle.currentEnemy.hp;
-    if(hp>maxhp/2&&hp<maxhp){
+    int hp = battle.currentEnemy.hp;
+    if (hp > maxhp / 2 && hp < maxhp) {
         this->ChangeState(this->attackState);
-    }else if(hp>maxhp/5){
+    }
+    else if (hp > maxhp / 5) {
         this->ChangeState(this->angryState);
-    }else{
+    }
+    else {
         this->ChangeState(this->fearState);
-    }
-};
-class EnemyBuffState:public EnemyState{
-    public:
-    EnemyBuffState(Enemy* _enemy):EnemyState(_enemy){
-        prob[AttackProb]=2;
-        prob[DefendProb]=4;
-        prob[BuffProb]=7;
-        prob[DebuffProb]=10;
-    }
-};
-
-class EnemyAttackState:public EnemyState{
-    public:
-    EnemyAttackState(Enemy* _enemy):EnemyState(_enemy){
-        prob[AttackProb]=5;
-    prob[DefendProb]=6;
-    prob[BuffProb]=8;
-    prob[DebuffProb]=10;
-    }
-};
-class EnemyAngryState:public EnemyState{
-    public:
-    EnemyAngryState(Enemy* _enemy):EnemyState(_enemy){
-        prob[AttackProb]=6;
-    prob[DefendProb]=6;
-    prob[BuffProb]=8;
-    prob[DebuffProb]=10;
-    }
-};
-class EnemyFearState:public EnemyState{
-    public:
-    EnemyFearState(Enemy* _enemy):EnemyState(_enemy){
-        prob[AttackProb]=1;
-    prob[DefendProb]=6;
-    prob[BuffProb]=8;
-    prob[DebuffProb]=10;
-    }
-    protected:
-    void  Enter() override {
-        enemy->armor+=3;
     }
 };
 
 // 从文件加载指定敌人数据
-bool EnemyAI_LoadEnemy(const std::string &filePath, const std::string &enemyId, Enemy &enemy) {
-    std::ifstream file(filePath);
+bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, Enemy& enemy) {
+    /*std::ifstream file(filePath);
     if (!file.is_open()) {
         std::cerr << "无法打开敌人文件: " << filePath << std::endl;
         return false;
-    }
+    }*/
     try
     {
-        if(enemyId=="slime"){
-            enemy.id=enemyId;
-            enemy.hp=30;enemy.armor=0;
-            EnemyAction ea={ActionType::ATTACK,4,"攻击"};
+        if (enemyId == "slime") {
+            enemy.id = enemyId;
+            enemy.hp = 30; enemy.armor = 0;
+            EnemyAction ea = { ActionType::ATTACK,4,"攻击" };
             enemy.nextActions.push_back(ea);
-            ea={ActionType::DEFEND,3,"柔软"};
+            ea = { ActionType::DEFEND,3,"柔软" };
             enemy.nextActions.push_back(ea);
-            ea={ActionType::BUFF,3,"提升活力"};
+            ea = { ActionType::BUFF,3,"提升活力" };
             enemy.nextActions.push_back(ea);
-            ea={ActionType::DEBUFF,3,"恶心你"};
+            ea = { ActionType::DEBUFF,3,"恶心你" };
             enemy.nextActions.push_back(ea);
-        }else if(enemyId=="goblin_boss"){
-            enemy.id=enemyId;
-            enemy.hp=80,enemy.armor=5;
-            EnemyAction ea={ActionType::ATTACK,10,"重击"};
+        }
+        else if (enemyId == "goblin_boss") {
+            enemy.id = enemyId;
+            enemy.hp = 80, enemy.armor = 5;
+            EnemyAction ea = { ActionType::ATTACK,10,"重击" };
             enemy.nextActions.push_back(ea);
-            ea={ActionType::DEFEND,10,"盾防"};
+            ea = { ActionType::DEFEND,10,"盾防" };
             enemy.nextActions.push_back(ea);
-            ea={ActionType::BUFF,3,"怒气提升"};
+            ea = { ActionType::BUFF,3,"怒气提升" };
             enemy.nextActions.push_back(ea);
-            ea={ActionType::DEBUFF,3,"恐吓"};
+            ea = { ActionType::DEBUFF,3,"恐吓" };
             enemy.nextActions.push_back(ea);
         }
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
-        std::cerr <<"解析敌人信息出错"<< e.what() << '\n';
+        std::cerr << "解析敌人信息出错" << e.what() << '\n';
     }
-    
+
     /*try {
         json j; file >> j;
         for (const auto &item : j) {
@@ -209,10 +167,10 @@ bool EnemyAI_LoadEnemy(const std::string &filePath, const std::string &enemyId, 
 }
 
 // 更新敌人行为，每回合调用
-EnemyAction EnemyAI_Update(Enemy &enemy, const BattleState &battle) {
+EnemyAction EnemyAI_Update(Enemy& enemy, const BattleState& battle) {
     // TODO: 可以根据battle状态和enemy.hp调整AI策略
     // 当前简单随机选择一个预定义动作
-    if (enemy.nextActions.empty()) return;
+    //if (enemy.nextActions.empty()) return;
     /*std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<size_t> dist(0, enemy.nextActions.size() - 1);
     size_t idx = dist(rng);
@@ -224,19 +182,20 @@ EnemyAction EnemyAI_Update(Enemy &enemy, const BattleState &battle) {
     std::uniform_int_distribution<size_t> dist(0, 10);
     size_t idx = dist(rng);
     ActionType chosenType;
-    if(idx>=0&&idx<enemy.stateMachine->currentState->prob[0]){
-        chosenType=enemy.stateMachine->currentState->at[0];
-    }else if(idx<enemy.stateMachine->currentState->prob[1])
-        chosenType=enemy.stateMachine->currentState->at[1];
-    else if(idx<enemy.stateMachine->currentState->prob[2])
-        chosenType=enemy.stateMachine->currentState->at[2];
-    else chosenType=enemy.stateMachine->currentState->at[3];
-    for(auto ea:enemy.nextActions){
-        if(ea.type==chosenType)
-        {
-            std::cout << "敌人选择行动: " <<ea.intent << std::endl;
-            return ea;
-        }      
+    if (idx >= 0 && idx < enemy.stateMachine->currentState->prob[0]) {
+        chosenType = enemy.stateMachine->currentState->at[0];
     }
-    
-}
+    else if (idx < enemy.stateMachine->currentState->prob[1])
+        chosenType = enemy.stateMachine->currentState->at[1];
+    else if (idx < enemy.stateMachine->currentState->prob[2])
+        chosenType = enemy.stateMachine->currentState->at[2];
+    else chosenType = enemy.stateMachine->currentState->at[3];
+    for (auto ea : enemy.nextActions) {
+        if (ea.type == chosenType)
+        {
+            std::cout << "敌人选择行动: " << ea.intent << std::endl;
+            return ea;
+        }
+    }
+
+}   
