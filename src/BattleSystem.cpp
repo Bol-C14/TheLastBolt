@@ -3,9 +3,16 @@
 #include "../include/CardSystem.h"
 #include "../include/EnemyAI.h"
 #include "../include/CommonTypes.h"
+#include "../include/CommonTypes.h"
 #include <iostream>
-#include<random>
+#include<random>#include<random>
+
+BattleSystem::BattleSystem(){};
+BattleSystem::~BattleSystem(){}
 // 初始化战斗
+bool BattleSystem::BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const PlayerState& player,const CardSystem& cardSystem) {
+    std::cout << "开始战斗，敌人ID: " << enemy.id << std::endl;
+
 bool BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const PlayerState& player,const CardSystem& cardSystem) {
     std::cout << "开始战斗，敌人ID: " << enemy.id << std::endl;
 
@@ -49,18 +56,18 @@ bool BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const Pla
 
 // 判断战斗是否结束
  // 玩家生命值为0或敌人生命值为0时战斗结束
-bool BattleSystem_IsBattleOver(const BattleState& battle) {
+bool BattleSystem:: BattleSystem_IsBattleOver(const BattleState& battle) {
     return battle.playerHP <= 0 || battle.currentEnemy.hp <= 0;
 }
 
 // 判断玩家是否胜利
 // 敌人生命值为0时玩家胜利
-bool BattleSystem_PlayerWon(const BattleState& battle) {
+bool BattleSystem:: BattleSystem_PlayerWon(const BattleState& battle) {
     return battle.currentEnemy.hp <= 0;
 }
 
 // 敌人行动
-void BattleSystem_EnemyAction(BattleState& battle) {
+void BattleSystem::BattleSystem_EnemyAction(BattleState& battle) {
     std::cout << "敌人行动..." << std::endl;
 
     // TODO: 调用敌人AI决定行动
@@ -70,18 +77,16 @@ void BattleSystem_EnemyAction(BattleState& battle) {
     // 根据敌人的nextActions列表执行行动
 
     // 示例：敌人攻击
-    if (!battle.currentEnemy.nextActions.empty()) {
-        EnemyAction action = battle.currentEnemy.nextActions[0];
+        EnemyAction action = EnemyAI_Update(battle.currentEnemy,battle);
         if (action.type == ActionType::ATTACK) {
             battle.playerHP -= action.value;
             std::cout << "敌人攻击，造成 " << action.value << " 点伤害，玩家剩余血量: " << battle.playerHP << std::endl;
-        }
         // TODO: 处理其他行动类型
     }
 }
 
 // 玩家出牌
-void BattleSystem_PlayerAction(BattleState& battle) {
+void BattleSystem::BattleSystem_PlayerAction(BattleState& battle) {
     //主循环出牌直到能量耗尽
     while (battle.energy) {
         int cardIndex = ConsoleUI::GetCardChoice(static_cast<int>(battle.hand.size()));
@@ -187,6 +192,47 @@ int true_random() {
     return dis(gen);
 }
 
+// 生成真随机数
+int true_random() {
+    static std::random_device rd;  // 硬件熵源（真随机种子）
+    static std::mt19937 gen(rd()); // 梅森旋转算法引擎
+    static std::uniform_int_distribution<int> dis(0, 5); // 假设现在有五张牌可以抽
+    return dis(gen);
+}
+void BattleSystem::BattleSystem_UpdataData(BattleViewState &view,BattleState battle){
+    view.playerHP = battle.playerHP;
+    view.playerMaxHP = battle.playerMaxHP;
+    view.energy = battle.energy;
+    view.enemyName = battle.currentEnemy.id;
+    view.enemyHP = battle.currentEnemy.hp;
+}
+// 执行战斗流程
+void BattleSystem::BattleSystem_ExecuteBattle(BattleState& battle, PlayerState& player,const Enemy& enemy,const CardSystem& cardSystem) {
+    std::cout << "战斗开始！" << std::endl;
+    //初始化战斗数据
+    BattleState battle;
+    BattleSystem_StartBattle(battle, enemy, player,cardSystem);
+    //根据随机数来确定玩家或者boss先手，真随机
+    if (true_random() % 2) {
+        std::cout << "由玩家先进行出招" << std::endl;
+        while (!BattleSystem_IsBattleOver(battle)) {
+            // 构造视图状态 传参数给ui
+            BattleViewState view;
+            BattleSystem_UpdataData(view,battle);
+            ShowBattleState(view);
+            // TODO: 使用意图描述，当前简化为类型编号
+            if (!battle.currentEnemy.nextActions.empty()) {
+                view.enemyIntent = std::to_string(static_cast<int>(battle.currentEnemy.nextActions[0].type));
+            }
+            else {
+                view.enemyIntent = "";
+            }
+            // 填充手牌名称
+            view.handCards.clear();
+            for (const auto& c : battle.hand) {
+                view.handCards.push_back(c.name);
+            }
+            ConsoleUI::ShowBattleState(view);
 // 执行战斗流程
 void BattleSystem_ExecuteBattle(BattleState& battle, PlayerState& player,const Enemy& enemy,const CardSystem& cardSystem) {
     std::cout << "战斗开始！" << std::endl;
@@ -220,7 +266,10 @@ void BattleSystem_ExecuteBattle(BattleState& battle, PlayerState& player,const E
 
             // 玩家回合
              BattleSystem_PlayerAction(battle);
-                // 检查战斗是否结束
+            // 给ui更新并打印
+            BattleSystem_UpdataData(view,battle);
+            ShowBattleState(view);
+            // 检查战斗是否结束
              if (BattleSystem_IsBattleOver(battle)) break;
             
             else {
@@ -230,7 +279,9 @@ void BattleSystem_ExecuteBattle(BattleState& battle, PlayerState& player,const E
 
             // 敌人回合
             BattleSystem_EnemyAction(battle);
-
+            // 给ui更新并打印
+            BattleSystem_UpdataData(view,battle);
+            ShowBattleState(view);
             // 检查战斗是否结束
             if (BattleSystem_IsBattleOver(battle)) break;
 
@@ -246,11 +297,9 @@ void BattleSystem_ExecuteBattle(BattleState& battle, PlayerState& player,const E
         while (!BattleSystem_IsBattleOver(battle)) {
             // 构造视图状态 传参数给ui
             BattleViewState view;
-            view.playerHP = battle.playerHP;
-            view.playerMaxHP = battle.playerMaxHP;
-            view.energy = battle.energy;
-            view.enemyName = battle.currentEnemy.id;
-            view.enemyHP = battle.currentEnemy.hp;
+            // 给ui更新并打印
+            BattleSystem_UpdataData(view,battle);
+            ShowBattleState(view);
             // TODO: 使用意图描述，当前简化为类型编号
             if (!battle.currentEnemy.nextActions.empty()) {
                 view.enemyIntent = std::to_string(static_cast<int>(battle.currentEnemy.nextActions[0].type));
@@ -267,6 +316,9 @@ void BattleSystem_ExecuteBattle(BattleState& battle, PlayerState& player,const E
 
             // 敌方回合
             BattleSystem_EnemyAction(battle);
+            // 给ui更新并打印
+            BattleSystem_UpdataData(view,battle);
+            ShowBattleState(view);
             // 检查战斗是否结束
             if (BattleSystem_IsBattleOver(battle)) break;
 
@@ -277,6 +329,9 @@ void BattleSystem_ExecuteBattle(BattleState& battle, PlayerState& player,const E
 
             // 我方回合
             BattleSystem_PlayerAction(battle);
+            // 给ui更新并打印
+            BattleSystem_UpdataData(view,battle);
+            ShowBattleState(view);
             // 检查战斗是否结束
             if (BattleSystem_IsBattleOver(battle)) break;
 

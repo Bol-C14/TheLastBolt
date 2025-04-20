@@ -123,3 +123,5 @@ std::vector<Card> CardSystem::GetDrawPile() const {
 std::vector<Card> CardSystem::GetDiscardPile() const {
     return discardPile;
 }
+#include "CardSystem.h"
+#include"SaveManager.h"
