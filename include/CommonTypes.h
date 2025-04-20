@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-
+#include"EnemyAI.h"
 // 节点类型，用于剧情、战斗、分支、奖励、地图展示等
 enum class NodeType {
     DIALOGUE,    // 剧情对话
@@ -84,12 +84,17 @@ struct EnemyAction {
     std::string    intent; // 文本或图标提示
 };
 
+
+
 // 敌人基础数据与运行时状态
 struct Enemy {
     std::string       id;          // 敌人ID
     int               hp;          // 当前生命值
     int               armor;       // 护甲值
     std::vector<EnemyAction> nextActions; // 下一回合可能动作
+    EnemyStateMachine *stateMachine; // 状态机指针
+    Enemy(const std::string& id_, int hp_, int armor_)
+        : id(id_), hp(hp_), armor(armor_) ,stateMachine(new EnemyStateMachine(this)){}
 };
 
 // 地图关卡信息
