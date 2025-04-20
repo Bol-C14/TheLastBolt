@@ -46,9 +46,26 @@
         "stack": "cpp",
         "unordered_map": "cpp",
         "variant": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "atomic": "cpp",
+        "bit": "cpp",
+        "cstddef": "cpp",
+        "map": "cpp",
+        "exception": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "system_error": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "fstream": "cpp",
+        "ostream": "cpp"
     },
     "githubPullRequests.ignoredPullRequestBranches": [
         "main"
-    ]
+    ],
+    "C_Cpp.errorSquiggles": "enabled"
 }
