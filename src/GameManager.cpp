@@ -34,7 +34,7 @@ bool GameManager::GameManager_Initialize() {
     gameContext.allCards = cardSys.GetDeck();
 
     // 初始化故事节点
-    StorySystem_Initialize(gameContext.storygameContext);
+    StorySystem_Initialize(gameContext.storyCtx);
 
     // 初始化游戏角色初始状态，即给gameContext中的player赋予初始值，备注：等会定义一个函数将这些装起来
     Player_Initialize(gameContext);
@@ -89,6 +89,7 @@ void GameManager::ViewArchive() {
 
 //开发人员部分
 void GameManager::Developer() {
+
 }
 
 //退出游戏部分
@@ -101,21 +102,22 @@ void GameManager::GameOver() {
 void GameManager::GameManager_ChangeScene(GameContext &gameContext, int nodeId) {
     // 保存当前节点ID
     gameContext.player.currentNodeId = nodeId;
-
     // 获取目标节点
-    const Node &targetNode = NodeManager_GetNodeById(gameContext.nodeManagergameContext, nodeId);
+    const Node &targetNode = nodeManager.NodeManager_GetNodeById(gameContext.node, nodeId);
 
     cout << "切换到节点 " << nodeId << " (" << static_cast<int>(targetNode.type) << ")" << endl;
 }
 
 // 战斗结束回调
-void GameManager_OnBattleEnd(GameContext &gameContext, bool playerWin, int nextNodeId) {
+void GameManager::GameManager_OnBattleEnd(GameContext &gameContext, bool playerWin, int nextNodeId) {
+   
     if (playerWin) {
         cout << "战斗胜利！" << endl;
 
         // TODO: 生成奖励
 
         // 切换到下一个节点
+        
         GameManager_ChangeScene(gameContext, nextNodeId);
     } else {
         cout << "战斗失败..." << endl;
