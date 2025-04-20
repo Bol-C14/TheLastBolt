@@ -1,0 +1,12 @@
+{
+    "VICTORY": [
+      { "type": "CARD",       "value": 2, "description": "获得防御卡" },
+      { "type": "HEAL",       "value": 5, "description": "恢复5点生命" }
+    ],
+    "BOSS_DEFEAT": [
+      { "type": "SKILLPOINT","value": 1, "description": "获得1点技能点" }
+    ],
+    "FAILURE": [
+      { "type": "HEAL",       "value": 10,"description": "失败补给：恢复10点生命" }
+    ]
+}
