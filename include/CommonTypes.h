@@ -48,6 +48,14 @@ struct ChoiceOption {
     int nextNodeId;     // 选择后跳转的节点ID
 };
 
+// 地图关卡信息
+struct MapStage {
+    int               stageId;       // 关卡ID
+    std::string       name;          // 关卡名称
+    bool              isBoss;        // 是否Boss关卡
+    int               nextStageId;   // 下一个关卡Id
+};
+
 // 剧情/流程节点
 struct Node {
     int               id;              // 节点唯一标识
@@ -92,13 +100,6 @@ struct Enemy {
     std::vector<EnemyAction> nextActions; // 下一回合可能动作
 };
 
-// 地图关卡信息
-struct MapStage {
-    int               stageId;       // 关卡ID
-    std::string       name;          // 关卡名称
-    bool              isBoss;        // 是否Boss关卡
-    int               nextStageId;   // 下一个关卡Id
-};
 
 // 奖励选项
 enum class RewardType {
