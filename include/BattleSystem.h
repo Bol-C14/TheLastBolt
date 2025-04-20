@@ -96,5 +96,5 @@ void BattleSystem_UpdataData(BattleViewState &view,BattleState battle);
  * 生成真随机数
  * TODO:实现随机抽牌以及随机实现玩家先出牌还是boss先出牌
  */
-int true_random(){};
+int true_random();
 #endif // BATTLESYSTEM_H
