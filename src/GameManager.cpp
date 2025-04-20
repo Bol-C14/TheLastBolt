@@ -110,12 +110,16 @@ void GameManager::GameInterface(ctx){
         cin>>choice;
         switch(choice){
             case 1://三岔路
+            Three_Roads(ctx);
                 break;
             case 2://查看卡组
+            View_Cards_Deck(ctx);
                 break;
             case 3://玩家数值
+            View_Player_Values(ctx);
                 break;
             case 4://查看存档
+            void View_and_SaveArchive();
                 break;
             case 5://返回主菜单
                 break;
@@ -125,14 +129,14 @@ void GameManager::GameInterface(ctx){
     }while(choice != 5);
     }
 }
-//三岔路部分执行
-
-//查看卡组部分执行
-
-//玩家数值部分执行
-
-//查看存档部分执行
-
+//三岔路部分实现
+void Three_Roads(GameContext &ctx);
+//查看卡组部分实现
+void View_Cards_Deck(GameContext &ctx);
+//玩家数值部分实现
+void View_Player_Values(GameContext &ctx);
+//查看存档部分实现
+void View_and_SaveArchive();
 //查看存档部分
 void GameManager::ViewArchive() {
 
