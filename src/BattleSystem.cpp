@@ -13,7 +13,7 @@ BattleSystem::~BattleSystem(){}
 bool BattleSystem::BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const PlayerState& player,const CardSystem& cardSystem) {
     std::cout << "开始战斗，敌人ID: " << enemy.id << std::endl;
 
-bool BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const PlayerState& player,const CardSystem& cardSystem) {
+bool  BattleSystem::BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const PlayerState& player,const CardSystem& cardSystem) {
     std::cout << "开始战斗，敌人ID: " << enemy.id << std::endl;
 
     // 初始化战斗状态
@@ -155,7 +155,7 @@ void BattleSystem::BattleSystem_PlayerAction(BattleState& battle) {
 }
 
 // 结算回合
-void BattleSystem_NextTurn(BattleState& battle) {
+void  BattleSystem::BattleSystem_NextTurn(BattleState& battle) {
     // 回合数+1
     battle.currentTurn++;
 
@@ -184,13 +184,6 @@ void BattleSystem_NextTurn(BattleState& battle) {
     std::cout << "回合 " << battle.currentTurn << " 开始，能量: " << battle.energy << std::endl;
 }
 
-// 生成 1~10 的真随机数
-int true_random() {
-    static std::random_device rd;  // 硬件熵源（真随机种子）
-    static std::mt19937 gen(rd()); // 梅森旋转算法引擎
-    static std::uniform_int_distribution<int> dis(1, 5); // 假设现在有五张牌可以抽
-    return dis(gen);
-}
 
 // 生成真随机数
 int true_random() {
