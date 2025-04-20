@@ -1,132 +1,189 @@
-#include "../include/UI.h"
+#include "UI.h"
+#include <windows.h>
+#include <conio.h>
+#include <algorithm>
 #include <iostream>
-#include <limits>
+#include <string>
+
+using namespace std;
+
+// 修改后的控制台颜色常量（避免宏冲突）
+const WORD CON_COLOR_DEFAULT = 0x07;    // 白字黑底
+const WORD CON_COLOR_TITLE = 0x0E;      // 黄字黑底
+const WORD CON_COLOR_HIGHLIGHT = 0x0B;  // Light cyan text
+const WORD CON_COLOR_WARNING = 0x0C;    // 红字黑底
+const WORD CON_COLOR_INFO = 0x0A;       // 绿字黑底
+
+void MySetCursorPos(int x, int y) {
+    COORD coord = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void SetConsoleColor(WORD color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+void ClearScreen() {
+    system("cls");
+}
 
 namespace ConsoleUI {
 
-    // 显示剧情对话
-    void ShowDialogue(const std::string &text, const std::string &optionalInfo) {
-        std::cout << "\n================================================\n";
-        if (!optionalInfo.empty()) {
-            std::cout << "[" << optionalInfo << "]\n";
-        }
-        std::cout << text << "\n";
-        std::cout << "================================================\n";
-    }
+void DrawTextBox(int x, int y, int width, const string& text, WORD color = CON_COLOR_DEFAULT) {
+    MySetCursorPos(x, y);
+    SetConsoleColor(color);
+    cout << "\xDA" << string(width - 2, '\xC4') << "\xBF";
     
-    // 等待用户输入继续
-    std::string WaitForContinue() {
-        std::cout << "\n按回车键继续...";
-        
-        std::string input;
-        std::getline(std::cin, input);
-        return input;
-    }
+    MySetCursorPos(x, y + 1);
+    cout << "\xB3" << string(width - 2, ' ') << "\xB3";
     
-    // 显示分支选项，返回选项索引
-    int ShowChoice(const std::vector<std::string> &options) {
-        if (options.empty()) {
-            std::cout << "错误：没有可选选项\n";
-            return -1;
-        }
+    MySetCursorPos(x + 1, y + 1);
+    cout << text;
+    
+    MySetCursorPos(x, y + 2);
+    cout << "\xC0" << string(width - 2, '\xC4') << "\xD9";
+    SetConsoleColor(CON_COLOR_DEFAULT);
+}
+
+void ShowDialogue(const string& text, const string& optionalInfo) {
+    ClearScreen();
+    MySetCursorPos(2, 2);
+    SetConsoleColor(CON_COLOR_TITLE);
+    cout << "=== 剧情对话 ===";
+    
+    DrawTextBox(2, 4, 70, text);
+    
+    if (!optionalInfo.empty()) {
+        MySetCursorPos(2, 8);
+        SetConsoleColor(CON_COLOR_INFO);
+        cout << "[提示] " << optionalInfo;
+    }
+}
+
+string WaitForContinue() {
+    MySetCursorPos(2, 15);
+    SetConsoleColor(CON_COLOR_INFO);
+    cout << "按回车键继续...";
+    string dummy;
+    getline(cin, dummy);
+    return dummy;
+}
+
+int ShowChoice(const vector<string>& options) {
+    int selected = 0;
+    while (true) {
+        MySetCursorPos(2, 10);
+        SetConsoleColor(CON_COLOR_TITLE);
+        cout << "请选择：";
         
-        std::cout << "\n请选择一个选项：\n";
-        for (size_t i = 0; i < options.size(); i++) {
-            std::cout << i + 1 << ". " << options[i] << "\n";
-        }
-        
-        int choice = -1;
-        while (true) {
-            std::cout << "输入选项编号 (1-" << options.size() << "): ";
-            if (std::cin >> choice && choice >= 1 && choice <= static_cast<int>(options.size())) {
-                // 清除输入缓冲区
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                return choice - 1; // 转为0-based索引
+        for (size_t i = 0; i < options.size(); ++i) {
+            MySetCursorPos(4, 12 + static_cast<int>(i));
+            if (i == selected) {
+                SetConsoleColor(CON_COLOR_HIGHLIGHT);
+                cout << "> " << options[i];
             } else {
-                std::cout << "无效输入，请重试。\n";
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            }
-        }
-    }
-    
-    // 显示战斗状态视图
-    void ShowBattleState(const BattleViewState &state) {
-        std::cout << "\n==================== 战斗 ====================\n";
-        // 敌人部分
-        std::cout << "敌人: " << state.enemyName << "\n";
-        std::cout << "HP: " << state.enemyHP << "\n";
-        std::cout << "意图: " << state.enemyIntent << "\n";
-        // 玩家部分
-        std::cout << "\n玩家: HP " << state.playerHP << "/" << state.playerMaxHP
-                  << " | 能量 " << state.energy << "\n";
-        // 手牌
-        std::cout << "\n手牌:\n";
-        for (size_t i = 0; i < state.handCards.size(); ++i) {
-            std::cout << i + 1 << ". " << state.handCards[i] << "\n";
-        }
-        std::cout << "==============================================\n";
-    }
-    
-    // 获取玩家出牌选择
-    int GetCardChoice(int handSize) {
-        if (handSize <= 0) {
-            std::cout << "没有可用的卡牌。\n";
-            return -1;
-        }
-        
-        int choice = -1;
-        std::cout << "选择要使用的卡牌 (1-" << handSize << ")，或输入 0 结束回合: ";
-        if (std::cin >> choice && choice >= 0 && choice <= handSize) {
-            // 清除输入缓冲区
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            return choice == 0 ? -1 : choice - 1; // 转为0-based索引，0表示结束回合
-        } else {
-            std::cout << "无效输入，视为结束回合。\n";
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            return -1;
-        }
-    }
-    
-    // 显示关卡信息
-    void ShowStageInfo(const std::string &stageName, const std::string &description, const std::vector<std::string> &tips) {
-        std::cout << "\n==================== 关卡信息 ====================\n";
-        std::cout << "关卡: " << stageName << "\n\n";
-        std::cout << description << "\n\n";
-        
-        if (!tips.empty()) {
-            std::cout << "提示:\n";
-            for (const auto &tip : tips) {
-                std::cout << "- " << tip << "\n";
+                SetConsoleColor(CON_COLOR_DEFAULT);
+                cout << "  " << options[i];
             }
         }
         
-        std::cout << "====================================================\n";
-    }
-    
-    // 显示奖励选项
-    int ShowRewardChoice(const std::vector<std::string> &rewardOptions) {
-        std::cout << "\n==================== 奖励 ====================\n";
-        std::cout << "选择一个奖励:\n";
-        
-        for (size_t i = 0; i < rewardOptions.size(); i++) {
-            std::cout << i + 1 << ". " << rewardOptions[i] << "\n";
-        }
-        
-        int choice = -1;
-        while (true) {
-            std::cout << "输入选项编号 (1-" << rewardOptions.size() << "): ";
-            if (std::cin >> choice && choice >= 1 && choice <= static_cast<int>(rewardOptions.size())) {
-                // 清除输入缓冲区
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                return choice - 1; // 转为0-based索引
-            } else {
-                std::cout << "无效输入，请重试。\n";
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (_kbhit()) {
+            int key = _getch();
+            if (key == 0 || key == 0xE0) {
+                key = _getch();
+                if (key == 72 && selected > 0) selected--;
+                else if (key == 80 && selected < options.size()-1) selected++;
+            } else if (key == 13) {
+                return selected;
             }
         }
+        Sleep(50);
     }
+}
+
+void ShowBattleState(const BattleViewState& state) {
+    ClearScreen();
     
+<<<<<<< HEAD
 } // namespace ConsoleUI
+=======
+    // 敌人区域
+    MySetCursorPos(2, 1);
+    SetConsoleColor(CON_COLOR_WARNING);
+    cout << "敌人: " << state.enemyName << " HP: " << state.enemyHP;
+    MySetCursorPos(60, 1);
+    cout << "意图: " << state.enemyIntent;
+
+    // 玩家区域
+    MySetCursorPos(2, 5);
+    SetConsoleColor(CON_COLOR_INFO);
+    cout << "玩家 HP: " << state.playerHP << "/" << state.playerMaxHP;
+    MySetCursorPos(30, 5);
+    cout << "能量: " << state.energy;
+
+    // 手牌显示
+    MySetCursorPos(2, 8);
+    SetConsoleColor(CON_COLOR_TITLE);
+    cout << "手牌:";
+    const int CARD_WIDTH = 18;
+    for (size_t i = 0; i < state.handCards.size(); ++i) {
+        MySetCursorPos(5 + static_cast<int>(i)*CARD_WIDTH, 10);
+        SetConsoleColor(CON_COLOR_DEFAULT);
+        cout << "┌─卡牌" << i << "─┐";
+        MySetCursorPos(5 + static_cast<int>(i)*CARD_WIDTH, 11);
+        cout << "│ " << state.handCards[i] << string(CARD_WIDTH-6-state.handCards[i].length(), ' ') << " │";
+        MySetCursorPos(5 + static_cast<int>(i)*CARD_WIDTH, 12);
+        cout << "└" << string(CARD_WIDTH-2, '─') << "┘";
+    }
+}
+
+int GetCardChoice(int handSize) {
+    int selected = 0;
+    while (true) {
+        for (int i = 0; i < handSize; ++i) {
+            MySetCursorPos(5 + i*18, 10);
+            SetConsoleColor(i == selected ? CON_COLOR_HIGHLIGHT : CON_COLOR_DEFAULT);
+            cout << "┌─卡牌" << i << "─┐";
+        }
+        
+        if (_kbhit()) {
+            int key = _getch();
+            if (key == 0 || key == 0xE0) {
+                key = _getch();
+                if (key == 75 && selected > 0) selected--;
+                else if (key == 77 && selected < handSize-1) selected++;
+            } else if (key == 13) {
+                return selected;
+            }
+        }
+        Sleep(50);
+    }
+}
+
+void ShowStageInfo(const string& stageName, const string& description, const vector<string>& tips) {
+    ClearScreen();
+    MySetCursorPos(2, 2);
+    SetConsoleColor(CON_COLOR_TITLE);
+    cout << "=== 进入关卡 ===";
+    
+    DrawTextBox(2, 4, 70, "关卡名称: " + stageName);
+    
+    MySetCursorPos(2, 8);
+    SetConsoleColor(CON_COLOR_INFO);
+    cout << "关卡描述: " << description;
+    
+    MySetCursorPos(2, 12);
+    SetConsoleColor(CON_COLOR_WARNING);
+    cout << "提示：";
+    for (size_t i = 0; i < tips.size(); ++i) {
+        MySetCursorPos(4, 14 + static_cast<int>(i));
+        cout << "◆ " << tips[i];
+    }
+}
+
+int ShowRewardChoice(const vector<string>& rewardOptions) {
+    return ShowChoice(rewardOptions);
+}
+} // namespace ConsoleUI
+// the end of the file
+>>>>>>> origin/main
