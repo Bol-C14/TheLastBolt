@@ -19,7 +19,7 @@ public:
       功能：从 drawPile 中抽一张卡
       返回：抽到的 Card 对象
     */
-    Card DrawCard();
+    //Card DrawCard();
 
     /*
       功能：对指定卡牌执行效果
@@ -27,12 +27,12 @@ public:
             player — 玩家状态引用  
             enemy  — 敌人状态引用  
     */
-    void ApplyCardEffect(const Card &card, PlayerState &player, Enemy &enemy);
+    //void ApplyCardEffect(const Card &card, PlayerState &player, Enemy &enemy);
 
     /*
       功能：将弃牌堆 shuffle 回抽牌堆
     */
-    void ShuffleDeck();
+    //void ShuffleDeck();
 
     /*
       功能：获取当前完整卡组
@@ -42,12 +42,12 @@ public:
     /*
       功能：获取当前抽牌堆
     */
-    std::vector<Card> GetDrawPile() const;
+    //std::vector<Card> GetDrawPile() const;
 
     /*
       功能：获取当前弃牌堆
     */
-    std::vector<Card> GetDiscardPile() const;
+    //std::vector<Card> GetDiscardPile() const;
 
 private:
     std::vector<Card> deck;        // 全部卡牌
