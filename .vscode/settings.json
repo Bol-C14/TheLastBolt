@@ -47,5 +47,8 @@
         "unordered_map": "cpp",
         "variant": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ]
 }

@@ -3,6 +3,24 @@
 
 #include <string>
 #include <vector>
+#include <MapSystem.h>
+#include <StorySystem.h>
+#include <NodeManager.h>
+#include <CardSystem.h>
+#include <BattleSystem.h>
+#include <RewardSystem.h>
+#include <SaveManager.h>
+#include <iostream>
+
+// 游戏全局上下文
+struct GameContext {
+    PlayerState player;                // 玩家全局状态
+    StoryContext storyCtx;             // 剧情流程状态
+    NodeManagerContext nodeManagerCtx; // 节点管理器上下文
+    std::vector<Card> allCards;        // 所有卡牌数据
+    MapContext mapCtx;                 // 地图上下文
+    // TODO: 其他全局状态（如系统配置等）
+};
 
 // 节点类型，用于剧情、战斗、分支、奖励、地图展示等
 enum class NodeType {
@@ -48,6 +66,14 @@ struct ChoiceOption {
     int nextNodeId;     // 选择后跳转的节点ID
 };
 
+// 地图关卡信息
+struct MapStage {
+    int               stageId;       // 关卡ID
+    std::string       name;          // 关卡名称
+    bool              isBoss;        // 是否Boss关卡
+    int               nextStageId;   // 下一个关卡Id
+};
+
 // 剧情/流程节点
 struct Node {
     int               id;              // 节点唯一标识
@@ -63,10 +89,7 @@ struct Node {
     // 奖励节点专用
     std::vector<std::string> rewardOptions; // 奖励描述列表
     // 地图信息节点专用
-    std::string       stageName;
-    std::string       stageDescription;
-    std::vector<std::string> stageTips;
-    int               proceedToId;     // 地图展示后继续节点
+    MapStage          mapStage;             // 当前节点的地图关卡信息
 };
 
 // 卡牌基础数据
@@ -95,13 +118,6 @@ struct Enemy {
     std::vector<EnemyAction> nextActions; // 下一回合可能动作
 };
 
-// 地图关卡信息
-struct MapStage {
-    int               stageId;       // 关卡ID
-    std::string       name;          // 关卡名称
-    bool              isBoss;        // 是否Boss关卡
-    std::vector<int>  nextStageIds;  // 可选后续关卡
-};
 
 // 奖励选项
 enum class RewardType {
