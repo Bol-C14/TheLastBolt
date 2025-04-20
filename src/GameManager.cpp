@@ -2,7 +2,6 @@
 #include "../include/UI.h"
 #include <iostream>
 #include <cstdlib>
-#include<conio.h>
 using namespace std;
 
 //初始化玩家状态
@@ -27,11 +26,11 @@ bool GameManager::GameManager_Initialize() {
         return false;
     }
 
-
-    // 加载所有卡牌数据到gameContext的allCards中
-    CardSystem cardSys;
-    cardSys.LoadCards("data/cards.json");
-    gameContext.allCards = cardSys.GetDeck();
+    //初始化卡牌数据
+    if (!cardSystem.initCard(gameContext.allCards)) {
+        cout << "卡牌数据加载失败" << endl;
+        return false;
+    }
 
     // 初始化故事节点
     StorySystem_Initialize(gameContext.storygameContext);

@@ -117,6 +117,7 @@ private:
     GameContext gameContext; // 游戏上下文
     CardSystem cardSystem; // 卡牌系统 
     NodeManager nodeManager; // 节点管理器
+
     /*
     BattleSystem battleSystem; // 战斗系统
     RewardSystem rewardSystem; // 奖励系统
