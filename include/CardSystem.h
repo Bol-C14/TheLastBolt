@@ -1,19 +1,41 @@
 #ifndef CARDSYSTEM_H
 #define CARDSYSTEM_H
 
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <random>
 #include <string>
+#include <sstream>
 #include <vector>
+#include <unordered_map>
 #include "CommonTypes.h"
 
 class CardSystem {
 public:
-    CardSystem();
+    //CardSystem();
+    std::unordered_map<std::string, CardType> typeMap = {
+      {"ATTACK", CardType::ATTACK},
+      {"DEFENSE", CardType::DEFENSE},
+      {"SKILL", CardType::SKILL},
+      {"RESOURCE", CardType::RESOURCE},
+      {"CURSE", CardType::CURSE}
+      }; // 映射字符串到枚举
+
+    /*
+    * 功能：初始化卡牌系统
+    * 参数：GameContext中的vector<Card> cards
+    * 返回值：bool — 是否初始化成功
+    *
+    */
+    bool initCard(std::vector<Card>& cards);
+
 
     /*
       功能：从文件加载所有卡牌定义（cards.json）
       参数：filePath — 卡牌数据文件路径
     */
-    void LoadCards(const std::string &filePath);
+    bool LoadCards(const std::string &filePath);
 
     /*
       功能：从 drawPile 中抽一张卡
@@ -51,8 +73,8 @@ public:
 
 private:
     std::vector<Card> deck;        // 全部卡牌
-    std::vector<Card> drawPile;    // 正在抽取的牌堆
-    std::vector<Card> discardPile; // 已打出或弃置的卡
+    // std::vector<Card> drawPile;    // 正在抽取的牌堆
+    // std::vector<Card> discardPile; // 已打出或弃置的卡
 };
 
 #endif // CARDSYSTEM_H

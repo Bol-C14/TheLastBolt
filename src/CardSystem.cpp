@@ -1,8 +1,17 @@
 #include "CardSystem.h"
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-#include <random>
+
+    /*
+    * 功能：初始化卡牌系统
+    * 参数：GameContext中的vector<Card> cards
+    * 返回值：bool — 是否初始化成功
+    *
+    */
+    bool CardSystem::initCard(std::vector<Card>& cards){
+    if (!LoadCards("card.txt"))
+        return false;
+    cards = deck;
+    return true;
+}
 
 /**
  * @brief 构造 CardSystem 对象
@@ -13,10 +22,10 @@
  * 
  * 依赖：无
  */
-CardSystem::CardSystem() {
-    // TODO: 可在此初始化随机种子，例如 std::srand(time(nullptr));
-    std::srand(time(nullptr));
-}
+// CardSystem::CardSystem() {
+//     // TODO: 可在此初始化随机种子，例如 std::srand(time(nullptr));
+//     std::srand(time(nullptr));
+// }
 
 /**
  * @brief 从 JSON 文件加载所有卡牌定义
@@ -32,29 +41,29 @@ CardSystem::CardSystem() {
  * - 使用 nlohmann::json 或其他库解析文件
  * - 遍历 JSON 数组，将每个对象转换为 Card
  */
-void CardSystem::LoadCards(const std::string &filePath) {
+bool CardSystem::LoadCards(const std::string &filePath) {
     //std::cout << "[CardSystem] LoadCards from: " << filePath << "\n";
     // TODO: 从 filePath 打开文件并解析
     // 示例：
     // std::ifstream in(filePath);
     // json j; in >> j;
     // for (auto &item : j) { Card c; c.id = item["id"]; ... deck.push_back(c); }
-    ifstream in(filePath);//打开文件filePath，并解析
-    json j;//
-    in>>j;//解析json数据
-    // 遍历 JSON 数组，将每个对象转换为 Card
-    for(auto &item:j)
-    {
-        Card c;
-        c.id=item["id"];
-        c.name=item["name"];
-        c.type=item["type"];
-        c.cost=item["cost"];
-        c.value=item["value"];
-        c.description=item["description"];
-        c.upgraded=item["upgraded"];
-        deck.push_back(c);//将Card对象存入deck
-    }
+    // ifstream in(filePath);//打开文件filePath，并解析
+    // json j;//
+    // in>>j;//解析json数据
+    // // 遍历 JSON 数组，将每个对象转换为 Card
+    // for(auto &item:j)
+    // {
+    //     Card c;
+    //     c.id=item["id"];
+    //     c.name=item["name"];
+    //     c.type=item["type"];
+    //     c.cost=item["cost"];
+    //     c.value=item["value"];
+    //     c.description=item["description"];
+    //     c.upgraded=item["upgraded"];
+    //     deck.push_back(c);//将Card对象存入deck
+    // }
     // int            id;           // 卡牌ID
     // std::string    name;         // 卡牌名
     // CardType       type;         // 卡牌类型
@@ -65,6 +74,39 @@ void CardSystem::LoadCards(const std::string &filePath) {
 
     // TODO: 初始化抽牌堆 drawPile = deck;
     //drawPile = deck;
+    std::ifstream f(filePath);  // 使用 ifstream 打开文件
+if (!f) // 检查文件是否成功打开
+{
+    return false;
+}
+
+std::string line;
+while (std::getline(f, line)) {
+    std::istringstream lineStream(line);  // 用 istringstream 解析每一行
+    Card c;
+    std::string typeStr, upgradedStr;
+
+    // 解析每一行数据
+    if (!(lineStream >> c.id >> c.name >> typeStr >> c.cost >> c.value >> c.description >> upgradedStr))
+    {
+        return false;
+    }
+
+    // 将 CardType 字符串转换为枚举类型
+    auto it = typeMap.find(typeStr);
+    if (it != typeMap.end()) {
+        c.type = it->second;
+    }
+    else {
+        return false; // 如果类型无效，返回失败
+    }
+
+    // 将升级字段转换为布尔值
+    c.upgraded = (upgradedStr == "true");
+
+    deck.push_back(c);  // 将 Card 对象存入 deck
+}
+return true;  // 返回 true 表示加载成功
 }
 
 /**
