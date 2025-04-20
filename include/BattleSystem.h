@@ -1,20 +1,18 @@
-#ifndef BATTLESYSTEM_H
-#define BATTLESYSTEM_H
+#pragma once
+#include<string>
+#include<vector>
+using namespace std;
 
-#include "CommonTypes.h"
-#include <vector>
-#include <string>
-
-// 战斗状态数据结构
+// 战斗状态结构体
 struct BattleState {
     int playerHP;
     int playerMaxHP;
-    int energy;
+    int energy;      //每回合玩家最多出牌的数量
     int currentTurn; // 当前回合数
 
     std::vector<Card> hand;        // 手牌
     std::vector<Card> drawPile;    // 抽牌堆
-    std::vector<Card> discardPile; // 弃牌堆
+    //std::vector<Card> discardPile; // 弃牌堆
 
     Enemy currentEnemy;            // 当前敌人
     // TODO: 其他战斗相关状态
@@ -29,7 +27,7 @@ struct BattleState {
  * 
  * TODO: 实现战斗初始化逻辑
  */
-bool BattleSystem_StartBattle(BattleState &battle, const std::string &enemyId, const PlayerState &player);
+bool BattleSystem_StartBattle(BattleState &battle, const Enemy &enemyId, const PlayerState &player, const CardSystem& cardSystem);
 
 /**
  * 判断战斗是否结束
@@ -64,7 +62,7 @@ void BattleSystem_EnemyAction(BattleState &battle);
  * 
  * TODO: 实现玩家出牌逻辑
  */
-void BattleSystem_PlayerAction(BattleState &battle, int cardIndex);
+void BattleSystem_PlayerAction(BattleState &battle);
 
 /**
  * 结算回合
@@ -82,6 +80,10 @@ void BattleSystem_NextTurn(BattleState &battle);
  * 
  * TODO: 实现战斗主循环流程
  */
-void BattleSystem_ExecuteBattle(BattleState &battle, PlayerState &player);
-
+void BattleSystem_ExecuteBattle(BattleState &battle, PlayerState &player,const Enemy & enemyId, const CardSystem& cardSystem);
+/**
+ * 生成真随机数
+ * TODO:实现随机抽牌以及随机实现玩家先出牌还是boss先出牌
+ */
+int true_random();
 #endif // BATTLESYSTEM_H
