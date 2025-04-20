@@ -115,14 +115,13 @@ void GameOver();
 
 private:
     GameContext gameContext; // 游戏上下文
-    CardSystem cardSystem; // 卡牌系统 
+    CardSystem cardSystem; // 卡牌子系统 
     NodeManager nodeManager; // 节点管理器
+    StorySystem storySystem; // 剧情子系统系统
 
     /*
     BattleSystem battleSystem; // 战斗系统
     RewardSystem rewardSystem; // 奖励系统
-    StorySystem storySystem; // 剧情系统
-    
     SaveManager saveManager; // 存档管理器  
     */
 };

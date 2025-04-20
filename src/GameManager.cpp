@@ -33,7 +33,10 @@ bool GameManager::GameManager_Initialize() {
     }
 
     // 初始化故事节点
-    StorySystem_Initialize(gameContext.storygameContext);
+    if (!storySystem.initStory(gameContext.storyCtx) {
+        cout << "卡牌数据加载失败" << endl;
+        return false;
+    }
 
     // 初始化游戏角色初始状态，即给gameContext中的player赋予初始值，备注：等会定义一个函数将这些装起来
     Player_Initialize(gameContext);
