@@ -3,30 +3,62 @@
 #include <iostream>
 #include<map>
 using namespace std;
-// TODO: 根据实际情况添加JSON解析库头文件
-// 加载节点数据
-void initnode(NodeManagerContext& ctx)
+
+/*
+* 加载节点数据，成功返回true，失败返回false
+*/ 
+bool NodeManager::initNode(Node &node)
 {
-    int i =0;
-    while (1)
-    {
-        Node nodei;
-        if (i == 0)
-        {
-            nodei.nextNodeId = 1;
-        }
-        nodei.id = i;
-        MapSystem mapnd;
-        mapnd.initMap(nodei);
-        ctx.nodes.push_back(nodei);
-        i++;
-        if (i == 1000)
-        {
-            break;
-        }
+     /** 
+    * 先初始化NodeManger类的私有成员nodeContext
+    */
+    std::string filename = "node.txt";                //当前node存储的路径 
+    Node node; // 节点数据结构
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "无法打开Node节点存储文件 " << filename << " 进行读取！" << std::endl;
+        return false;
     }
+
+    /*
+    * 读取文件内容并解析
+    * 文件格式为：id nextNodeId
+    * 例如：
+    * 3 4
+    */
+    std::string line;
+    if (!std::getline(file, line)) {  // 如果读取失败，说明文件为空
+        //地图初始化
+        mapSystem.initMap(node);
+
+        //奖励机制初始化
+        //rewardSystem.initReward(node);
+
+        //战斗机制初始化
+        //battleSystem.initBattle(node);
+    }
+    else                              //文件不为空
+    {
+        //解析读取到的文件内容到Node结构体中
+        std::istringstream lineStream(line);
+        Node node;
+        // 按顺序解析字段
+        if (!(lineStream >> node.id >> node.nextNodeId)) {
+            std::cerr << "解析行失败: " << line << std::endl;
+            return false;
+        }
+
+        mapSystem.initMap(node); // 初始化地图数据
+        //initbattle(node); // 初始化战斗数据
+        //initreward(node); // 初始化奖励数据
+        //initstory(node); // 初始化剧情数据
+    }
+    
+    
+    file.close();
+    return true;
 }
-void initbattle(NodeManagerContext& ctx)
+void NodeManager::initbattle(NodeManagerContext& ctx)
 {
     Node nodei;
     nodei.type = NodeType::BATTLE;
@@ -82,18 +114,7 @@ ______________ ______________.____       _____    ______________________________
       )";
     ctx.nodes[3] = nodei;
 }
-bool NodeManager_LoadNodes(NodeManagerContext &ctx)
-{
-    
-    std::cout << "节点数据加载中..." << std::endl;
-    ctx.nodes.clear();
-    initnode(ctx);
-    initstory(ctx);
-    initbattle(ctx);
-    initreward(ctx);
-    std::cout << "成功加载节点数据" << endl;
-    return true;
-}
+
 // 根据ID查找节点
 const Node& NodeManager_GetNodeById(const NodeManagerContext &ctx, int id) {
     // TODO: 遍历nodes查找匹配ID的节点

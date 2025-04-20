@@ -23,7 +23,7 @@ public:
     功能：初始化全局数据结构体ctx
     参数：结构体：GameContext &ctx
     返回值：bool
-*/
+    */
     bool GameManager_Initialize();
 
     /*
@@ -31,15 +31,15 @@ public:
     功能：控制整个游戏流程，根据用户输入，跳转到不同界面，然后调用相应的执行部分
     参数：GameContext &ctx
     返回值：空
-*/
+    */
     void GameManager_Run();
 
-/*
+    /*
     负责人：木木
     功能：开始游戏按钮执行
     参数：GameContext &ctx
     返回值：空
-*/
+    */
 void GameStart(GameContext &ctx);
 
 /*
@@ -115,13 +115,13 @@ void GameOver();
 
 private:
     GameContext gameContext; // 游戏上下文
-    MapSystem mapSystem; // 地图系统
     CardSystem cardSystem; // 卡牌系统 
+    NodeManager nodeManager; // 节点管理器
     /*
     BattleSystem battleSystem; // 战斗系统
     RewardSystem rewardSystem; // 奖励系统
     StorySystem storySystem; // 剧情系统
-    NodeManager nodeManager; // 节点管理器
+    
     SaveManager saveManager; // 存档管理器  
     */
 };

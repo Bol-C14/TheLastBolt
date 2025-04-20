@@ -16,9 +16,8 @@
 struct GameContext {
     PlayerState player;                // 玩家全局状态
     StoryContext storyCtx;             // 剧情流程状态
-    NodeManagerContext nodeManagerCtx; // 节点管理器上下文
+    Node node;                         // 当前节点数据
     std::vector<Card> allCards;        // 所有卡牌数据
-    MapContext mapCtx;                 // 地图上下文
     // TODO: 其他全局状态（如系统配置等）
 };
 
