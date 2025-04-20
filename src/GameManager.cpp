@@ -1,7 +1,6 @@
 #include "../include/GameManager.h"
 #include "../include/UI.h"
 #include <iostream>
-
 // 初始化游戏
 bool GameManager_Initialize(GameContext &ctx) {
     std::cout << "游戏初始化中..." << std::endl;
@@ -9,7 +8,7 @@ bool GameManager_Initialize(GameContext &ctx) {
     // TODO: 初始化各子系统
     
     // 初始化节点管理器
-    if (!NodeManager_LoadNodes("data/nodes.json", ctx.nodeManagerCtx)) {
+    if (!NodeManager_LoadNodes("nodes.txt", ctx.nodeManagerCtx)) {
         std::cout << "节点数据加载失败" << std::endl;
         return false;
     }
@@ -29,7 +28,6 @@ bool GameManager_Initialize(GameContext &ctx) {
     StorySystem_Initialize(ctx.storyCtx);
     
     // TODO: 尝试加载存档，如果失败则初始化新游戏
-    
     // 初始化玩家状态（新游戏）
     ctx.player.hp = 100;
     ctx.player.maxHp = 100;
