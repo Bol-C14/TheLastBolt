@@ -24,7 +24,7 @@ public:
     参数：结构体：GameContext &ctx
     返回值：bool
 */
-    bool GameManager_Initialize(GameContext &ctx);
+    bool GameManager_Initialize();
 
     /*
     负责人：木木
@@ -32,7 +32,7 @@ public:
     参数：GameContext &ctx
     返回值：空
 */
-    void GameManager_Run(GameContext &ctx);
+    void GameManager_Run();
 
 /*
     负责人：木木
@@ -114,6 +114,7 @@ void GameOver();
     bool GameManager_HandleInput(GameContext &ctx);
 
 private:
+    GameContext gameContext; // 游戏上下文
     MapSystem mapSystem; // 地图系统
     CardSystem cardSystem; // 卡牌系统 
     /*

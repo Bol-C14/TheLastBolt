@@ -31,6 +31,16 @@ public:
      */ 
     bool initMap(struct Node &node);
 
+
+    /**
+     * 游戏地图数据初始化，将节点Node的地图部分数据初始完毕
+     * 将mapContext的数据初始化完毕
+     * 传入传出参数：Node
+     * 返回值：true——表示初始化成功
+     *        false——表示初始化失败
+     */
+    bool loadMap(MapContext &mapContext);               
+
     /**
      * 判断给定关卡ID是否为Boss关卡
      */
@@ -53,50 +63,8 @@ public:
     const MapStage* GetMapStageByStageId(int stageId);
 
 private:
-    MapContext  *mapContext;                                     //所有地图列表，在initMap()中初始化
+    MapContext  mapContext;                                     //所有地图列表，在initMap()中初始化
 };
 
 #endif // MAPSYSTEM_H#pragma once
-#include <iostream>
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <fstream>
 
-
-struct MapStage {
-    /* ��ͼ������� */
-    int stageId;                            //��ͼId��Ψһ��ʶ��ͼ
-
-    std::string name;                       //��ͼ����
-
-    bool isBoss;                            //�Ƿ���Boss
-
-    std::vector<int> nextStageIds;          //��һ�صĵ�ͼId;
-
-    /* ��������������� */
-};
-
-class MapSystem {
-public:
-    bool initMap();                                             //��ʼ����ͼ���ݣ���ҵ�һ������ʹ�ã���Ҫ��stages��ʼ��
-
-    bool LoadMap(const std::string& mapFile);                   //��json�浵�м��ص�ͼ,���سɹ�����true,private��������Ա��������Ӧ���ݣ����򷵻�false
-
-    std::vector<int> GetNextStageIds(int currentStageId);       //��ȡ��һ�صĵ�ͼ�б�������ֵ��һ��vector<int>�б������б��������3����ͼ
-
-    bool IsBossStage(int stageId);                              //�ж�stageId����ؿ��Ƿ�ΪBoss,�Ƿ���true,���Ƿ���false
-
-    MapStage GetMapStageByStageId(int stageId);                 //ͨ��stageId��ȡ��Ӧ�ĵ�ͼ���ݣ�����MapStage�ṹ��
-
-    void setSelectStages(std::vector<int>& selectStages);        //����˽�г�ԱselectStages��ֵ
-
-    std::vector<int> getSelectStages();                          //��ȡ˽�г�ԱselectStages������
-
-    void setCurrentStageId(int currentStageId);                  //����˽�г�Ա��ֵ
-
-private:
-    std::vector<int> selectStages;                               //��Ϸҳ����Ҫѡ���3���ؿ�
-
-    int currentStageId;                                         //���ѡ����Ǹ��ؿ�
-};
