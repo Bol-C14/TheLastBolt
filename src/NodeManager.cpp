@@ -11,6 +11,10 @@ void initnode(NodeManagerContext& ctx)
     while (1)
     {
         Node nodei;
+        if (i == 0)
+        {
+            nodei.nextNodeId = 1;
+        }
         nodei.id = i;
         ctx.nodes.push_back(nodei);
         i++;
@@ -24,19 +28,21 @@ void initbattle(NodeManagerContext& ctx)
 {
     Node nodei;
     nodei.type = NodeType::BATTLE;
+    nodei.nextNodeId = 5;
     ctx.nodes[4] = nodei;
+    
 }
 void initreward(NodeManagerContext& ctx)
 {
     Node nodei;
     nodei.type = NodeType::REWARD;
+    nodei.nextNodeId = 6;
     ctx.nodes[5] = nodei;
     
 }
 void initstory(NodeManagerContext& ctx)
 {
     Node nodei;
-    
     nodei.nextNodeId = 2;
     nodei.type = NodeType::DIALOGUE;
     nodei.text = "==== 欢迎，这是一个充满挑战的冒险游戏！=======";
@@ -64,6 +70,7 @@ ______________ ______________.____       _____    ______________________________
     ctx.nodes[2] = nodei;
    
     nodei.type = NodeType::STAGE_INFO;
+    nodei.nextNodeId = 4;
     nodei.text = R"(
       ========【战斗】========
       接下来你将开始第一场战斗
