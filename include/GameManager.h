@@ -1,6 +1,5 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
-
 #include "CommonTypes.h"
 #include "StorySystem.h"
 #include "NodeManager.h"
