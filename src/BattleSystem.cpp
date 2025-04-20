@@ -12,10 +12,6 @@ BattleSystem::~BattleSystem(){}
 // 初始化战斗
 bool BattleSystem::BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const PlayerState& player,const CardSystem& cardSystem) {
     std::cout << "开始战斗，敌人ID: " << enemy.id << std::endl;
-
-bool  BattleSystem::BattleSystem_StartBattle(BattleState& battle, const Enemy& enemy, const PlayerState& player,const CardSystem& cardSystem) {
-    std::cout << "开始战斗，敌人ID: " << enemy.id << std::endl;
-
     // 初始化战斗状态
     battle.playerHP = player.hp;
     battle.playerMaxHP = player.maxHp;
@@ -27,7 +23,7 @@ bool  BattleSystem::BattleSystem_StartBattle(BattleState& battle, const Enemy& e
    /* battle.hand.clear();
     battle.drawPile.clear();*/
     //获取可抽取的手牌
-    battle.drawPile = cardSystem.GetDrawPile();
+    battle.drawPile = cardSystem.GetDeck();
 
     // TODO: 初始化敌人数据
     // 假设有一个函数从ID加载敌人数据
