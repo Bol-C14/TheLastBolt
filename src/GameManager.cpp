@@ -22,16 +22,11 @@ bool GameManager::GameManager_Initialize() {
     // TODO: 初始化各子系统
 
     // 初始化节点管理器，把所有节点信息加载到gameContext的nodeManagergameContext中
-    if (!NodeManager_LoadNodes(gameContext.nodeManagerCtx)) {
+    if (!nodeManager.initNode(gameContext.node)) {
         cout << "节点数据加载失败" << endl;
         return false;
     }
 
-    // 加载当前关卡信息、所有地图关卡信息到gameContext的mapgameContext中
-    if (!mapSystem.loadMap(gameContext.mapCtx)) {
-        cout << "地图数据加载失败" << endl;
-        return false;
-    }
 
     // 加载所有卡牌数据到gameContext的allCards中
     CardSystem cardSys;
