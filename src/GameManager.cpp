@@ -56,15 +56,16 @@ void GameManager::GameManager_Run(GameContext &ctx) {
         //draw() 展示四个界面分别是：开始游戏、查看存档、开发人员、退出游戏
         //choice用来接收玩家输入的选择
         int choice;
+        cout<<"请输入你的选择：";
         cin >> choice;
         switch (choice) {
             case 1: //开始游戏
             GameStart(ctx);
                 break;
-            case 2: //查看存档
+            case 2: //查看存档TODO
             ViewArchive();
                 break;
-            case 3: //开发人员
+            case 3: //开发人员TODO
             Developer();
                 break;
             case 4: //退出游戏
@@ -72,6 +73,7 @@ void GameManager::GameManager_Run(GameContext &ctx) {
                 break;
             default:
                 cout << "输入错误，请重新输入！" << endl;
+                break;
         }
     }
 
@@ -87,9 +89,7 @@ void GameManager::GameStart(GameContext &ctx) {
         //游戏界面TODO
         ShowStageInfo(const string& stageName, const string& description, const vector<string>& tips);
         //游戏界面执行部分
-        void GameInterface(ctx){
-            //游戏界面UI界面
-        }
+        GameInterface(ctx);
     }
     //情况一：无存档
     //执行无存档时的函数
@@ -100,10 +100,38 @@ void GameManager::GameStart(GameContext &ctx) {
         ShowStageInfo(const string& stageName, const string& description, const vector<string>& tips);
         //游戏界面执行部分TODO
     }
-
-    
-
 }
+//游戏界面执行部分
+void GameManager::GameInterface(ctx){
+    //游戏界面UI界面分别选择  三岔路、查看卡组、玩家数值、查看存档、返回主菜单TODO
+    int choice;
+    do{
+        cout<<"请输入你的选择：";
+        cin>>choice;
+        switch(choice){
+            case 1://三岔路
+                break;
+            case 2://查看卡组
+                break;
+            case 3://玩家数值
+                break;
+            case 4://查看存档
+                break;
+            case 5://返回主菜单
+                break;
+            default:
+                cout<<"输入错误，请重新输入！"<<endl;
+                break;
+    }while(choice != 5);
+    }
+}
+//三岔路部分执行
+
+//查看卡组部分执行
+
+//玩家数值部分执行
+
+//查看存档部分执行
 
 //查看存档部分
 void GameManager::ViewArchive() {
