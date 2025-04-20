@@ -8,7 +8,7 @@ bool GameManager_Initialize(GameContext &ctx) {
     // TODO: 初始化各子系统
     
     // 初始化节点管理器
-    if (!NodeManager_LoadNodes("nodes.txt", ctx.nodeManagerCtx)) {
+    if (!NodeManager_LoadNodes(ctx.nodeManagerCtx)) {
         std::cout << "节点数据加载失败" << std::endl;
         return false;
     }
