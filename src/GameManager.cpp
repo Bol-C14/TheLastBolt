@@ -47,7 +47,11 @@ bool GameManager_Initialize(GameContext &ctx) {
 void GameManager_Run(GameContext &ctx) {
     cout << "游戏开始运行..." << endl;
     while (true) {
-        
+        //暂时用draw()来代替任何UI界面
+        //draw() 展示四个界面分别是：开始游戏、查看存档、开发人员、退出游戏
+        //choice用来接收玩家输入的选择
+        int choice;
+        cin>>choice;
     }
     
     cout << "游戏结束" << endl;
