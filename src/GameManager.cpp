@@ -1,7 +1,7 @@
 #include "../include/GameManager.h"
 #include "../include/UI.h"
 #include <iostream>
-
+using namespace std;
 //初始化玩家状态
 void Player_Initialize(GameContext &ctx){
     ctx.player.hp = 100;
@@ -13,19 +13,19 @@ void Player_Initialize(GameContext &ctx){
 }
 // 初始化游戏，加载基础数据到ctx
 bool GameManager_Initialize(GameContext &ctx) {
-    std::cout << "游戏初始化中..." << std::endl;
+    cout << "游戏初始化中..." << endl;
     
     // TODO: 初始化各子系统
     
     // 初始化节点管理器，把所有节点信息加载到ctx的nodeManagerCtx中
     if (!NodeManager_LoadNodes("data/nodes.json", ctx.nodeManagerCtx)) {
-        std::cout << "节点数据加载失败" << std::endl;
+        cout << "节点数据加载失败" << endl;
         return false;
     }
     
     // 加载当前关卡信息、所有地图关卡信息到ctx的mapCtx中
     if (!MapSystem_LoadMap("data/map.json", ctx.mapCtx)) {
-        std::cout << "地图数据加载失败" << std::endl;
+        cout << "地图数据加载失败" << endl;
         return false;
     }
     
@@ -38,17 +38,17 @@ bool GameManager_Initialize(GameContext &ctx) {
     StorySystem_Initialize(ctx.storyCtx);
     
     // TODO: 尝试加载存档，如果失败则初始化新游戏
-    
+    if()
     // 初始化游戏角色初始状态，即给ctx中的player赋予初始值，备注：等会定义一个函数将这些装起来
     Player_Initialize(ctx);
     
-    std::cout << "游戏初始化完成" << std::endl;
+    cout << "游戏初始化完成" << endl;
     return true;
 }
 
 // 游戏主循环
 void GameManager_Run(GameContext &ctx) {
-    std::cout << "游戏开始运行..." << std::endl;
+    cout << "游戏开始运行..." << endl;
     
     bool gameRunning = true;
     
@@ -86,7 +86,7 @@ void GameManager_Run(GameContext &ctx) {
                 break;
                 
             default:
-                std::cout << "未知节点类型" << std::endl;
+                cout << "未知节点类型" << endl;
                 break;
         }
         
@@ -94,7 +94,7 @@ void GameManager_Run(GameContext &ctx) {
         gameRunning = !GameManager_HandleInput(ctx);
     }
     
-    std::cout << "游戏结束" << std::endl;
+    cout << "游戏结束" << endl;
 }
 
 // 切换场景
@@ -105,20 +105,20 @@ void GameManager_ChangeScene(GameContext &ctx, int nodeId) {
     // 获取目标节点
     const Node &targetNode = NodeManager_GetNodeById(ctx.nodeManagerCtx, nodeId);
     
-    std::cout << "切换到节点 " << nodeId << " (" << static_cast<int>(targetNode.type) << ")" << std::endl;
+    cout << "切换到节点 " << nodeId << " (" << static_cast<int>(targetNode.type) << ")" << endl;
 }
 
 // 战斗结束回调
 void GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId) {
     if (playerWin) {
-        std::cout << "战斗胜利！" << std::endl;
+        cout << "战斗胜利！" << endl;
         
         // TODO: 生成奖励
         
         // 切换到下一个节点
         GameManager_ChangeScene(ctx, nextNodeId);
     } else {
-        std::cout << "战斗失败..." << std::endl;
+        cout << "战斗失败..." << endl;
         
         if (ctx.player.canRevive) {
             // 玩家可以重生
