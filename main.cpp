@@ -6,9 +6,8 @@ int main() {
 
     GameManager gameManager; // 游戏管理器
 
-    GameContext ctx; // 全局上下文
-    if (gameManager.GameManager_Initialize(ctx)) {
-        gameManager.GameManager_Run(ctx);
+    if (gameManager.GameManager_Initialize()) {
+        gameManager.GameManager_Run();
     } else {
         std::cout << "游戏初始化失败！" << std::endl;
     }

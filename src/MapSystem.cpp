@@ -3,16 +3,11 @@
 //构造函数
 MapSystem::MapSystem()
 {
-        //地图系统对象生成时，mapContext初始化为NULL
-        this-> mapContext = new MapContext();
-        this->mapContext = NULL;
 }                                                
 
 //析构函数
 MapSystem::~MapSystem()
 {
-        //地图系统销毁时，mapContext一并回收
-        delete mapContext;
 }                                              
 
 /**
@@ -62,7 +57,7 @@ bool MapSystem::initMap(struct Node &node)
         bool isFound = false; // 标记是否找到对应的关卡ID
         for (const auto& stage : stages) {
                 if (stage.stageId == nodeId) {
-                        this->mapContext->currentStageId = stage.stageId; // 设置当前关卡ID
+                        this->mapContext.currentStageId = stage.stageId; // 设置当前关卡ID
                         node.mapStage = stage; // 将当前节点的地图信息设置为对应节点的关卡信息
                         isFound = true; // 找到对应的关卡ID
                         break;
@@ -78,12 +73,22 @@ bool MapSystem::initMap(struct Node &node)
         return true;
 }                                              
 
+/*
+* 游戏地图数据初始化，将节点的地图部分数据初始完毕
+* 将mapContext的数据初始化完毕
+*/
+bool MapSystem::loadMap(MapContext &mapContext)
+{
+        mapContext = this->mapContext; // 将传入的mapContext指针赋值给成员变量
+        return true; // 返回true表示加载成功
+}
+
 /**
  * 获取下一关的地图id
  */
 int MapSystem::GetNextStageId(int currentStageId)
 {
-        for (const auto& stage : this->mapContext->stages) {
+        for (const auto& stage : this->mapContext.stages) {
                 if (stage.stageId == currentStageId) {
                         return stage.nextStageId; // 返回下一关的ID
                 }
@@ -96,7 +101,7 @@ int MapSystem::GetNextStageId(int currentStageId)
 */
 bool MapSystem::IsBossStage(int stageId)
 {
-        for (const auto& stage : this->mapContext->stages) {
+        for (const auto& stage : this->mapContext.stages) {
                 if (stage.stageId == stageId) {
                 return stage.isBoss; // 返回是否为Boss关卡
                 }
@@ -107,7 +112,7 @@ bool MapSystem::IsBossStage(int stageId)
 //通过stageId获取相应的地图数据，返回MapStage结构体
 const MapStage* MapSystem::GetMapStageByStageId(int stageId)
 {
-        for (const auto& stage : this->mapContext->stages) {
+        for (const auto& stage : this->mapContext.stages) {
                 if (stage.stageId == stageId) {
                         return &stage; // 返回对应的地图数据
                 }
