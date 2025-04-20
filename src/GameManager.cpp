@@ -3,7 +3,7 @@
 #include <iostream>
 
 // 初始化游戏
-bool GameManager_Initialize(GameContext &ctx) {
+bool GameManager::GameManager_Initialize(GameContext &ctx) {
     std::cout << "游戏初始化中..." << std::endl;
     
     // TODO: 初始化各子系统
@@ -43,7 +43,7 @@ bool GameManager_Initialize(GameContext &ctx) {
 }
 
 // 游戏主循环
-void GameManager_Run(GameContext &ctx) {
+void GameManager::GameManager_Run(GameContext &ctx) {
     std::cout << "游戏开始运行..." << std::endl;
     
     bool gameRunning = true;
@@ -94,7 +94,7 @@ void GameManager_Run(GameContext &ctx) {
 }
 
 // 切换场景
-void GameManager_ChangeScene(GameContext &ctx, int nodeId) {
+void GameManager::GameManager_ChangeScene(GameContext &ctx, int nodeId) {
     // 保存当前节点ID
     ctx.player.currentNodeId = nodeId;
     
@@ -105,7 +105,7 @@ void GameManager_ChangeScene(GameContext &ctx, int nodeId) {
 }
 
 // 战斗结束回调
-void GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId) {
+void GameManager::GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId) {
     if (playerWin) {
         std::cout << "战斗胜利！" << std::endl;
         
@@ -132,12 +132,12 @@ void GameManager_OnBattleEnd(GameContext &ctx, bool playerWin, int nextNodeId) {
 }
 
 // 保存游戏进度
-bool GameManager_SaveGame(const GameContext &ctx, const std::string &filePath) {
+bool GameManager::GameManager_SaveGame(const GameContext &ctx, const std::string &filePath) {
     return SaveManager_SaveGame(filePath, ctx.player, ctx.player.currentNodeId);
 }
 
 // 读取游戏进度
-bool GameManager_LoadGame(GameContext &ctx, const std::string &filePath) {
+bool GameManager::GameManager_LoadGame(GameContext &ctx, const std::string &filePath) {
     int nodeId;
     bool success = SaveManager_LoadGame(filePath, ctx.player, nodeId);
     
@@ -149,7 +149,7 @@ bool GameManager_LoadGame(GameContext &ctx, const std::string &filePath) {
 }
 
 // 处理用户输入
-bool GameManager_HandleInput(GameContext &ctx) {
+bool GameManager::GameManager_HandleInput(GameContext &ctx) {
     // TODO: 处理全局按键（如ESC菜单、保存等）
     
     // 示例：检测是否需要退出游戏
