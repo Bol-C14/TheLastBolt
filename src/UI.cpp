@@ -7,28 +7,53 @@
 
 using namespace std;
 
-// 修改后的控制台颜色常量（避免宏冲突）
-const WORD CON_COLOR_DEFAULT = 0x07;    // 白字黑底
-const WORD CON_COLOR_TITLE = 0x0E;      // 黄字黑底
-const WORD CON_COLOR_HIGHLIGHT = 0x0B;  // Light cyan text
-const WORD CON_COLOR_WARNING = 0x0C;    // 红字黑底
-const WORD CON_COLOR_INFO = 0x0A;       // 绿字黑底
+/**
+ * @brief 控制台颜色常量，用于不同的 UI 元素。
+ */
+const WORD CON_COLOR_DEFAULT = 0x07;    ///< 默认控制台颜色（白字黑底）。
+const WORD CON_COLOR_TITLE = 0x0E;      ///< 标题颜色（黄字黑底）。
+const WORD CON_COLOR_HIGHLIGHT = 0x0B;  ///< 高亮颜色（浅青色文字）。
+const WORD CON_COLOR_WARNING = 0x0C;    ///< 警告颜色（红字黑底）。
+const WORD CON_COLOR_INFO = 0x0A;       ///< 信息颜色（绿字黑底）。
 
+/**
+ * @brief 设置控制台光标位置。
+ * 
+ * @param x 光标的 x 坐标（列）。
+ * @param y 光标的 y 坐标（行）。
+ */
 void MySetCursorPos(int x, int y) {
     COORD coord = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+/**
+ * @brief 设置控制台文字颜色。
+ * 
+ * @param color 要设置的颜色属性（参见 CON_COLOR_* 常量）。
+ */
 void SetConsoleColor(WORD color) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
+/**
+ * @brief 清空控制台屏幕。
+ */
 void ClearScreen() {
     system("cls");
 }
 
 namespace ConsoleUI {
 
+/**
+ * @brief 在指定位置绘制一个带边框的文本框，并可选择颜色。
+ * 
+ * @param x 文本框左上角的 x 坐标（列）。
+ * @param y 文本框左上角的 y 坐标（行）。
+ * @param width 文本框的宽度。
+ * @param text 文本框内显示的文字。
+ * @param color 文本框边框和文字的颜色（默认为 CON_COLOR_DEFAULT）。
+ */
 void DrawTextBox(int x, int y, int width, const string& text, WORD color = CON_COLOR_DEFAULT) {
     MySetCursorPos(x, y);
     SetConsoleColor(color);
@@ -45,6 +70,12 @@ void DrawTextBox(int x, int y, int width, const string& text, WORD color = CON_C
     SetConsoleColor(CON_COLOR_DEFAULT);
 }
 
+/**
+ * @brief 显示一段对话，并可选择显示额外信息。
+ * 
+ * @param text 要显示的主要对话内容。
+ * @param optionalInfo 要显示的额外信息（可选）。
+ */
 void ShowDialogue(const string& text, const string& optionalInfo) {
     ClearScreen();
     MySetCursorPos(2, 2);
@@ -60,6 +91,11 @@ void ShowDialogue(const string& text, const string& optionalInfo) {
     }
 }
 
+/**
+ * @brief 等待用户按下回车键以继续。
+ * 
+ * @return 一个空字符串，表示继续。
+ */
 string WaitForContinue() {
     MySetCursorPos(2, 15);
     SetConsoleColor(CON_COLOR_INFO);
@@ -69,6 +105,12 @@ string WaitForContinue() {
     return dummy;
 }
 
+/**
+ * @brief 显示一个选项列表，并允许用户通过方向键选择。
+ * 
+ * @param options 一个字符串向量，表示可供选择的选项。
+ * @return 用户选择的选项索引。
+ */
 int ShowChoice(const vector<string>& options) {
     int selected = 0;
     while (true) {
@@ -101,6 +143,11 @@ int ShowChoice(const vector<string>& options) {
     }
 }
 
+/**
+ * @brief 显示当前战斗状态，包括敌人和玩家的信息。
+ * 
+ * @param state 包含当前战斗状态数据的 BattleViewState 对象。
+ */
 void ShowBattleState(const BattleViewState& state) {
     ClearScreen();
     
@@ -134,6 +181,12 @@ void ShowBattleState(const BattleViewState& state) {
     }
 }
 
+/**
+ * @brief 允许用户通过方向键选择手牌中的一张卡牌。
+ * 
+ * @param handSize 玩家手牌的数量。
+ * @return 用户选择的卡牌索引。
+ */
 int GetCardChoice(int handSize) {
     int selected = 0;
     while (true) {
@@ -157,6 +210,13 @@ int GetCardChoice(int handSize) {
     }
 }
 
+/**
+ * @brief 显示当前关卡的信息，包括名称、描述和提示。
+ * 
+ * @param stageName 关卡的名称。
+ * @param description 关卡的描述。
+ * @param tips 包含关卡提示的字符串向量。
+ */
 void ShowStageInfo(const string& stageName, const string& description, const vector<string>& tips) {
     ClearScreen();
     MySetCursorPos(2, 2);
@@ -178,9 +238,16 @@ void ShowStageInfo(const string& stageName, const string& description, const vec
     }
 }
 
+/**
+ * @brief 显示奖励选项列表，并允许用户选择一个。
+ * 
+ * @param rewardOptions 一个字符串向量，表示可供选择的奖励。
+ * @return 用户选择的奖励索引。
+ */
 int ShowRewardChoice(const vector<string>& rewardOptions) {
     return ShowChoice(rewardOptions);
 }
+
 } // namespace ConsoleUI
 // the end of the file#include "UI.h"
 #include <iostream>
