@@ -81,7 +81,7 @@ void StorySystem_ShowNode(const StoryNode &node) {
 
 
 // // 处理剧情节点
-// void StorySystem_HandleNode(const NodeManagerContext &nodeCtx, StoryContext &ctx, PlayerState &player) {
+// void StorySystem_HandleNode(const Node& node, StoryContext &ctx, PlayerState &player) {
 //     // 获取当前节点（从外部提供的函数获取）
 //     // 注：此处假设有一个外部的NodeManager_GetNodeById函数
 //     const Node &node = NodeManager_GetNodeById(nodeCtx, player.currentNodeId);
