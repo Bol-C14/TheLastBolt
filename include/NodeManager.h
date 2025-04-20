@@ -22,7 +22,7 @@ struct NodeManagerContext {
  * 
  * TODO: 实现JSON解析，填充nodes数组
  */
-bool NodeManager_LoadNodes(const std::string &filePath, NodeManagerContext &ctx);
+bool NodeManager_LoadNodes(NodeManagerContext &ctx);
 
 /**
  * 根据ID查找节点
