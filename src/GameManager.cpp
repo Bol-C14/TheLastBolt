@@ -37,11 +37,8 @@ bool GameManager_Initialize(GameContext &ctx) {
     // 初始化故事节点
     StorySystem_Initialize(ctx.storyCtx);
     
-    // TODO: 尝试加载存档，如果失败则初始化新游戏
-    if()
     // 初始化游戏角色初始状态，即给ctx中的player赋予初始值，备注：等会定义一个函数将这些装起来
     Player_Initialize(ctx);
-    
     cout << "游戏初始化完成" << endl;
     return true;
 }
@@ -49,49 +46,8 @@ bool GameManager_Initialize(GameContext &ctx) {
 // 游戏主循环
 void GameManager_Run(GameContext &ctx) {
     cout << "游戏开始运行..." << endl;
-    
-    bool gameRunning = true;
-    
-    while (gameRunning) {
-        // 获取当前节点
-        const Node &currentNode = NodeManager_GetNodeById(ctx.nodeManagerCtx, ctx.player.currentNodeId);
+    while (true) {
         
-        // 根据节点类型分发处理
-        switch (currentNode.type) {
-            case NodeType::DIALOGUE:
-                // 处理对话节点
-                StorySystem_HandleNode(ctx.nodeManagerCtx, ctx.storyCtx, ctx.player);
-                break;
-                
-            case NodeType::BATTLE:
-                // TODO: 处理战斗节点
-                // 初始化战斗
-                // BattleSystem_StartBattle(...)
-                break;
-                
-            case NodeType::CHOICE:
-                // 处理选择节点
-                StorySystem_HandleNode(ctx.nodeManagerCtx, ctx.storyCtx, ctx.player);
-                break;
-                
-            case NodeType::REWARD:
-                // TODO: 处理奖励节点
-                // 显示奖励选择
-                // 应用奖励
-                break;
-                
-            case NodeType::STAGE_INFO:
-                // 处理地图信息节点
-                StorySystem_HandleNode(ctx.nodeManagerCtx, ctx.storyCtx, ctx.player);
-                break;
-                
-            default:
-                cout << "未知节点类型" << endl;
-                break;
-        }
-        
-        // 处理用户输入（如保存、退出等）
-        gameRunning = !GameManager_HandleInput(ctx);
     }
     
     cout << "游戏结束" << endl;
