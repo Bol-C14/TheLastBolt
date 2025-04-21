@@ -1,7 +1,16 @@
 #include <iostream>
 #include "include/GameManager.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 int main() {
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8); // 设置控制台输出为 UTF-8
+    SetConsoleCP(CP_UTF8);       // 设置控制台输入为 UTF-8（可选）
+#endif
+
     // 创建游戏管理器实例
     GameManager gameManager;
 

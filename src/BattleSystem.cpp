@@ -1,11 +1,16 @@
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <thread>
+#include <chrono>
+#endif
+
 #include "../include/BattleSystem.h"
 #include "../include/UI.h"
 #include <iostream>
 #include <random>
 #include <ctime>
 #include <algorithm>
-#include <thread>
-#include <chrono>
 
 BattleSystem::BattleSystem() {
     // 初始化随机数生成器
@@ -161,8 +166,12 @@ void BattleSystem::nextTurn(UI& ui) { // Add UI& ui parameter
     enemyAction();
     
     // 等待3秒，让玩家有足够时间看到敌人的行动信息
+#ifdef _WIN32
+    Sleep(3000); // 单位是毫秒
+#else
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    
+#endif
+
     // 抽新手牌
     drawCards(5);
     
@@ -388,7 +397,11 @@ void BattleSystem::applyCardEffect(const Card& card) {
     }
     
     // 添加小延迟，让玩家看清效果
+    #ifdef _WIN32
+    Sleep(500);
+    #else
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    #endif
 }
 
 void BattleSystem::updateBattleUI(UI& ui) { // Add UI& ui parameter
