@@ -2,7 +2,7 @@
 
 ## 一、项目简介
 
-本项目是一款面向学生练习的 C++ 控制台卡牌肉鸽策略游戏框架。通过本项目，学生可以学习：
+本项目是一款面向 C++ 控制台卡牌肉鸽策略游戏框架
 - 使用结构体和 STL 实现简单数据模型
 - 模块化设计（前后端分离、Service & View 分层）
 - 基于函数接口完成子系统集成
@@ -47,7 +47,7 @@
   - **地图信息节点** -> `StorySystem_HandleNode` 或自定义显示
 - 学生需在 `GameManager_ChangeScene/OnBattleEnd` 中完成节点 ID 更新与复活逻辑。
 
-### 3. 子系统练习点
+### 3. 子系统
 - **NodeManager**：实现 `LoadNodes` 和 `GetNodeById`, 可使用 STL 容器和 JSON 库解析。
 - **StorySystem**：在 `StorySystem_HandleNode` 根据 `NodeType` 实现对话、分支和地图展示。
 - **MapSystem**：解析关卡数据，返回下一阶段列表；提示 `TODO` 完善解析逻辑。
@@ -78,5 +78,3 @@ make
 ./TheLastBolt
 ```
 
-## 五、游戏玩法与核心循环
-详见 `workflow.txt` 中的流程图与循环说明。
