@@ -5,9 +5,11 @@
 #include <random>
 
 //using json = nlohmann::json;
+Enemy::Enemy()
+    : stateMachine(new EnemyStateMachine(this)) {
+}
 
-
-EnemyState::EnemyState(Enemy* _enemy) : enemy(_enemy) {
+EnemyState::EnemyState(Enemy* _enemy) : enemy(_enemy), at{ ActionType::ATTACK, ActionType::DEFEND, ActionType::BUFF, ActionType::DEBUFF } {
     // 默认概率初始化（可以在派生类中被覆盖）
     prob[AttackProb] = 0.0f;
     prob[DefendProb] = 0.0f;
@@ -58,10 +60,10 @@ EnemyFearState::EnemyFearState(Enemy* _enemy) : EnemyState(_enemy) {
 
 
 // EnemyFearState::Enter 实现
-/*void EnemyFearState::Enter() {
+void EnemyFearState::Enter() {
     enemy->armor += 3;
     std::cout << "EnemyFearState Entered. Armor increased by 3." << std::endl; // 调试输出
-}*/
+}
 
 // EnemyStateMachine 构造函数实现
 EnemyStateMachine::EnemyStateMachine(Enemy* _enemy)
@@ -100,8 +102,6 @@ void EnemyStateMachine::UpdateState(const BattleState& battle) {
         this->ChangeState(this->fearState);
     }
 };
-
-// 从文件加载指定敌人数据
 bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, Enemy& enemy) {
     /*std::ifstream file(filePath);
     if (!file.is_open()) {
@@ -121,6 +121,7 @@ bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, 
             enemy.nextActions.push_back(ea);
             ea = { ActionType::DEBUFF,3,"恶心你" };
             enemy.nextActions.push_back(ea);
+            return true;
         }
         else if (enemyId == "goblin_boss") {
             enemy.id = enemyId;
@@ -133,13 +134,14 @@ bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, 
             enemy.nextActions.push_back(ea);
             ea = { ActionType::DEBUFF,3,"恐吓" };
             enemy.nextActions.push_back(ea);
+            return true;
         }
     }
     catch (const std::exception& e)
     {
         std::cerr << "解析敌人信息出错" << e.what() << '\n';
     }
-
+    return false;
     /*try {
         json j; file >> j;
         for (const auto &item : j) {
@@ -166,7 +168,6 @@ bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, 
     return false;*/
 }
 
-// 更新敌人行为，每回合调用
 EnemyAction EnemyAI_Update(Enemy& enemy, const BattleState& battle) {
     // TODO: 可以根据battle状态和enemy.hp调整AI策略
     // 当前简单随机选择一个预定义动作
@@ -198,4 +199,4 @@ EnemyAction EnemyAI_Update(Enemy& enemy, const BattleState& battle) {
         }
     }
 
-}   
+}

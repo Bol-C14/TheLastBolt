@@ -1,3 +1,4 @@
+#pragma once
 #ifndef COMMONTYPES_H
 #define COMMONTYPES_H
 
@@ -23,13 +24,13 @@ enum class CardType {
 };
 
 // 敌人行为类型
-enum class ActionType {
+/**enum class ActionType {
     ATTACK,    // 普通攻击
     DEFEND,    // 防御/护甲
     BUFF,      // 自身增益
     DEBUFF     // 给玩家施加负面
-};
-
+};*/
+enum class ActionType;
 // 玩家全局状态
 struct PlayerState {
     int hp;                 // 当前生命值
@@ -47,25 +48,6 @@ struct ChoiceOption {
     std::string text;   // 选项描述
     int nextNodeId;     // 选择后跳转的节点ID
 };
-
-// 剧情/流程节点
-struct Node {
-    int               id;              // 节点唯一标识
-    NodeType          type;            // 节点类型
-    std::string       text;            // 对话或描述文本
-    std::string       background;      // 背景信息（可选）
-    std::string       portrait;        // 角色立绘（可选）
-    int               nextNodeId;      // 单一跳转
-    std::vector<ChoiceOption> options; // 分支选项
-    // 战斗节点专用
-    std::string       enemyId;         // 敌人标识
-    int               afterBattleId;   // 战斗胜利后跳转
-    // 奖励节点专用
-    std::vector<std::string> rewardOptions; // 奖励描述列表
-    // 地图信息节点专用
-    MapStage          mapStage;             // 当前节点的地图关卡信息
-};
-
 // 卡牌基础数据
 struct Card {
     int            id;           // 卡牌ID
@@ -78,12 +60,12 @@ struct Card {
 };
 
 // 敌人行动预告
-struct EnemyAction {
+struct EnemyAction;
+/*struct EnemyAction {
     ActionType     type;   // 行为类型
     int            value;  // 数值（伤害/护盾等）
     std::string    intent; // 文本或图标提示
-};
-
+};*/
 
 class EnemyStateMachine;
 // 敌人基础数据与运行时状态
@@ -93,9 +75,8 @@ struct Enemy {
     int               hp;          // 当前生命值
     int               armor;       // 护甲值
     std::vector<EnemyAction> nextActions; // 下一回合可能动作
-    EnemyStateMachine *stateMachine; // 状态机指针
-    Enemy()
-        : stateMachine(new EnemyStateMachine(this)){}
+    EnemyStateMachine* stateMachine; // 状态机指针
+    Enemy();
 };
 
 // 地图关卡信息

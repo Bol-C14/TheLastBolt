@@ -7,7 +7,17 @@
 
 class Enemy;
 class BattleState;
-
+enum class ActionType {
+    ATTACK,    // 普通攻击
+    DEFEND,    // 防御/护甲
+    BUFF,      // 自身增益
+    DEBUFF     // 给玩家施加负面
+};
+struct EnemyAction {
+    ActionType     type;   // 行为类型
+    int            value;  // 数值（伤害/护盾等）
+    std::string    intent; // 文本或图标提示
+};
 enum Prob {
     AttackProb,
     DefendProb,
@@ -25,12 +35,7 @@ public:
     virtual void Exit();
     // 动作类型数组
     int prob[4];
-    ActionType at[4] = {
-        ActionType::ATTACK,   // 普通攻击
-        ActionType::DEFEND,   // 防御/护甲
-        ActionType::BUFF,     // 自身增益
-        ActionType::DEBUFF    // 减益
-    };
+    ActionType at[4];
 
     Enemy* enemy; // 指向所属敌人的指针
 };
@@ -95,6 +100,7 @@ bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, 
  * @param enemy 敌人结构体
  * @param battle 当前战斗状态
  */
+
 EnemyAction EnemyAI_Update(Enemy& enemy, const BattleState& battle);
 
 #endif // ENEMYAI_H
