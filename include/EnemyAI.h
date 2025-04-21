@@ -1,37 +1,107 @@
 #ifndef ENEMYAI_H
 #define ENEMYAI_H
 
-#include "CommonTypes.h" // 包含通用类型
-#include <vector>
+#include "CommonTypes.h"
+#include "BattleSystem.h"
 #include <string>
 
-// 敌人 AI 类
-class EnemyAI {
-public:
-    EnemyAI();
-    ~EnemyAI();
-
-    // 为敌人生成下一回合的行动计划
-    // enemy: 需要生成行动的敌人引用
-    // player: 当前玩家状态 (AI 可能需要参考玩家状态来做决策)
-    void generateNextActions(Enemy &enemy, const PlayerState &player);
-
-private:
-    // 根据敌人类型和当前状态选择行动模式
-    // enemy: 敌人引用
-    // player: 玩家状态引用
-    // 返回值: 包含一或多个行动的向量
-    std::vector<EnemyAction> chooseActionPattern(const Enemy &enemy, const PlayerState &player);
-
-    // 示例：简单的攻击模式
-    EnemyAction createAttackAction(int damage);
-
-    // 示例：简单的防御模式
-    EnemyAction createDefendAction(int armor);
-
-    // 示例：随机选择行动 (可以根据需要实现更复杂的逻辑)
-    EnemyAction chooseRandomAction(const Enemy &enemy);
+class Enemy;
+class BattleState;
+enum class ActionType {
+    ATTACK,    // 普通攻击
+    DEFEND,    // 防御/护甲
+    BUFF,      // 自身增益
+    DEBUFF     // 给玩家施加负面
 };
+struct EnemyAction {
+    ActionType     type;   // 行为类型
+    int            value;  // 数值（伤害/护盾等）
+    std::string    intent; // 文本或图标提示
+};
+enum Prob {
+    AttackProb,
+    DefendProb,
+    BuffProb,
+    DebuffProb,
+};
+
+// 基类：EnemyState
+class EnemyState {
+public:
+    EnemyState(Enemy* _enemy);
+
+    // 状态进入和退出的虚函数，子类可以重写
+    virtual void Enter();
+    virtual void Exit();
+    // 动作类型数组
+    int prob[4];
+    ActionType at[4];
+
+    Enemy* enemy; // 指向所属敌人的指针
+};
+
+// 派生状态类
+class EnemyBuffState : public EnemyState {
+public:
+    EnemyBuffState(Enemy* _enemy);
+};
+
+class EnemyAttackState : public EnemyState {
+public:
+    EnemyAttackState(Enemy* _enemy);
+};
+
+class EnemyAngryState : public EnemyState {
+public:
+    EnemyAngryState(Enemy* _enemy);
+};
+
+class EnemyFearState : public EnemyState {
+public:
+    EnemyFearState(Enemy* _enemy);
+
+protected:
+    void Enter() override;
+};
+// 状态机类
+class EnemyStateMachine {
+public:
+    // 构造函数
+    EnemyStateMachine(Enemy* _enemy);
+
+
+    // 改变状态
+    void ChangeState(EnemyState* nextState);
+
+    // 更新状态
+    virtual void UpdateState(const BattleState& battle);
+
+public:
+    Enemy* enemy; // 指向所属敌人的指针
+
+    EnemyBuffState *buffState;
+    EnemyAttackState *attackState;
+    EnemyAngryState *angryState;
+    EnemyFearState *fearState;
+
+    EnemyState* currentState; // 当前状态指针
+};
+/**
+ * 从JSON文件加载敌人数据
+ * @param filePath JSON文件路径（data/enemies.json）
+ * @param enemyId 敌人ID
+ * @param enemy 输出敌人数据结构
+ * @return 是否加载成功
+ */
+bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, Enemy& enemy);
+
+/**
+ * 更新敌人AI，生成下一回合行动列表
+ * @param enemy 敌人结构体
+ * @param battle 当前战斗状态
+ */
+
+EnemyAction EnemyAI_Update(Enemy& enemy, const BattleState& battle);
 
 #endif // ENEMYAI_H
 
