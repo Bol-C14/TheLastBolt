@@ -3,7 +3,14 @@
 
 #include "CommonTypes.h"
 #include <string>
-#include <vector>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#ifdef _WIN32
+    #include <direct.h>  // for _mkdir
+    #define mkdir(path, mode) _mkdir(path)
+#endif
+
 
 // 存档管理器类
 class SaveManager {

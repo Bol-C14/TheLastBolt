@@ -1,12 +1,26 @@
 cmake_minimum_required(VERSION 3.10)
-project(TheLastBolt)  # ÏîÄ¿Ãû³ÆĞèÓëÄ¿Â¼Ò»ÖÂ
+project(TheLastBolt)
 
-# Ìí¼Ó¿ÉÖ´ĞĞÎÄ¼ş£¬°üº¬ËùÓĞÔ´ÎÄ¼ş£¨º¬ main.cpp ºÍ src ÏÂµÄ .cpp£©
-file(GLOB SOURCES "src/*.cpp" "main.cpp")  # ×Ô¶¯Æ¥Åä src Ä¿Â¼ÏÂµÄ .cpp
+set(CMAKE_CXX_STANDARD 17)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG v3.11.3
+)
+
+FetchContent_MakeAvailable(json)
+
+# æŸ¥æ‰¾æºæ–‡ä»¶
+file(GLOB SOURCES "src/*.cpp" "main.cpp")
+
+# åˆ›å»ºå¯æ‰§è¡Œæ–‡ä»¶
 add_executable(TheLastBolt ${SOURCES})
 
-# °üº¬Í·ÎÄ¼şÄ¿Â¼
-target_include_directories(TheLastBolt PRIVATE include)
-
-# ÉèÖÃ C++ ±ê×¼£¨¿ÉÑ¡£¬Èô´úÂëĞèÒª£©
-set(CMAKE_CXX_STANDARD 17)
+# æ·»åŠ  include è·¯å¾„
+target_include_directories(TheLastBolt PRIVATE
+  ${json_SOURCE_DIR}/single_include
+  ${CMAKE_SOURCE_DIR}/include
+)
