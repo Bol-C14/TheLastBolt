@@ -1,0 +1,5 @@
+/workspaces/TheLastBolt/build/CMakeFiles/rebuild_cache.dir
+/workspaces/TheLastBolt/build/CMakeFiles/edit_cache.dir
+/workspaces/TheLastBolt/build/CMakeFiles/TheLastBolt.dir
+/workspaces/TheLastBolt/build/_deps/json-build/CMakeFiles/edit_cache.dir
+/workspaces/TheLastBolt/build/_deps/json-build/CMakeFiles/rebuild_cache.dir
