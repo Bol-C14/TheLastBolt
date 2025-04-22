@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/my_code/TheLastBolt/build/cmake_install.cmake",
+		"D:/my_code/TheLastBolt/build/_deps/json-build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

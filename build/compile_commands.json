@@ -1,0 +1,74 @@
+[
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\main.cpp.obj -c D:\\my_code\\TheLastBolt\\main.cpp",
+  "file": "D:/my_code/TheLastBolt/main.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/main.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\BattleSystem.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\BattleSystem.cpp",
+  "file": "D:/my_code/TheLastBolt/src/BattleSystem.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/BattleSystem.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\CardSystem.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\CardSystem.cpp",
+  "file": "D:/my_code/TheLastBolt/src/CardSystem.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/CardSystem.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\CommonTypes.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\CommonTypes.cpp",
+  "file": "D:/my_code/TheLastBolt/src/CommonTypes.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/CommonTypes.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\EnemyAI.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\EnemyAI.cpp",
+  "file": "D:/my_code/TheLastBolt/src/EnemyAI.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/EnemyAI.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\GameManager.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\GameManager.cpp",
+  "file": "D:/my_code/TheLastBolt/src/GameManager.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/GameManager.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\MapSystem.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\MapSystem.cpp",
+  "file": "D:/my_code/TheLastBolt/src/MapSystem.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/MapSystem.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\NodeManager.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\NodeManager.cpp",
+  "file": "D:/my_code/TheLastBolt/src/NodeManager.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/NodeManager.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\RewardSystem.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\RewardSystem.cpp",
+  "file": "D:/my_code/TheLastBolt/src/RewardSystem.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/RewardSystem.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\SaveManager.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\SaveManager.cpp",
+  "file": "D:/my_code/TheLastBolt/src/SaveManager.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/SaveManager.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\StorySystem.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\StorySystem.cpp",
+  "file": "D:/my_code/TheLastBolt/src/StorySystem.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/StorySystem.cpp.obj"
+},
+{
+  "directory": "D:/my_code/TheLastBolt/build",
+  "command": "D:\\mingw64\\bin\\g++.exe  @CMakeFiles/TheLastBolt.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\TheLastBolt.dir\\src\\UI.cpp.obj -c D:\\my_code\\TheLastBolt\\src\\UI.cpp",
+  "file": "D:/my_code/TheLastBolt/src/UI.cpp",
+  "output": "CMakeFiles/TheLastBolt.dir/src/UI.cpp.obj"
+}
+]
