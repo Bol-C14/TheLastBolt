@@ -5,7 +5,7 @@
 #include "BattleSystem.h"
 #include <string>
 
-class Enemy;
+/*class Enemy;
 class BattleState;
 enum class ActionType {
     ATTACK,    // 普通攻击

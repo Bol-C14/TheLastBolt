@@ -9,20 +9,7 @@
 // 前向声明 UI 类
 class UI;
 
-// 战斗状态结构体
-struct BattleState {
-    int playerHP;
-    int playerMaxHP;
-    int energy;      // 每回合玩家最多出牌的数量
-    int currentTurn; // 当前回合数
 
-    std::vector<Card> hand;        // 手牌
-    std::vector<Card> drawPile;    // 抽牌堆
-    std::vector<Card> discardPile; // 弃牌堆
-
-    Enemy currentEnemy;            // 当前敌人
-    // TODO: 其他战斗相关状态
-};
 
 // 战斗系统类
 class BattleSystem {
