@@ -1,11 +1,17 @@
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <thread>
+#include <chrono>
+#endif
+
 #include "../include/BattleSystem.h"
 #include "../include/UI.h"
+#include"../include/EnemyAI.h"
 #include <iostream>
 #include <random>
 #include <ctime>
 #include <algorithm>
-#include <thread>
-#include <chrono>
 
 BattleSystem::BattleSystem() {
     // 初始化随机数生成器
@@ -66,13 +72,14 @@ bool BattleSystem::playerWon() const {
 }
 
 void BattleSystem::enemyAction() {
-    if (battleState.currentEnemy.nextActions.empty()) {
+    /*if (battleState.currentEnemy.nextActions.empty()) {
         // 如果没有预定的动作，生成一个随机动作
         generateRandomEnemyAction();
-    }
+    }*/
     
     // 执行敌人的动作
-    EnemyAction action = battleState.currentEnemy.nextActions[0];
+    //EnemyAction action = battleState.currentEnemy.nextActions[0];
+    EnemyAction action = EnemyAI_Update(battleState.currentEnemy, battleState);
     std::cout << "敌人 " << battleState.currentEnemy.id << " 使用了 " << action.intent << "!" << std::endl;
     
     switch (action.type) {
@@ -108,10 +115,10 @@ void BattleSystem::enemyAction() {
     }
     
     // 移除已执行的动作
-    battleState.currentEnemy.nextActions.erase(battleState.currentEnemy.nextActions.begin());
+    //battleState.currentEnemy.nextActions.erase(battleState.currentEnemy.nextActions.begin());
     
     // 生成新的动作计划
-    generateRandomEnemyAction();
+    //generateRandomEnemyAction();
 }
 
 void BattleSystem::playerAction(int cardIndex, UI& ui) { // Add UI& ui parameter
@@ -161,8 +168,12 @@ void BattleSystem::nextTurn(UI& ui) { // Add UI& ui parameter
     enemyAction();
     
     // 等待3秒，让玩家有足够时间看到敌人的行动信息
+#ifdef _WIN32
+    Sleep(3000); // 单位是毫秒
+#else
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    
+#endif
+
     // 抽新手牌
     drawCards(5);
     
@@ -255,7 +266,24 @@ void BattleSystem::initializeEnemy(const std::string& enemyId) {
     
     battleState.currentEnemy.id = enemyId;
     battleState.currentEnemy.armor = 0;
-    
+    EnemyAction att, def, buff, debuff;
+    att.type = ActionType::ATTACK;  
+    att.value = 5;
+    att.intent = "攻击";
+    def.type = ActionType::DEFEND;
+    def.value = 3;
+    def.intent = "防御";
+    buff.type = ActionType::BUFF;
+    buff.value = 2;
+    buff.intent = "增益";
+    debuff.type = ActionType::DEBUFF;
+    debuff.value = 1;
+    debuff.intent = "削弱";
+    battleState.currentEnemy.nextActions.push_back(att);
+    battleState.currentEnemy.nextActions.push_back(def);
+    battleState.currentEnemy.nextActions.push_back(buff);
+    battleState.currentEnemy.nextActions.push_back(debuff);
+
     if (enemyId == "possessed_villager") {
         battleState.currentEnemy.hp = 20;
         // 设置初始行动
@@ -388,7 +416,11 @@ void BattleSystem::applyCardEffect(const Card& card) {
     }
     
     // 添加小延迟，让玩家看清效果
+    #ifdef _WIN32
+    Sleep(500);
+    #else
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    #endif
 }
 
 void BattleSystem::updateBattleUI(UI& ui) { // Add UI& ui parameter

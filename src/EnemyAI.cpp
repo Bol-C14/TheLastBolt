@@ -1,11 +1,11 @@
-#include "../include/EnemyAI.h"
 //#include <nlohmann/json.hpp>
+#include"../include/EnemyAI.h"
 #include <fstream>
 #include <iostream>
 #include <random>
 
 //using json = nlohmann::json;
-Enemy::Enemy()
+/*Enemy::Enemy()
     : stateMachine(new EnemyStateMachine(this)) {
 }
 
@@ -101,7 +101,7 @@ void EnemyStateMachine::UpdateState(const BattleState& battle) {
     else {
         this->ChangeState(this->fearState);
     }
-};
+};*/
 bool EnemyAI_LoadEnemy(const std::string& filePath, const std::string& enemyId, Enemy& enemy) {
     /*std::ifstream file(filePath);
     if (!file.is_open()) {
