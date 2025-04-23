@@ -1,5 +1,5 @@
 #include "../include/EnemyAI.h"
-#include <nlohmann/json.hpp>
+#include "../lib/nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
 #include <random>

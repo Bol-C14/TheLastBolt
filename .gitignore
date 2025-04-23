@@ -46,4 +46,5 @@
 *.tmp
 main
 .vscode/tasks.json
+.vscode/
 build-win/
