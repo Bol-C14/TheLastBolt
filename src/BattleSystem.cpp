@@ -158,8 +158,8 @@ void BattleSystem::nextTurn(UI& ui) { // Add UI& ui parameter
     battleState.currentTurn++;
     
     // 将手牌放入弃牌堆
-    battleState.discardPile.insert(battleState.discardPile.end(), battleState.hand.begin(), battleState.hand.end());
-    battleState.hand.clear();
+    //battleState.discardPile.insert(battleState.discardPile.end(), battleState.hand.begin(), battleState.hand.end());
+    //battleState.hand.clear();
     
     // 重置能量
     battleState.energy = 3; // 假设基础能量为3
@@ -175,7 +175,7 @@ void BattleSystem::nextTurn(UI& ui) { // Add UI& ui parameter
 #endif
 
     // 抽新手牌
-    drawCards(5);
+    //drawCards(5);
     
     // 更新战斗UI
     updateBattleUI(ui); // Pass the UI reference
@@ -223,6 +223,7 @@ bool BattleSystem::executeBattle(PlayerState& player, const std::string& enemyId
 }
 
 void BattleSystem::drawCards(int count) {
+    std::cout<<"drawCards"<<std::endl;
     for (int i = 0; i < count; i++) {
         if (battleState.drawPile.empty()) {
             // 如果抽牌堆为空，将弃牌堆洗牌并成为新的抽牌堆
@@ -245,6 +246,7 @@ void BattleSystem::drawCards(int count) {
         
         if (!battleState.drawPile.empty()) {
             // 抽一张牌
+            std::cout <<"抽一张牌"<<std::endl;
             battleState.hand.push_back(battleState.drawPile.back());
             battleState.drawPile.pop_back();
         }
@@ -390,8 +392,12 @@ void BattleSystem::applyCardEffect(const Card& card) {
             
         case CardType::SKILL:
             // 技能卡牌：根据卡牌描述产生特殊效果
-            if (card.description.find("抽牌") != std::string::npos) {
+            std::cout<<"Skill"<<std::endl;
+            std::cout<<card.description<<std::endl;
+            std::cout<<card.value<<std::endl;
+            if (card.description.find("抽") != std::string::npos) {
                 std::cout << "抽 " << card.value << " 张牌!" << std::endl;
+
                 drawCards(card.value);
             } else if (card.description.find("能量") != std::string::npos) {
                 battleState.energy += card.value;
