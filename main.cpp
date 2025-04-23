@@ -1,10 +1,18 @@
 #include <iostream>
+#include<locale>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include "include/GameManager.h"
 
 int main() {
     // 创建游戏管理器实例
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);  // 设置控制台输出为 UTF-8
+        SetConsoleCP(CP_UTF8);     // 设置控制台输入为 UTF-8
+    #endif
     GameManager gameManager;
-
+    
     // 初始化游戏
     if (!gameManager.initialize()) {
         std::cerr << "游戏初始化失败！" << std::endl;

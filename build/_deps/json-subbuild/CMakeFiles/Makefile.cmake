@@ -7,8 +7,10 @@ set(CMAKE_DEPENDS_GENERATOR "MinGW Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
+  "D:/CMake/share/cmake-4.0/Modules/CMakeDetermineSystem.cmake"
   "D:/CMake/share/cmake-4.0/Modules/CMakeGenericSystem.cmake"
   "D:/CMake/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake"
+  "D:/CMake/share/cmake-4.0/Modules/CMakeSystem.cmake.in"
   "D:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake"
   "D:/CMake/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake"
   "D:/CMake/share/cmake-4.0/Modules/ExternalProject.cmake"
@@ -36,6 +38,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
+  "CMakeFiles/4.0.0/CMakeSystem.cmake"
   "json-populate-prefix/tmp/json-populate-mkdirs.cmake"
   "json-populate-prefix/tmp/json-populate-gitclone.cmake"
   "json-populate-prefix/src/json-populate-stamp/json-populate-gitinfo.txt"
